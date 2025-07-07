@@ -5,12 +5,12 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'rust/api/inference.dart' as rust_api;
 
 /// Abstract base class for inference inputs
-/// 
+///
 /// All input types must extend this class and implement the conversion
 /// to the Rust API format.
 abstract class InferenceInput {
   /// Creates a new inference input.
-  /// 
+  ///
   /// This is the base constructor for all inference input types.
   /// Subclasses should call this constructor and implement [toRustInput].
   const InferenceInput();
