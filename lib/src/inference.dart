@@ -3,7 +3,7 @@ import 'engines/candle_session.dart';
 import 'engines/linfa_session.dart';
 
 /// Main entry point for the Inference package
-/// 
+///
 /// This class provides the exact API specified in the BRD with static methods
 /// for loading models and training algorithms. It serves as a convenience
 /// wrapper around the more specific session classes.
@@ -12,10 +12,10 @@ class Inference {
   Inference._();
 
   /// Load a model with automatic engine detection
-  /// 
+  ///
   /// This method automatically detects the appropriate engine based on
   /// the model file format and loads it accordingly.
-  /// 
+  ///
   /// Example:
   /// ```dart
   /// final model = await Inference.load('assets/model.safetensors');
@@ -27,10 +27,10 @@ class Inference {
   }
 
   /// Load a model with explicit Candle engine
-  /// 
+  ///
   /// Forces the use of the Candle engine for PyTorch models.
   /// Supports .safetensors, .pt, and .pth files.
-  /// 
+  ///
   /// Example:
   /// ```dart
   /// final model = await Inference.loadWithCandle('assets/model.safetensors');
@@ -39,12 +39,11 @@ class Inference {
     return InferenceSession.loadWithCandle(modelPath);
   }
 
-
   /// Train a Linfa model on-device
-  /// 
+  ///
   /// Creates a new model using classical ML algorithms from the Linfa library.
   /// Supports various algorithms like k-means, linear regression, SVM, etc.
-  /// 
+  ///
   /// Example:
   /// ```dart
   /// final model = await Inference.trainLinfa(
@@ -64,4 +63,4 @@ class Inference {
       params: params,
     );
   }
-} 
+}

@@ -8,22 +8,28 @@ import '../exceptions/inference_exceptions.dart';
 enum LinfaAlgorithm {
   /// K-means clustering
   kmeans,
+
   /// Linear regression
   linearRegression,
+
   /// Support Vector Machine
   svm,
+
   /// Decision tree
   decisionTree,
+
   /// Random forest
   randomForest,
+
   /// Logistic regression
   logisticRegression,
+
   /// Principal Component Analysis
   pca,
 }
 
 /// Linfa session for classical ML algorithms
-/// 
+///
 /// This class provides specialized functionality for the Linfa engine,
 /// which supports on-device training and classical machine learning algorithms.
 class LinfaSession extends InferenceSession {
@@ -37,9 +43,9 @@ class LinfaSession extends InferenceSession {
         );
 
   /// Train a K-means clustering model
-  /// 
+  ///
   /// K-means is an unsupervised learning algorithm that groups data into clusters.
-  /// 
+  ///
   /// Example:
   /// ```dart
   /// final session = await LinfaSession.trainKMeans(
@@ -61,13 +67,13 @@ class LinfaSession extends InferenceSession {
         'max_iterations': maxIterations.toString(),
         'tolerance': tolerance.toString(),
       };
-      
+
       final sessionInfo = await rust_api.trainLinfaModel(
         features: features,
         algorithm: 'kmeans',
         params: params,
       );
-      
+
       return LinfaSession.fromSessionInfo(sessionInfo);
     } catch (e) {
       throw ModelLoadException(
@@ -79,9 +85,9 @@ class LinfaSession extends InferenceSession {
   }
 
   /// Train a linear regression model
-  /// 
+  ///
   /// Linear regression predicts continuous values based on linear relationships.
-  /// 
+  ///
   /// Example:
   /// ```dart
   /// final session = await LinfaSession.trainLinearRegression(
@@ -105,23 +111,24 @@ class LinfaSession extends InferenceSession {
         row.add(targets[i]);
         combinedData.add(row);
       }
-      
-      final featureData = combinedData.map((row) => Float64List.fromList(row)).toList();
+
+      final featureData =
+          combinedData.map((row) => Float64List.fromList(row)).toList();
       final params = <String, String>{};
-      
+
       if (l1Ratio != null) {
         params['l1_ratio'] = l1Ratio.toString();
       }
       if (l2Ratio != null) {
         params['l2_ratio'] = l2Ratio.toString();
       }
-      
+
       final sessionInfo = await rust_api.trainLinfaModel(
         features: featureData,
         algorithm: 'linear_regression',
         params: params,
       );
-      
+
       return LinfaSession.fromSessionInfo(sessionInfo);
     } catch (e) {
       throw ModelLoadException(
@@ -133,9 +140,9 @@ class LinfaSession extends InferenceSession {
   }
 
   /// Train a Support Vector Machine (SVM) model
-  /// 
+  ///
   /// SVM is a powerful classification algorithm that works well for many tasks.
-  /// 
+  ///
   /// Example:
   /// ```dart
   /// final session = await LinfaSession.trainSVM(
@@ -159,24 +166,25 @@ class LinfaSession extends InferenceSession {
         row.add(labels[i].toDouble());
         combinedData.add(row);
       }
-      
-      final featureData = combinedData.map((row) => Float64List.fromList(row)).toList();
+
+      final featureData =
+          combinedData.map((row) => Float64List.fromList(row)).toList();
       final stringParams = <String, String>{
         'kernel': kernel,
       };
-      
+
       if (params != null) {
         params.forEach((key, value) {
           stringParams[key] = value.toString();
         });
       }
-      
+
       final sessionInfo = await rust_api.trainLinfaModel(
         features: featureData,
         algorithm: 'svm',
         params: stringParams,
       );
-      
+
       return LinfaSession.fromSessionInfo(sessionInfo);
     } catch (e) {
       throw ModelLoadException(
@@ -188,9 +196,9 @@ class LinfaSession extends InferenceSession {
   }
 
   /// Train a decision tree model
-  /// 
+  ///
   /// Decision trees are interpretable models that make decisions based on feature thresholds.
-  /// 
+  ///
   /// Example:
   /// ```dart
   /// final session = await LinfaSession.trainDecisionTree(
@@ -215,10 +223,11 @@ class LinfaSession extends InferenceSession {
         row.add(labels[i].toDouble());
         combinedData.add(row);
       }
-      
-      final featureData = combinedData.map((row) => Float64List.fromList(row)).toList();
+
+      final featureData =
+          combinedData.map((row) => Float64List.fromList(row)).toList();
       final params = <String, String>{};
-      
+
       if (maxDepth != null) {
         params['max_depth'] = maxDepth.toString();
       }
@@ -228,13 +237,13 @@ class LinfaSession extends InferenceSession {
       if (minSamplesLeaf != null) {
         params['min_samples_leaf'] = minSamplesLeaf.toString();
       }
-      
+
       final sessionInfo = await rust_api.trainLinfaModel(
         features: featureData,
         algorithm: 'decision_tree',
         params: params,
       );
-      
+
       return LinfaSession.fromSessionInfo(sessionInfo);
     } catch (e) {
       throw ModelLoadException(
@@ -246,9 +255,9 @@ class LinfaSession extends InferenceSession {
   }
 
   /// Train a random forest model
-  /// 
+  ///
   /// Random forest combines multiple decision trees for better accuracy and robustness.
-  /// 
+  ///
   /// Example:
   /// ```dart
   /// final session = await LinfaSession.trainRandomForest(
@@ -273,25 +282,26 @@ class LinfaSession extends InferenceSession {
         row.add(labels[i].toDouble());
         combinedData.add(row);
       }
-      
-      final featureData = combinedData.map((row) => Float64List.fromList(row)).toList();
+
+      final featureData =
+          combinedData.map((row) => Float64List.fromList(row)).toList();
       final params = <String, String>{
         'n_trees': numTrees.toString(),
       };
-      
+
       if (maxDepth != null) {
         params['max_depth'] = maxDepth.toString();
       }
       if (minSamplesSplit != null) {
         params['min_samples_split'] = minSamplesSplit.toString();
       }
-      
+
       final sessionInfo = await rust_api.trainLinfaModel(
         features: featureData,
         algorithm: 'random_forest',
         params: params,
       );
-      
+
       return LinfaSession.fromSessionInfo(sessionInfo);
     } catch (e) {
       throw ModelLoadException(
@@ -303,9 +313,9 @@ class LinfaSession extends InferenceSession {
   }
 
   /// Serialize the trained model to bytes
-  /// 
+  ///
   /// This allows saving the model for later use or transfer.
-  /// 
+  ///
   /// Example:
   /// ```dart
   /// final bytes = await session.serialize();
@@ -318,9 +328,9 @@ class LinfaSession extends InferenceSession {
   }
 
   /// Deserialize a model from bytes
-  /// 
+  ///
   /// This allows loading a previously saved model.
-  /// 
+  ///
   /// Example:
   /// ```dart
   /// final session = await LinfaSession.deserialize(modelBytes);
@@ -332,7 +342,7 @@ class LinfaSession extends InferenceSession {
   }
 
   /// Get information about the Linfa engine
-  /// 
+  ///
   /// Returns details about the current Linfa engine configuration,
   /// including supported algorithms and features.
   Map<String, dynamic> get engineInfo {
@@ -353,7 +363,7 @@ class LinfaSession extends InferenceSession {
   }
 
   /// Get available algorithms
-  /// 
+  ///
   /// Returns a list of machine learning algorithms that are available in Linfa.
   List<String> get availableAlgorithms {
     return [
@@ -368,14 +378,14 @@ class LinfaSession extends InferenceSession {
   }
 
   /// Check if a specific algorithm is available
-  /// 
+  ///
   /// Returns true if the specified algorithm is available, false otherwise.
   bool isAlgorithmAvailable(String algorithm) {
     return availableAlgorithms.contains(algorithm.toLowerCase());
   }
 
   /// Get training statistics
-  /// 
+  ///
   /// Returns information about the training process and model performance.
   Map<String, dynamic> get trainingStats {
     return {
@@ -388,21 +398,22 @@ class LinfaSession extends InferenceSession {
   }
 
   /// Get model parameters
-  /// 
+  ///
   /// Returns the learned parameters of the trained model.
   Map<String, dynamic> get modelParameters {
     return {
       'algorithm': 'unknown', // This would be stored during training
       'parameters': {}, // This would contain algorithm-specific parameters
-      'feature_count': inputSpecs.isNotEmpty ? inputSpecs.first.shape.length : 0,
+      'feature_count':
+          inputSpecs.isNotEmpty ? inputSpecs.first.shape.length : 0,
       'trained': true,
     };
   }
 
   /// Evaluate the model on test data
-  /// 
+  ///
   /// Returns performance metrics for the model on the provided test data.
-  /// 
+  ///
   /// Example:
   /// ```dart
   /// final metrics = await session.evaluate(
@@ -419,10 +430,8 @@ class LinfaSession extends InferenceSession {
     throw UnsupportedError('Model evaluation not yet implemented');
   }
 
-
-
   @override
   String toString() {
     return 'LinfaSession(engine: $engine, algorithm: ${modelParameters['algorithm']}, inputs: ${inputSpecs.length}, outputs: ${outputSpecs.length})';
   }
-} 
+}

@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data' hide Uint64List;
 import 'package:flutter/services.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
@@ -10,12 +9,18 @@ import 'rust/api/inference.dart' as rust_api;
 /// All input types must extend this class and implement the conversion
 /// to the Rust API format.
 abstract class InferenceInput {
+  /// Creates a new inference input.
+  /// 
+  /// This is the base constructor for all inference input types.
+  /// Subclasses should call this constructor and implement [toRustInput].
+  const InferenceInput();
+
   /// Convert this input to the Rust API format
   rust_api.InferenceInput toRustInput();
 }
 
 /// Image input for computer vision models
-/// 
+///
 /// Handles image data with preprocessing capabilities.
 /// Supports common image formats and provides convenience constructors
 /// for loading from files, assets, or raw bytes.
@@ -26,7 +31,7 @@ class ImageInput extends InferenceInput {
   /// Image width in pixels
   final int width;
 
-  /// Image height in pixels  
+  /// Image height in pixels
   final int height;
 
   /// Number of channels (1 for grayscale, 3 for RGB, 4 for RGBA)
@@ -41,10 +46,10 @@ class ImageInput extends InferenceInput {
   });
 
   /// Create from a file
-  /// 
+  ///
   /// Loads and preprocesses an image file. The image will be decoded
   /// and converted to the appropriate format for ML inference.
-  /// 
+  ///
   /// Example:
   /// ```dart
   /// final input = await ImageInput.fromFile(File('path/to/image.jpg'));
@@ -55,9 +60,9 @@ class ImageInput extends InferenceInput {
   }
 
   /// Create from a Flutter asset
-  /// 
+  ///
   /// Loads an image from the app's asset bundle.
-  /// 
+  ///
   /// Example:
   /// ```dart
   /// final input = await ImageInput.fromAsset('assets/images/test.jpg');
@@ -69,10 +74,10 @@ class ImageInput extends InferenceInput {
   }
 
   /// Create from raw bytes
-  /// 
+  ///
   /// Decodes image bytes and extracts dimensions and channel information.
   /// Supports common formats like JPEG, PNG, WebP, etc.
-  /// 
+  ///
   /// Example:
   /// ```dart
   /// final input = await ImageInput.fromBytes(imageBytes);
@@ -81,21 +86,21 @@ class ImageInput extends InferenceInput {
     // For now, we'll create a placeholder implementation
     // In a real implementation, this would decode the image and extract metadata
     // This would typically use the `image` package or platform-specific decoders
-    
+
     // Placeholder values - in reality these would be extracted from the image
     return ImageInput(
       bytes: bytes,
-      width: 224,  // Common input size for many models
+      width: 224, // Common input size for many models
       height: 224,
       channels: 3, // RGB
     );
   }
 
   /// Create from raw pixel data
-  /// 
+  ///
   /// Creates an image input from raw pixel values. Useful when you already
   /// have preprocessed image data.
-  /// 
+  ///
   /// Example:
   /// ```dart
   /// final input = ImageInput.fromPixels(
@@ -115,7 +120,7 @@ class ImageInput extends InferenceInput {
     final bytes = Uint8List.fromList(
       pixels.map((p) => (p * 255).clamp(0, 255).toInt()).toList(),
     );
-    
+
     return ImageInput(
       bytes: bytes,
       width: width,
@@ -130,7 +135,7 @@ class ImageInput extends InferenceInput {
     final floatData = Float32List.fromList(
       bytes.map((b) => b / 255.0).toList(),
     );
-    
+
     return rust_api.InferenceInput(
       data: floatData,
       shape: Uint64List.fromList([height, width, channels]),
@@ -143,7 +148,7 @@ class ImageInput extends InferenceInput {
 }
 
 /// NLP input for natural language processing models
-/// 
+///
 /// Handles text data with optional tokenizer specification.
 /// Can work with raw text or pre-tokenized input.
 class NLPInput extends InferenceInput {
@@ -164,9 +169,9 @@ class NLPInput extends InferenceInput {
   });
 
   /// Create from pre-tokenized input
-  /// 
+  ///
   /// Use this when you have already tokenized the text using a specific tokenizer.
-  /// 
+  ///
   /// Example:
   /// ```dart
   /// final input = NLPInput.fromTokens([101, 2023, 2003, 102]);
@@ -200,11 +205,12 @@ class NLPInput extends InferenceInput {
   }
 
   @override
-  String toString() => 'NLPInput("${text.length > 50 ? '${text.substring(0, 50)}...' : text}")';
+  String toString() =>
+      'NLPInput("${text.length > 50 ? '${text.substring(0, 50)}...' : text}")';
 }
 
 /// Raw tensor input for models
-/// 
+///
 /// Provides direct access to tensor data with shape validation.
 /// Useful for custom preprocessing or when working with numerical data.
 class TensorInput extends InferenceInput {
@@ -225,7 +231,7 @@ class TensorInput extends InferenceInput {
   });
 
   /// Create from a 1D list
-  /// 
+  ///
   /// Example:
   /// ```dart
   /// final input = TensorInput.fromList([1.0, 2.0, 3.0, 4.0]);
@@ -235,7 +241,7 @@ class TensorInput extends InferenceInput {
   }
 
   /// Create from a 2D list (matrix)
-  /// 
+  ///
   /// Example:
   /// ```dart
   /// final input = TensorInput.from2D([
@@ -247,28 +253,28 @@ class TensorInput extends InferenceInput {
     if (matrix.isEmpty) {
       return TensorInput([], [0, 0]);
     }
-    
+
     final rows = matrix.length;
     final cols = matrix[0].length;
-    
+
     // Validate that all rows have the same length
     for (int i = 1; i < rows; i++) {
       if (matrix[i].length != cols) {
         throw ArgumentError('All rows must have the same length');
       }
     }
-    
+
     // Flatten the matrix
     final flatData = <double>[];
     for (final row in matrix) {
       flatData.addAll(row);
     }
-    
+
     return TensorInput(flatData, [rows, cols]);
   }
 
   /// Create from a 3D list
-  /// 
+  ///
   /// Example:
   /// ```dart
   /// final input = TensorInput.from3D([
@@ -280,11 +286,11 @@ class TensorInput extends InferenceInput {
     if (tensor3d.isEmpty) {
       return TensorInput([], [0, 0, 0]);
     }
-    
+
     final depth = tensor3d.length;
     final rows = tensor3d[0].length;
     final cols = tensor3d[0].isEmpty ? 0 : tensor3d[0][0].length;
-    
+
     // Validate dimensions
     for (int i = 0; i < depth; i++) {
       if (tensor3d[i].length != rows) {
@@ -296,7 +302,7 @@ class TensorInput extends InferenceInput {
         }
       }
     }
-    
+
     // Flatten the tensor
     final flatData = <double>[];
     for (final matrix in tensor3d) {
@@ -304,7 +310,7 @@ class TensorInput extends InferenceInput {
         flatData.addAll(row);
       }
     }
-    
+
     return TensorInput(flatData, [depth, rows, cols]);
   }
 
@@ -321,7 +327,7 @@ class TensorInput extends InferenceInput {
   @override
   rust_api.InferenceInput toRustInput() {
     validate();
-    
+
     return rust_api.InferenceInput(
       data: Float32List.fromList(data),
       shape: Uint64List.fromList(shape),
@@ -334,7 +340,7 @@ class TensorInput extends InferenceInput {
 }
 
 /// Audio input for speech and audio processing models
-/// 
+///
 /// Handles audio samples with sample rate information.
 /// Supports common audio preprocessing tasks.
 class AudioInput extends InferenceInput {
@@ -355,9 +361,9 @@ class AudioInput extends InferenceInput {
   });
 
   /// Create from a file
-  /// 
+  ///
   /// Loads and decodes an audio file. Supports common formats like WAV, MP3, etc.
-  /// 
+  ///
   /// Example:
   /// ```dart
   /// final input = await AudioInput.fromFile(File('path/to/audio.wav'));
@@ -370,9 +376,9 @@ class AudioInput extends InferenceInput {
   }
 
   /// Create from raw bytes
-  /// 
+  ///
   /// Decodes audio bytes and extracts sample rate and channel information.
-  /// 
+  ///
   /// Example:
   /// ```dart
   /// final input = await AudioInput.fromBytes(audioBytes);
@@ -380,7 +386,7 @@ class AudioInput extends InferenceInput {
   static Future<AudioInput> fromBytes(Uint8List bytes) async {
     // Placeholder implementation
     // In a real implementation, this would decode the audio format
-    
+
     // For now, assume 16-bit PCM audio at 16kHz
     final samples = Float32List(bytes.length ~/ 2);
     for (int i = 0; i < samples.length; i++) {
@@ -388,7 +394,7 @@ class AudioInput extends InferenceInput {
       final sample = (bytes[i * 2] | (bytes[i * 2 + 1] << 8));
       samples[i] = sample / 32768.0; // Normalize to [-1, 1]
     }
-    
+
     return AudioInput(
       samples: samples,
       sampleRate: 16000,
@@ -397,9 +403,9 @@ class AudioInput extends InferenceInput {
   }
 
   /// Create from raw samples
-  /// 
+  ///
   /// Use this when you already have processed audio samples.
-  /// 
+  ///
   /// Example:
   /// ```dart
   /// final input = AudioInput.fromSamples(
@@ -432,5 +438,6 @@ class AudioInput extends InferenceInput {
   }
 
   @override
-  String toString() => 'AudioInput(${duration.toStringAsFixed(2)}s, ${sampleRate}Hz, ${channels}ch)';
-} 
+  String toString() =>
+      'AudioInput(${duration.toStringAsFixed(2)}s, ${sampleRate}Hz, ${channels}ch)';
+}

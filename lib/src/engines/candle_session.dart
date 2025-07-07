@@ -3,7 +3,7 @@ import '../rust/api/inference.dart' as rust_api;
 import '../exceptions/inference_exceptions.dart';
 
 /// Candle engine session for PyTorch models
-/// 
+///
 /// This class provides specialized functionality for the Candle engine,
 /// which supports PyTorch models and HuggingFace integration.
 class CandleSession extends InferenceSession {
@@ -17,10 +17,10 @@ class CandleSession extends InferenceSession {
         );
 
   /// Load a model from HuggingFace Hub
-  /// 
+  ///
   /// Downloads and loads a model from the HuggingFace model hub.
   /// This is convenient for accessing pre-trained models.
-  /// 
+  ///
   /// Example:
   /// ```dart
   /// final session = await CandleSession.fromHuggingFace(
@@ -50,17 +50,18 @@ class CandleSession extends InferenceSession {
   }
 
   /// Load a PyTorch model from SafeTensors format
-  /// 
+  ///
   /// SafeTensors is a secure format for storing tensors that's becoming
   /// the standard for PyTorch models.
-  /// 
+  ///
   /// Example:
   /// ```dart
   /// final session = await CandleSession.fromPyTorch('path/to/model.safetensors');
   /// ```
   static Future<CandleSession> fromPyTorch(String safetensorsPath) async {
     try {
-      final sessionInfo = await rust_api.loadModelWithCandle(modelPath: safetensorsPath);
+      final sessionInfo =
+          await rust_api.loadModelWithCandle(modelPath: safetensorsPath);
       return CandleSession.fromSessionInfo(sessionInfo);
     } catch (e) {
       throw ModelLoadException(
@@ -73,10 +74,10 @@ class CandleSession extends InferenceSession {
   }
 
   /// Load a model from a specific architecture
-  /// 
+  ///
   /// This method allows loading models with known architectures
   /// like ResNet, BERT, GPT-2, etc.
-  /// 
+  ///
   /// Example:
   /// ```dart
   /// final session = await CandleSession.fromArchitecture(
@@ -94,7 +95,7 @@ class CandleSession extends InferenceSession {
   }
 
   /// Get information about the Candle engine
-  /// 
+  ///
   /// Returns details about the current Candle engine configuration,
   /// including supported features and available devices.
   Map<String, dynamic> get engineInfo {
@@ -108,7 +109,7 @@ class CandleSession extends InferenceSession {
   }
 
   /// Check if CUDA is available for this session
-  /// 
+  ///
   /// Returns true if the model is running on CUDA, false otherwise.
   bool get isCudaAvailable {
     // This would be implemented by querying the Rust backend
@@ -116,7 +117,7 @@ class CandleSession extends InferenceSession {
   }
 
   /// Check if MKL (Intel Math Kernel Library) is available
-  /// 
+  ///
   /// Returns true if MKL optimizations are available, false otherwise.
   bool get isMklAvailable {
     // This would be implemented by querying the Rust backend
@@ -124,7 +125,7 @@ class CandleSession extends InferenceSession {
   }
 
   /// Get the device being used for inference
-  /// 
+  ///
   /// Returns a string describing the device (e.g., 'cpu', 'cuda:0').
   String get device {
     // This would be implemented by querying the Rust backend
@@ -132,9 +133,9 @@ class CandleSession extends InferenceSession {
   }
 
   /// Move the model to a different device
-  /// 
+  ///
   /// This allows switching between CPU and GPU inference.
-  /// 
+  ///
   /// Example:
   /// ```dart
   /// await session.toDevice('cuda:0'); // Move to first GPU
@@ -147,7 +148,7 @@ class CandleSession extends InferenceSession {
   }
 
   /// Get model statistics
-  /// 
+  ///
   /// Returns information about the model structure and parameters.
   Map<String, dynamic> get modelStats {
     return {
@@ -163,4 +164,4 @@ class CandleSession extends InferenceSession {
   String toString() {
     return 'CandleSession(engine: $engine, device: $device, inputs: ${inputSpecs.length}, outputs: ${outputSpecs.length})';
   }
-} 
+}

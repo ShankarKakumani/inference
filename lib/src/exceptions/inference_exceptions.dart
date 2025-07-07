@@ -1,5 +1,5 @@
 /// Base exception class for all inference-related errors
-/// 
+///
 /// All inference exceptions extend this class to provide consistent
 /// error handling across the package.
 abstract class InferenceException implements Exception {
@@ -12,6 +12,11 @@ abstract class InferenceException implements Exception {
   /// Stack trace where the error occurred
   final StackTrace? stackTrace;
 
+  /// Creates a new inference exception.
+  ///
+  /// [message] is the error message describing what went wrong.
+  /// [cause] is an optional underlying exception that caused this error.
+  /// [stackTrace] is an optional stack trace where the error occurred.
   const InferenceException(
     this.message, {
     this.cause,
@@ -29,7 +34,7 @@ abstract class InferenceException implements Exception {
 }
 
 /// Exception thrown when model loading fails
-/// 
+///
 /// This can occur due to various reasons:
 /// - Invalid model file format
 /// - Corrupted model file
@@ -44,12 +49,12 @@ class ModelLoadException extends InferenceException {
   final String? engineType;
 
   const ModelLoadException(
-    String message, {
+    super.message, {
     this.modelPath,
     this.engineType,
-    Object? cause,
-    StackTrace? stackTrace,
-  }) : super(message, cause: cause, stackTrace: stackTrace);
+    super.cause,
+    super.stackTrace,
+  });
 
   @override
   String toString() {
@@ -68,7 +73,7 @@ class ModelLoadException extends InferenceException {
 }
 
 /// Exception thrown when prediction fails
-/// 
+///
 /// This can occur due to:
 /// - Invalid input data
 /// - Input shape mismatch
@@ -86,13 +91,13 @@ class PredictionException extends InferenceException {
   final List<int>? actualShape;
 
   const PredictionException(
-    String message, {
+    super.message, {
     this.inputDescription,
     this.expectedShape,
     this.actualShape,
-    Object? cause,
-    StackTrace? stackTrace,
-  }) : super(message, cause: cause, stackTrace: stackTrace);
+    super.cause,
+    super.stackTrace,
+  });
 
   @override
   String toString() {
@@ -111,7 +116,7 @@ class PredictionException extends InferenceException {
 }
 
 /// Exception thrown when an unsupported model format is encountered
-/// 
+///
 /// This occurs when trying to load a model file that is not supported
 /// by any of the available engines.
 class UnsupportedFormatException extends InferenceException {
@@ -138,7 +143,8 @@ class UnsupportedFormatException extends InferenceException {
 
   @override
   String toString() {
-    final buffer = StringBuffer('UnsupportedFormatException: Unsupported format "$format"');
+    final buffer = StringBuffer(
+        'UnsupportedFormatException: Unsupported format "$format"');
     if (filePath != null) {
       buffer.write(' (file: $filePath)');
     }
@@ -153,7 +159,7 @@ class UnsupportedFormatException extends InferenceException {
 }
 
 /// Exception thrown when an unsupported or unavailable engine is requested
-/// 
+///
 /// This occurs when trying to use an engine that is either:
 /// - Not compiled into the build
 /// - Not available on the current platform
@@ -182,7 +188,8 @@ class UnsupportedEngineException extends InferenceException {
 
   @override
   String toString() {
-    final buffer = StringBuffer('UnsupportedEngineException: Engine "$engineType" is not available');
+    final buffer = StringBuffer(
+        'UnsupportedEngineException: Engine "$engineType" is not available');
     if (platform != null) {
       buffer.write(' (platform: $platform)');
     }
@@ -197,7 +204,7 @@ class UnsupportedEngineException extends InferenceException {
 }
 
 /// Exception thrown when input validation fails
-/// 
+///
 /// This occurs when the provided input data doesn't match the expected format:
 /// - Invalid tensor shapes
 /// - Wrong data types
@@ -214,13 +221,13 @@ class InputValidationException extends InferenceException {
   final String? actual;
 
   const InputValidationException(
-    String message, {
+    super.message, {
     this.field,
     this.expected,
     this.actual,
-    Object? cause,
-    StackTrace? stackTrace,
-  }) : super(message, cause: cause, stackTrace: stackTrace);
+    super.cause,
+    super.stackTrace,
+  });
 
   @override
   String toString() {
@@ -239,7 +246,7 @@ class InputValidationException extends InferenceException {
 }
 
 /// Exception thrown when resource management fails
-/// 
+///
 /// This can occur during:
 /// - Session disposal
 /// - Memory cleanup
@@ -253,12 +260,12 @@ class ResourceException extends InferenceException {
   final String? operation;
 
   const ResourceException(
-    String message, {
+    super.message, {
     this.resource,
     this.operation,
-    Object? cause,
-    StackTrace? stackTrace,
-  }) : super(message, cause: cause, stackTrace: stackTrace);
+    super.cause,
+    super.stackTrace,
+  });
 
   @override
   String toString() {
@@ -277,7 +284,7 @@ class ResourceException extends InferenceException {
 }
 
 /// Exception thrown when configuration is invalid
-/// 
+///
 /// This occurs when:
 /// - Invalid configuration parameters
 /// - Conflicting settings
@@ -293,14 +300,22 @@ class ConfigurationException extends InferenceException {
   /// Valid options (if applicable)
   final List<String>? validOptions;
 
+  /// Creates a new configuration exception.
+  ///
+  /// [message] describes the configuration error.
+  /// [configKey] is the configuration key that is invalid.
+  /// [invalidValue] is the value that caused the error.
+  /// [validOptions] lists valid alternatives (if applicable).
+  /// [cause] is an optional underlying exception.
+  /// [stackTrace] is an optional stack trace where the error occurred.
   const ConfigurationException(
-    String message, {
+    super.message, {
     this.configKey,
     this.invalidValue,
     this.validOptions,
-    Object? cause,
-    StackTrace? stackTrace,
-  }) : super(message, cause: cause, stackTrace: stackTrace);
+    super.cause,
+    super.stackTrace,
+  });
 
   @override
   String toString() {
@@ -319,4 +334,4 @@ class ConfigurationException extends InferenceException {
     }
     return buffer.toString();
   }
-} 
+}

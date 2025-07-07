@@ -91,7 +91,10 @@ class InferenceService extends ChangeNotifier {
   }
 
   // Load model from asset bytes with timing
-  Future<InferenceSession?> loadModelFromAsset(String assetPath, String engine) async {
+  Future<InferenceSession?> loadModelFromAsset(
+    String assetPath,
+    String engine,
+  ) async {
     try {
       print(
         '🚀 InferenceService: Starting to load $engine model from asset $assetPath',
@@ -99,7 +102,7 @@ class InferenceService extends ChangeNotifier {
       _setLoading(true, 'Loading $engine model from asset...');
 
       final stopwatch = Stopwatch()..start();
-      
+
       // Load asset as bytes
       print('📁 InferenceService: Loading asset bytes...');
       final assetData = await rootBundle.load(assetPath);
@@ -110,11 +113,15 @@ class InferenceService extends ChangeNotifier {
 
       switch (engine.toLowerCase()) {
         case 'candle':
-          print('🔥 InferenceService: Loading with Candle engine from bytes...');
+          print(
+            '🔥 InferenceService: Loading with Candle engine from bytes...',
+          );
           session = await InferenceSession.loadFromBytesWithCandle(modelBytes);
           break;
         default:
-          print('⚡ InferenceService: Loading with auto-detection from bytes...');
+          print(
+            '⚡ InferenceService: Loading with auto-detection from bytes...',
+          );
           session = await InferenceSession.loadFromBytes(modelBytes);
       }
 
@@ -122,7 +129,9 @@ class InferenceService extends ChangeNotifier {
       final loadTime = stopwatch.elapsedMilliseconds.toDouble();
       _recordLoadTime(engine, loadTime);
 
-      print('✅ InferenceService: Model loaded successfully from asset in ${loadTime}ms');
+      print(
+        '✅ InferenceService: Model loaded successfully from asset in ${loadTime}ms',
+      );
       print('📊 InferenceService: Session details: $session');
 
       _setLoading(false);
