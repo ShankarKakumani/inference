@@ -1,0 +1,36 @@
+---
+description: Dependencies and build configuration requirements
+globs: ["Cargo.toml", "pubspec.yaml", "build.rs"]
+alwaysApply: true
+---
+
+Use EXACT dependencies from BRD:
+
+RUST DEPENDENCIES:
+- candle-core = { version = "0.8", features = ["cuda", "mkl"] }
+- candle-nn = "0.8"
+- candle-transformers = "0.8"
+- ort = { version = "2.0.0-rc.9", features = ["load-dynamic", "cuda", "tensorrt"] }
+- linfa = "0.7" (with linfa-linear, linfa-clustering, linfa-svm, linfa-trees)
+- flutter_rust_bridge = "2.0"
+- tokio = { version = "1.0", features = ["rt-multi-thread"] }
+
+FLUTTER DEPENDENCIES:
+- flutter_rust_bridge: ^2.0.0
+- ffi: ^2.1.0
+- meta: ^1.12.0
+
+BUILD CONFIGURATION:
+- Cargo.toml: crate-type = ["staticlib", "cdylib"]
+- build.rs: flutter_rust_bridge_codegen::generate()
+- Features: default = ["candle", "ort", "linfa"]
+- Platform-specific rustflags in .cargo/config.toml
+
+PACKAGE INFO:
+- name: inference
+- description: Zero-setup ML inference for Flutter using Rust engines
+- version: 1.0.0
+- SDK: '>=3.0.0 <4.0.0'
+- Flutter: ">=3.16.0"
+
+NEVER use different versions or add unlisted dependencies.

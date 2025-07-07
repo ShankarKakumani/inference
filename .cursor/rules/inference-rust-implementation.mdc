@@ -1,0 +1,35 @@
+---
+description: Rust implementation rules and engine specifications
+globs: ["rust/**/*"]
+alwaysApply: true
+---
+
+Rust implementation must follow exact BRD specifications:
+
+TRAITS STRUCTURE:
+- InferenceEngine trait: load_model(), load_from_bytes(), supports_format(), engine_name()
+- Model trait: predict(), predict_batch(), input_specs(), output_specs()
+- All traits must be Send + Sync
+
+ENGINE IMPLEMENTATIONS:
+- CandleEngine: Handle .safetensors, .pt, .pth files
+- OrtEngine: Handle .onnx files with SessionBuilder configuration
+- LinfaEngine: Handle on-device training with Dataset creation
+
+DEPENDENCIES (exact versions):
+- candle-core = "0.8" with cuda, mkl features
+- ort = "2.0.0-rc.9" with load-dynamic, cuda, tensorrt features
+- linfa = "0.7" with all algorithm crates
+- flutter_rust_bridge = "2.0"
+
+AUTO-DETECTION LOGIC:
+- File extension mapping: .onnx → ORT, .safetensors/.pt/.pth → Candle
+- Content-based detection: ONNX magic bytes (\x08), SafeTensors JSON ({)
+- Default fallback to ORT
+
+ERROR HANDLING:
+- Use thiserror for structured errors
+- Specific error types: ModelLoad, Prediction, UnsupportedFormat, InvalidShape
+- Proper error propagation across FFI boundary
+
+NEVER use different ML libraries or create custom implementations.

@@ -1,0 +1,30 @@
+---
+description: API design standards and signatures for Inference package
+globs:
+alwaysApply: true
+---
+
+Follow the exact API design from the BRD:
+
+MAIN INTERFACE (InferenceSession):
+- Static factories: load(), loadWithCandle(), loadWithOnnx(), trainLinfa()
+- Prediction methods: predict(), predictBatch()
+- Properties: inputSpecs, outputSpecs, engine
+- Resource management: dispose()
+
+INPUT TYPES (InferenceInput hierarchy):
+- Abstract base: InferenceInput
+- Concrete types: ImageInput, NLPInput, TensorInput, AudioInput
+- Each must have convenience constructors (fromFile, fromAsset, fromBytes)
+
+RESULTS (InferenceResult):
+- Raw data: data, shape, dataType
+- Convenience accessors: scalar, vector, matrix
+- ML helpers: argmax, topK()
+
+ENGINE-SPECIFIC APIS:
+- CandleSession: fromHuggingFace(), fromPyTorch(), fromArchitecture()
+- OnnxSession: withCuda(), withCoreML(), withCpu(), optimize()
+- LinfaSession: trainKMeans(), trainLinearRegression(), trainSVM(), serialize()
+
+NEVER create different API signatures or add methods not specified in the BRD.

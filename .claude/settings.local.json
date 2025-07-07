@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "Bash(ls:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(cargo check:*)",
+      "Bash(rg:*)",
+      "Bash(flutter run:*)",
+      "Bash(cargo:*)",
+      "Bash(flutter pub:*)",
+      "Bash(flutter build:*)",
+      "WebFetch(domain:ort.pyke.io)",
+      "Bash(mkdir:*)",
+      "Bash(cp:*)",
+      "Bash(rm:*)",
+      "Bash(tar:*)",
+      "Bash(curl:*)",
+      "Bash(otool:*)",
+      "Bash(grep:*)",
+      "Bash(git checkout:*)",
+      "WebFetch(domain:mvnrepository.com)",
+      "Bash(rustup target:*)",
+      "Bash(flutter clean:*)",
+      "Bash(unzip:*)"
+    ],
+    "deny": []
+  }
+}

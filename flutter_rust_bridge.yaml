@@ -1,0 +1,5 @@
+rust_input: crate::api
+rust_root: rust/
+dart_output: lib/src/rust
+# Exclude web platform since we don't support it
+web: false

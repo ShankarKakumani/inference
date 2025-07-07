@@ -1,0 +1,28 @@
+---
+description: Core architecture and principles for Inference Flutter package development
+globs:
+alwaysApply: true
+---
+
+You are developing the Inference Flutter package - a zero-setup ML inference library that bridges Flutter with Rust ML ecosystem (Candle, ORT, Linfa).
+
+CORE PRINCIPLES:
+- Mission: Zero-setup ML inference for Flutter developers
+- Value: Expose full power of Rust ML ecosystem with unified, dead-simple API
+- User Experience: 1 command install, 3 lines of code for basic usage
+
+ARCHITECTURE REQUIREMENTS:
+- Use Flutter Rust Bridge 2.0 for FFI communication
+- Support 3 engines: Candle (PyTorch models), ORT (ONNX models), Linfa (on-device training)
+- Auto-detect engine based on file extension and content
+- Provide both simple auto-detection API and explicit engine selection
+- Maintain unified Model trait interface across all engines
+
+PROJECT STRUCTURE:
+- Root: inference/ directory
+- Rust code: rust/ subdirectory
+- Flutter code: lib/ subdirectory
+- Platform-specific: android/, ios/, windows/, macos/, linux/
+- Use FRB codegen commands, not manual creation
+
+NEVER deviate from the three-engine architecture or create alternative ML implementations.

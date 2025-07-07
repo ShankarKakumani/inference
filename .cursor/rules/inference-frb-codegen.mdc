@@ -1,0 +1,36 @@
+---
+description: Flutter Rust Bridge code generation and FFI rules
+globs: ["rust/src/api.rs", "lib/**/*.dart"]
+alwaysApply: true
+---
+
+Flutter Rust Bridge 2.0 code generation rules:
+
+INITIALIZATION:
+- Use flutter_rust_bridge_codegen create-integration or init commands
+- NEVER create project structure manually
+- Let FRB generate bridge_generated.rs and bridge_generated.dart
+
+FFI PLUGIN SETUP:
+- Configure as ffiPlugin: true for all platforms (android, ios, linux, macos, windows)
+- Platform-specific native code in respective directories
+- Proper library loading and symbol resolution
+
+BRIDGE INTERFACE:
+- Define API in rust/src/api.rs
+- Use proper FRB annotations and types
+- Async functions for all model operations
+- Proper error handling across FFI boundary
+
+CODEGEN WORKFLOW:
+1. Define Rust API with FRB annotations
+2. Run codegen to generate bridge code
+3. Implement Dart wrapper classes
+4. Test FFI communication
+
+MEMORY MANAGEMENT:
+- Proper resource cleanup with dispose() methods
+- No memory leaks across FFI boundary
+- Thread-safe operations with Send + Sync
+
+NEVER bypass FRB codegen or create custom FFI bindings.

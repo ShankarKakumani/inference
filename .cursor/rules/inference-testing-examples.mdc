@@ -1,0 +1,32 @@
+---
+description: Testing requirements and example implementations
+globs: ["example/**/*", "test/**/*"]
+alwaysApply: true
+---
+
+Follow BRD examples exactly:
+
+USAGE EXAMPLES TO IMPLEMENT:
+1. Image Classification: MobileNet with ImagePicker, top-K results
+2. Text Sentiment Analysis: ONNX model with NLPInput, confidence scoring
+3. On-Device Training: K-means clustering with feature data
+4. Real-time Object Detection: YOLO with ImageInput processing
+
+CONFIGURATION EXAMPLES:
+- Global configuration: Inference.configure() with caching, GPU acceleration
+- Per-session options: SessionOptions with execution providers, optimization levels
+
+TEST SCENARIOS:
+- Auto-detection vs explicit engine selection
+- All input types (Image, Text, Tensor, Audio)
+- Error handling (invalid models, wrong formats)
+- Memory management (dispose() calls)
+- Cross-platform compatibility
+
+PERFORMANCE REQUIREMENTS:
+- Zero-setup installation (flutter pub add inference)
+- 3-line basic usage
+- Automatic engine detection
+- GPU acceleration when available
+
+NEVER create examples that deviate from BRD specifications or use different APIs.
