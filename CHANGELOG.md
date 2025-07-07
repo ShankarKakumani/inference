@@ -1,6 +1,10 @@
-## 0.1.0-beta.5
+## 0.1.0-beta.4
 
-* **Improved pub.dev score** with comprehensive documentation and code quality fixes
+* **Enhanced examples and updated dependencies** for better pub.dev experience
+* Added comprehensive standalone example.dart showcasing core functionality
+* Created detailed example README.md following Dart package layout conventions
+* Updated dependencies to latest versions with proper version constraints
+* Improved pub.dev score with comprehensive documentation and code quality fixes
 * Added detailed library documentation with examples and feature overview
 * Documented all missing constructors and classes for 100% API coverage
 * Fixed static analysis issues including unused imports and style improvements
