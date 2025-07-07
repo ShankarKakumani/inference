@@ -4,14 +4,9 @@ version: 0.1.0-beta.3
 topics:
   - machine-learning
   - artificial-intelligence
-  - deep-learning
   - pytorch
   - onnx
-  - neural-networks
-  - computer-vision
-  - nlp
   - rust
-  - cross-platform
 homepage: https://github.com/ShankarKakumani/inference
 repository: https://github.com/ShankarKakumani/inference
 issue_tracker: https://github.com/ShankarKakumani/inference/issues
