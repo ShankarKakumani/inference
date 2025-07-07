@@ -1,3 +1,12 @@
+## 0.1.0-beta.3
+
+* **Improved pub.dev score** with comprehensive documentation and code quality fixes
+* Added detailed library documentation with examples and feature overview
+* Documented all missing constructors and classes for 100% API coverage
+* Fixed static analysis issues including unused imports and style improvements
+* Added package topics for better discoverability
+* Enhanced code formatting and consistency
+
 ## 0.1.0-beta.2
 
 * **Bug fixes and improvements** for the second beta release
