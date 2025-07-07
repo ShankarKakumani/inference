@@ -74,7 +74,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.11.0';
 
   @override
-  int get rustContentHash => -1841851838;
+  int get rustContentHash => 1818969595;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -128,9 +128,6 @@ abstract class RustLibApi extends BaseApi {
 
   Future<SessionInfo> crateApiInferenceLoadModelWithConfig(
       {required String modelPath, required SessionConfig config});
-
-  Future<SessionInfo> crateApiInferenceLoadModelWithOnnx(
-      {required String modelPath});
 
   Future<InferenceResult> crateApiInferencePredict(
       {required BigInt sessionHandle, required InferenceInput input});
@@ -607,32 +604,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<SessionInfo> crateApiInferenceLoadModelWithOnnx(
-      {required String modelPath}) {
-    return handler.executeNormal(NormalTask(
-      callFfi: (port_) {
-        final serializer = SseSerializer(generalizedFrbRustBinding);
-        sse_encode_String(modelPath, serializer);
-        pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 19, port: port_);
-      },
-      codec: SseCodec(
-        decodeSuccessData: sse_decode_session_info,
-        decodeErrorData: sse_decode_inference_error,
-      ),
-      constMeta: kCrateApiInferenceLoadModelWithOnnxConstMeta,
-      argValues: [modelPath],
-      apiImpl: this,
-    ));
-  }
-
-  TaskConstMeta get kCrateApiInferenceLoadModelWithOnnxConstMeta =>
-      const TaskConstMeta(
-        debugName: "load_model_with_onnx",
-        argNames: ["modelPath"],
-      );
-
-  @override
   Future<InferenceResult> crateApiInferencePredict(
       {required BigInt sessionHandle, required InferenceInput input}) {
     return handler.executeNormal(NormalTask(
@@ -641,7 +612,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_u_64(sessionHandle, serializer);
         sse_encode_box_autoadd_inference_input(input, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 20, port: port_);
+            funcId: 19, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_inference_result,
@@ -667,7 +638,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_u_64(sessionHandle, serializer);
         sse_encode_list_inference_input(inputs, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 21, port: port_);
+            funcId: 20, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_list_inference_result,
@@ -691,7 +662,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 22, port: port_);
+            funcId: 21, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_session_config,
@@ -721,7 +692,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_String(algorithm, serializer);
         sse_encode_Map_String_String_None(params, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 23, port: port_);
+            funcId: 22, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_session_info,

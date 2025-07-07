@@ -83,14 +83,6 @@ class _PerformanceScreenState extends State<PerformanceScreen> {
                         ),
                         const Divider(),
                         _buildPerformanceRow(
-                          'ONNX Runtime',
-                          'Text/Audio Processing',
-                          service.modelLoadTimes['onnx'],
-                          Colors.blue,
-                          Icons.chat_bubble,
-                        ),
-                        const Divider(),
-                        _buildPerformanceRow(
                           'Linfa Engine',
                           'On-Device Training',
                           service.modelLoadTimes['linfa'],
@@ -124,14 +116,6 @@ class _PerformanceScreenState extends State<PerformanceScreen> {
                         ),
                         const Divider(),
                         _buildPerformanceRow(
-                          'ONNX Runtime',
-                          'Text/Audio Processing',
-                          service.inferenceTimes['onnx'],
-                          Colors.blue,
-                          Icons.chat_bubble,
-                        ),
-                        const Divider(),
-                        _buildPerformanceRow(
                           'Linfa Engine',
                           'Clustering Prediction',
                           service.inferenceTimes['linfa'],
@@ -161,13 +145,6 @@ class _PerformanceScreenState extends State<PerformanceScreen> {
                           'PyTorch models, HuggingFace integration, GPU acceleration',
                           ['SafeTensors', 'PyTorch', 'CUDA', 'MKL'],
                           Colors.red,
-                        ),
-                        const Divider(),
-                                                                          _buildCapabilityRow(
-                          'ONNX Runtime',
-                          'Cross-platform ONNX models with hardware acceleration',
-                          ['ONNX', 'CUDA', 'CoreML', 'TensorRT'],
-                          Colors.blue,
                         ),
                         const Divider(),
                         _buildCapabilityRow(

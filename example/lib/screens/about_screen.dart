@@ -106,15 +106,6 @@ class AboutScreen extends StatelessWidget {
                     const Divider(),
                     _buildEngineRow(
                       context,
-                      'ONNX Runtime',
-                      'Cross-platform ONNX model inference',
-                      'v2.0.0-rc.10',
-                      Colors.blue,
-                      Icons.settings,
-                    ),
-                    const Divider(),
-                    _buildEngineRow(
-                      context,
                       'Linfa',
                       'Classical ML algorithms in Rust',
                       'v0.7.0',

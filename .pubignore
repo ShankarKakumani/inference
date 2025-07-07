@@ -7,12 +7,7 @@ knowledge/
 # Exclude Rust target directory (if it exists)
 rust/target/
 
-# Exclude any remaining ONNX Runtime files
-**/onnxruntime*/
-**/native_assets/
-
 # Exclude large model files
-**/*.onnx
 **/*.safetensors
 **/*.pt
 **/*.pth

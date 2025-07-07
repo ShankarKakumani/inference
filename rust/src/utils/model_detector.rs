@@ -14,9 +14,9 @@ impl ModelDetector {
         // Check file extension first
         if let Some(ext) = path.extension().and_then(|e| e.to_str()) {
             match ext.to_lowercase().as_str() {
-                "onnx" => return EngineType::Ort,
                 "safetensors" => return EngineType::Candle,
                 "pt" | "pth" => return EngineType::Candle,
+
                 _ => {}
             }
         }
@@ -26,8 +26,8 @@ impl ModelDetector {
             return engine;
         }
         
-        // Default fallback to ORT as specified in BRD
-        EngineType::Ort
+        // Default fallback to Candle
+        EngineType::Candle
     }
     
     /// Detect engine type from file content
@@ -40,11 +40,6 @@ impl ModelDetector {
     
     /// Detect engine type from raw bytes
     pub fn detect_engine_from_bytes(bytes: &[u8]) -> Result<EngineType, InferenceError> {
-        // Check for ONNX magic bytes
-        if Self::is_onnx_format(bytes) {
-            return Ok(EngineType::Ort);
-        }
-        
         // Check for SafeTensors format
         if Self::is_safetensors_format(bytes) {
             return Ok(EngineType::Candle);
@@ -66,9 +61,9 @@ impl ModelDetector {
         
         if let Some(ext) = path.extension().and_then(|e| e.to_str()) {
             match ext.to_lowercase().as_str() {
-                "onnx" => return Ok(ModelFormat::Onnx),
                 "safetensors" => return Ok(ModelFormat::SafeTensors),
                 "pt" | "pth" => return Ok(ModelFormat::PyTorch),
+
                 _ => {}
             }
         }
@@ -87,10 +82,6 @@ impl ModelDetector {
     
     /// Detect model format from raw bytes
     pub fn detect_format_from_bytes(bytes: &[u8]) -> Result<ModelFormat, InferenceError> {
-        if Self::is_onnx_format(bytes) {
-            return Ok(ModelFormat::Onnx);
-        }
-        
         if Self::is_safetensors_format(bytes) {
             return Ok(ModelFormat::SafeTensors);
         }
@@ -104,20 +95,7 @@ impl ModelDetector {
         ))
     }
     
-    /// Check if bytes represent ONNX format
-    fn is_onnx_format(bytes: &[u8]) -> bool {
-        // ONNX files start with protobuf magic bytes
-        // The exact pattern can vary, but commonly starts with 0x08
-        if bytes.len() < 4 {
-            return false;
-        }
-        
-        // Check for common ONNX protobuf patterns
-        bytes.starts_with(&[0x08]) ||
-        bytes.starts_with(b"onnx") ||
-        // Check for protobuf field indicators commonly found in ONNX
-        (bytes[0] == 0x08 && bytes[1] >= 0x01 && bytes[1] <= 0x0F)
-    }
+
     
     /// Check if bytes represent SafeTensors format
     fn is_safetensors_format(bytes: &[u8]) -> bool {
@@ -181,29 +159,19 @@ mod tests {
     
     #[test]
     fn test_detect_engine_from_extension() {
-        assert_eq!(detect_engine("model.onnx"), EngineType::Ort);
         assert_eq!(detect_engine("model.safetensors"), EngineType::Candle);
         assert_eq!(detect_engine("model.pt"), EngineType::Candle);
         assert_eq!(detect_engine("model.pth"), EngineType::Candle);
-        assert_eq!(detect_engine("model.unknown"), EngineType::Ort); // fallback
+        assert_eq!(detect_engine("model.unknown"), EngineType::Candle); // fallback
     }
     
     #[test]
     fn test_detect_format_from_extension() {
-        assert_eq!(detect_format("model.onnx").unwrap(), ModelFormat::Onnx);
         assert_eq!(detect_format("model.safetensors").unwrap(), ModelFormat::SafeTensors);
         assert_eq!(detect_format("model.pt").unwrap(), ModelFormat::PyTorch);
         assert_eq!(detect_format("model.pth").unwrap(), ModelFormat::PyTorch);
     }
     
-    #[test]
-    fn test_onnx_format_detection() {
-        let onnx_bytes = vec![0x08, 0x01, 0x12, 0x04];
-        assert!(ModelDetector::is_onnx_format(&onnx_bytes));
-        
-        let not_onnx = vec![0x50, 0x4B, 0x03, 0x04];
-        assert!(!ModelDetector::is_onnx_format(&not_onnx));
-    }
     
     #[test]
     fn test_safetensors_format_detection() {

@@ -21,18 +21,9 @@ fn main() {
         results.insert("candle", false);
     }
     
-    // Test ORT compilation
-    #[cfg(feature = "ort")]
-    {
-        println!("✅ ORT feature enabled");
-        results.insert("ort", true);
-    }
-    
-    #[cfg(not(feature = "ort"))]
-    {
-        println!("❌ ORT feature disabled");
-        results.insert("ort", false);
-    }
+    // ORT is no longer supported
+    println!("❌ ORT feature removed (no longer supported)");
+    results.insert("ort", false);
     
     // Test Linfa compilation
     #[cfg(feature = "linfa")]

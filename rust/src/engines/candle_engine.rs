@@ -918,7 +918,7 @@ mod tests {
         let engine = CandleEngine::cpu().unwrap();
         assert!(engine.supports_format(&ModelFormat::SafeTensors));
         assert!(engine.supports_format(&ModelFormat::PyTorch));
-        assert!(!engine.supports_format(&ModelFormat::Onnx));
+
         assert!(!engine.supports_format(&ModelFormat::Linfa));
     }
     

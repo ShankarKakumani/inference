@@ -66,10 +66,6 @@ class InferenceService extends ChangeNotifier {
           print('🔥 InferenceService: Loading with Candle engine...');
           session = await InferenceSession.loadWithCandle(modelPath);
           break;
-        case 'onnx':
-          print('🧠 InferenceService: Loading with ONNX engine...');
-          session = await InferenceSession.loadWithOnnx(modelPath);
-          break;
         default:
           print('⚡ InferenceService: Loading with auto-detection...');
           session = await InferenceSession.load(modelPath);
@@ -116,10 +112,6 @@ class InferenceService extends ChangeNotifier {
         case 'candle':
           print('🔥 InferenceService: Loading with Candle engine from bytes...');
           session = await InferenceSession.loadFromBytesWithCandle(modelBytes);
-          break;
-        case 'onnx':
-          print('🧠 InferenceService: Loading with ONNX engine from bytes...');
-          session = await InferenceSession.loadFromBytesWithOnnx(modelBytes);
           break;
         default:
           print('⚡ InferenceService: Loading with auto-detection from bytes...');

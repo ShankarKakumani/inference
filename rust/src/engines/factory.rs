@@ -4,8 +4,6 @@ use std::path::Path;
 
 #[cfg(feature = "candle")]
 use crate::engines::CandleEngine;
-#[cfg(feature = "ort")]
-use crate::engines::OrtEngine;
 #[cfg(feature = "linfa")]
 use crate::engines::LinfaEngine;
 
@@ -46,19 +44,6 @@ impl EngineFactory {
                     ))
                 }
             }
-            ModelFormat::Onnx => {
-                #[cfg(feature = "ort")]
-                {
-                    let engine = OrtEngine::new()?;
-                    Ok(Box::new(engine))
-                }
-                #[cfg(not(feature = "ort"))]
-                {
-                    Err(InferenceError::configuration(
-                        "ORT engine not available - compile with 'ort' feature"
-                    ))
-                }
-            }
             ModelFormat::Linfa => {
                 #[cfg(feature = "linfa")]
                 {
@@ -91,19 +76,6 @@ impl EngineFactory {
                     ))
                 }
             }
-            EngineType::Ort => {
-                #[cfg(feature = "ort")]
-                {
-                    let engine = OrtEngine::new()?;
-                    Ok(Box::new(engine))
-                }
-                #[cfg(not(feature = "ort"))]
-                {
-                    Err(InferenceError::configuration(
-                        "ORT engine not available - compile with 'ort' feature"
-                    ))
-                }
-            }
             EngineType::Linfa => {
                 #[cfg(feature = "linfa")]
                 {
@@ -128,7 +100,6 @@ impl EngineFactory {
             .ok_or_else(|| InferenceError::unsupported_format(format!("No file extension found for {}", path)))?;
         
         match extension.to_lowercase().as_str() {
-            "onnx" => Ok(ModelFormat::Onnx),
             "safetensors" => Ok(ModelFormat::SafeTensors),
             "pt" | "pth" => Ok(ModelFormat::PyTorch),
             "linfa" | "lfa" => Ok(ModelFormat::Linfa),
@@ -147,10 +118,6 @@ impl EngineFactory {
             return Err(InferenceError::unsupported_format("Empty file content"));
         }
         
-        // ONNX format detection
-        if bytes.starts_with(b"\x08") {
-            return Ok(ModelFormat::Onnx);
-        }
         
         // SafeTensors format detection (starts with JSON metadata)
         if bytes.starts_with(b"{") {
@@ -175,8 +142,8 @@ impl EngineFactory {
             }
         }
         
-        // Default fallback to ONNX for unknown formats
-        Ok(ModelFormat::Onnx)
+        // Default fallback to SafeTensors for unknown formats
+        Ok(ModelFormat::SafeTensors)
     }
     
     /// Get all available engines
@@ -186,8 +153,6 @@ impl EngineFactory {
         #[cfg(feature = "candle")]
         engines.push(EngineType::Candle);
         
-        #[cfg(feature = "ort")]
-        engines.push(EngineType::Ort);
         
         #[cfg(feature = "linfa")]
         engines.push(EngineType::Linfa);
@@ -199,7 +164,6 @@ impl EngineFactory {
     pub fn is_engine_available(engine_type: EngineType) -> bool {
         match engine_type {
             EngineType::Candle => cfg!(feature = "candle"),
-            EngineType::Ort => cfg!(feature = "ort"),
             EngineType::Linfa => cfg!(feature = "linfa"),
         }
     }
@@ -208,7 +172,6 @@ impl EngineFactory {
     pub fn preferred_engine_for_format(format: ModelFormat) -> EngineType {
         match format {
             ModelFormat::SafeTensors | ModelFormat::PyTorch => EngineType::Candle,
-            ModelFormat::Onnx => EngineType::Ort,
             ModelFormat::Linfa => EngineType::Linfa,
         }
     }
@@ -310,10 +273,6 @@ mod tests {
     #[test]
     fn test_format_detection_from_extension() {
         assert_eq!(
-            EngineFactory::detect_format_from_path("model.onnx").unwrap(),
-            ModelFormat::Onnx
-        );
-        assert_eq!(
             EngineFactory::detect_format_from_path("model.safetensors").unwrap(),
             ModelFormat::SafeTensors
         );
@@ -333,12 +292,6 @@ mod tests {
     
     #[test]
     fn test_format_detection_from_bytes() {
-        // ONNX format (starts with 0x08)
-        let onnx_bytes = b"\x08\x01\x12\x04test";
-        assert_eq!(
-            EngineFactory::detect_format_from_bytes(onnx_bytes).unwrap(),
-            ModelFormat::Onnx
-        );
         
         // SafeTensors format (starts with JSON)
         let safetensors_bytes = b"{\"__metadata__\": {\"format\": \"pt\"}}";
@@ -354,11 +307,11 @@ mod tests {
             ModelFormat::PyTorch
         );
         
-        // Unknown format defaults to ONNX
+        // Unknown format defaults to SafeTensors
         let unknown_bytes = b"unknown format";
         assert_eq!(
             EngineFactory::detect_format_from_bytes(unknown_bytes).unwrap(),
-            ModelFormat::Onnx
+            ModelFormat::SafeTensors
         );
     }
     
@@ -375,10 +328,6 @@ mod tests {
     
     #[test]
     fn test_preferred_engine_for_format() {
-        assert_eq!(
-            EngineFactory::preferred_engine_for_format(ModelFormat::Onnx),
-            EngineType::Ort
-        );
         assert_eq!(
             EngineFactory::preferred_engine_for_format(ModelFormat::SafeTensors),
             EngineType::Candle

@@ -8,9 +8,8 @@ Follow BRD examples exactly:
 
 USAGE EXAMPLES TO IMPLEMENT:
 1. Image Classification: MobileNet with ImagePicker, top-K results
-2. Text Sentiment Analysis: ONNX model with NLPInput, confidence scoring
-3. On-Device Training: K-means clustering with feature data
-4. Real-time Object Detection: YOLO with ImageInput processing
+2. On-Device Training: K-means clustering with feature data
+3. Real-time Object Detection: YOLO with ImageInput processing
 
 CONFIGURATION EXAMPLES:
 - Global configuration: Inference.configure() with caching, GPU acceleration

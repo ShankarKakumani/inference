@@ -1,6 +1,5 @@
 import 'inference_session.dart';
 import 'engines/candle_session.dart';
-import 'engines/onnx_session.dart';
 import 'engines/linfa_session.dart';
 
 /// Main entry point for the Inference package
@@ -19,7 +18,7 @@ class Inference {
   /// 
   /// Example:
   /// ```dart
-  /// final model = await Inference.load('assets/model.onnx');
+  /// final model = await Inference.load('assets/model.safetensors');
   /// final result = await model.predict(inputData);
   /// print(result); // Done!
   /// ```
@@ -40,18 +39,6 @@ class Inference {
     return InferenceSession.loadWithCandle(modelPath);
   }
 
-  /// Load a model with explicit ONNX engine
-  /// 
-  /// Forces the use of the ONNX Runtime engine for ONNX models.
-  /// Supports .onnx files with various optimization options.
-  /// 
-  /// Example:
-  /// ```dart
-  /// final model = await Inference.loadWithOnnx('assets/model.onnx');
-  /// ```
-  static Future<OnnxSession> loadWithOnnx(String modelPath) {
-    return InferenceSession.loadWithOnnx(modelPath);
-  }
 
   /// Train a Linfa model on-device
   /// 

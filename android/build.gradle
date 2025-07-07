@@ -45,12 +45,8 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 24  // Required for ONNX Runtime Android
+        minSdkVersion 24
     }
-}
-
-dependencies {
-    implementation 'com.microsoft.onnxruntime:onnxruntime-android:1.21.0'
 }
 
 apply from: "../cargokit/gradle/plugin.gradle"

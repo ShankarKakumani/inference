@@ -4,7 +4,6 @@ import 'package:meta/meta.dart';
 import 'inference_input.dart';
 import 'inference_result.dart';
 import 'engines/candle_session.dart';
-import 'engines/onnx_session.dart';
 import 'engines/linfa_session.dart';
 import 'rust/api/inference.dart' as rust_api;
 import 'rust/models/tensor.dart';
@@ -14,7 +13,7 @@ import 'exceptions/inference_exceptions.dart';
 ///
 /// This is the primary entry point for the Inference package, providing
 /// a unified interface for loading models and making predictions across
-/// different ML engines (Candle, ONNX, Linfa).
+/// different ML engines (Candle, Linfa).
 abstract class InferenceSession {
   /// Handle to the underlying Rust session
   @protected
@@ -44,7 +43,7 @@ abstract class InferenceSession {
   ///
   /// Example:
   /// ```dart
-  /// final model = await InferenceSession.load('assets/model.onnx');
+  /// final model = await InferenceSession.load('assets/model.safetensors');
   /// ```
   static Future<InferenceSession> load(String modelPath) async {
     try {
@@ -81,7 +80,7 @@ abstract class InferenceSession {
   ///
   /// Example:
   /// ```dart
-  /// final bytes = await rootBundle.load('assets/model.onnx');
+  /// final bytes = await rootBundle.load('assets/model.safetensors');
   /// final model = await InferenceSession.loadFromBytes(bytes.buffer.asUint8List());
   /// ```
   static Future<InferenceSession> loadFromBytes(Uint8List modelBytes) async {
@@ -107,7 +106,8 @@ abstract class InferenceSession {
   /// final bytes = await rootBundle.load('assets/model.safetensors');
   /// final model = await InferenceSession.loadFromBytesWithCandle(bytes.buffer.asUint8List());
   /// ```
-  static Future<CandleSession> loadFromBytesWithCandle(Uint8List modelBytes) async {
+  static Future<CandleSession> loadFromBytesWithCandle(
+      Uint8List modelBytes) async {
     try {
       final defaultConfig = await rust_api.SessionConfig.default_();
       final config = rust_api.SessionConfig(
@@ -126,54 +126,6 @@ abstract class InferenceSession {
     }
   }
 
-  /// Load a model from bytes with explicit ONNX engine
-  ///
-  /// Forces the use of the ONNX Runtime engine for ONNX models.
-  /// Supports .onnx files with various optimization options.
-  ///
-  /// Example:
-  /// ```dart
-  /// final bytes = await rootBundle.load('assets/model.onnx');
-  /// final model = await InferenceSession.loadFromBytesWithOnnx(bytes.buffer.asUint8List());
-  /// ```
-  static Future<OnnxSession> loadFromBytesWithOnnx(Uint8List modelBytes) async {
-    try {
-      final defaultConfig = await rust_api.SessionConfig.default_();
-      final config = rust_api.SessionConfig(
-        engineType: 'onnx',
-        gpuAcceleration: defaultConfig.gpuAcceleration,
-        numThreads: defaultConfig.numThreads,
-        optimizationLevel: defaultConfig.optimizationLevel,
-      );
-      final sessionInfo = await rust_api.loadModelFromBytes(
-        modelBytes: modelBytes,
-        config: config,
-      );
-      return OnnxSession.fromSessionInfo(sessionInfo);
-    } catch (e) {
-      throw ModelLoadException('Failed to load ONNX model from bytes: $e');
-    }
-  }
-
-  /// Load a model with explicit ONNX engine
-  ///
-  /// Forces the use of the ONNX Runtime engine for ONNX models.
-  /// Supports .onnx files with various optimization options.
-  ///
-  /// Example:
-  /// ```dart
-  /// final model = await InferenceSession.loadWithOnnx('assets/model.onnx');
-  /// ```
-  static Future<OnnxSession> loadWithOnnx(String modelPath) async {
-    try {
-      final sessionInfo =
-          await rust_api.loadModelWithOnnx(modelPath: modelPath);
-      return OnnxSession.fromSessionInfo(sessionInfo);
-    } catch (e) {
-      throw ModelLoadException('Failed to load ONNX model: $e');
-    }
-  }
-
   /// Load a model from a URL with automatic caching
   ///
   /// Downloads the model from the specified URL and caches it locally
@@ -182,7 +134,7 @@ abstract class InferenceSession {
   /// Example:
   /// ```dart
   /// final model = await InferenceSession.loadFromUrl(
-  ///   'https://huggingface.co/qualcomm/EasyOCR/resolve/main/EasyOCR.onnx',
+  ///   'https://huggingface.co/qualcomm/EasyOCR/resolve/main/EasyOCR.safetensors',
   ///   cache: true,
   /// );
   /// ```
@@ -209,7 +161,7 @@ abstract class InferenceSession {
   ///
   /// Example:
   /// ```dart
-  /// final model = await InferenceSession.loadFromFile('/path/to/model.onnx');
+  /// final model = await InferenceSession.loadFromFile('/path/to/model.safetensors');
   /// ```
   static Future<InferenceSession> loadFromFile(String filePath) async {
     try {
@@ -230,13 +182,13 @@ abstract class InferenceSession {
   /// // Load EasyOCR detector
   /// final detector = await InferenceSession.loadFromHuggingFace(
   ///   'qualcomm/EasyOCR',
-  ///   filename: 'EasyOCR.onnx',
+  ///   filename: 'EasyOCR.safetensors',
   /// );
   ///
   /// // Load EasyOCR recognizer
   /// final recognizer = await InferenceSession.loadFromHuggingFace(
   ///   'qualcomm/EasyOCR',
-  ///   filename: 'EasyOCRRecognizer.onnx',
+  ///   filename: 'EasyOCRRecognizer.safetensors',
   /// );
   /// ```
   static Future<InferenceSession> loadFromHuggingFace(
@@ -396,9 +348,7 @@ abstract class InferenceSession {
     switch (sessionInfo.engineType.toLowerCase()) {
       case 'candle':
         return CandleSession.fromSessionInfo(sessionInfo);
-      case 'onnx':
-      case 'ort':
-        return OnnxSession.fromSessionInfo(sessionInfo);
+
       case 'linfa':
         return LinfaSession.fromSessionInfo(sessionInfo);
       default:

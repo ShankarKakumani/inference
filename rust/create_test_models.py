@@ -31,24 +31,7 @@ def create_simple_linear_model():
     # Create test input
     test_input = torch.randn(1, 2)
     
-    # Export to ONNX
-    onnx_path = "simple_linear.onnx"
-    torch.onnx.export(
-        model,
-        test_input,
-        onnx_path,
-        export_params=True,
-        opset_version=11,
-        do_constant_folding=True,
-        input_names=['input'],
-        output_names=['output'],
-        dynamic_axes={
-            'input': {0: 'batch_size'},
-            'output': {0: 'batch_size'}
-        }
-    )
-    
-    print(f"✅ Created ONNX model: {onnx_path}")
+
     
     # Save as SafeTensors for Candle
     try:
@@ -67,7 +50,7 @@ def create_simple_linear_model():
         print(f"📊 Test input: {test_input.numpy()}")
         print(f"📊 Test output: {output.numpy()}")
     
-    return onnx_path
+    return safetensors_path
 
 def create_simple_classifier():
     """Create a simple classifier for testing"""
@@ -92,24 +75,17 @@ def create_simple_classifier():
     # Create test input (batch_size=1, features=4)
     test_input = torch.randn(1, 4)
     
-    # Export to ONNX
-    onnx_path = "simple_classifier.onnx"
-    torch.onnx.export(
-        model,
-        test_input,
-        onnx_path,
-        export_params=True,
-        opset_version=11,
-        do_constant_folding=True,
-        input_names=['input'],
-        output_names=['output'],
-        dynamic_axes={
-            'input': {0: 'batch_size'},
-            'output': {0: 'batch_size'}
-        }
-    )
-    
-    print(f"✅ Created ONNX classifier: {onnx_path}")
+    # Save as SafeTensors for Candle
+    try:
+        from safetensors.torch import save_file
+        state_dict = model.state_dict()
+        safetensors_path = "simple_classifier.safetensors"
+        save_file(state_dict, safetensors_path)
+        print(f"✅ Created SafeTensors classifier: {safetensors_path}")
+    except ImportError:
+        print("⚠️  SafeTensors not available, skipping SafeTensors export")
+        print("   Install with: pip install safetensors")
+        safetensors_path = None
     
     # Test the model
     with torch.no_grad():
@@ -118,7 +94,7 @@ def create_simple_classifier():
         print(f"📊 Test output shape: {output.shape}")
         print(f"📊 Output probabilities: {output.numpy()}")
     
-    return onnx_path
+    return safetensors_path
 
 def create_test_data():
     """Create test data files"""
@@ -153,9 +129,7 @@ def main():
         
         # List created files
         files = [
-            "simple_linear.onnx",
             "simple_linear.safetensors", 
-            "simple_classifier.onnx",
             "linear_input.npy",
             "classifier_input.npy",
             "batch_input.npy"

@@ -513,7 +513,7 @@ mod tests {
     fn test_format_support() {
         let engine = LinfaEngine::linear_regression().unwrap();
         assert!(engine.supports_format(&ModelFormat::Linfa));
-        assert!(!engine.supports_format(&ModelFormat::Onnx));
+
         assert!(!engine.supports_format(&ModelFormat::SafeTensors));
         assert!(!engine.supports_format(&ModelFormat::PyTorch));
     }

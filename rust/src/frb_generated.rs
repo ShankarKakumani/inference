@@ -37,7 +37,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueMoi,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.11.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -1841851838;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 1818969595;
 
 // Section: executor
 
@@ -689,43 +689,6 @@ fn wire__crate__api__inference__load_model_with_config_impl(
         },
     )
 }
-fn wire__crate__api__inference__load_model_with_onnx_impl(
-    port_: flutter_rust_bridge::for_generated::MessagePort,
-    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
-    rust_vec_len_: i32,
-    data_len_: i32,
-) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
-        flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "load_model_with_onnx",
-            port: Some(port_),
-            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
-        },
-        move || {
-            let message = unsafe {
-                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
-                    ptr_,
-                    rust_vec_len_,
-                    data_len_,
-                )
-            };
-            let mut deserializer =
-                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
-            let api_model_path = <String>::sse_decode(&mut deserializer);
-            deserializer.end();
-            move |context| async move {
-                transform_result_sse::<_, crate::models::error::InferenceError>(
-                    (move || async move {
-                        let output_ok =
-                            crate::api::inference::load_model_with_onnx(api_model_path).await?;
-                        Ok(output_ok)
-                    })()
-                    .await,
-                )
-            }
-        },
-    )
-}
 fn wire__crate__api__inference__predict_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
@@ -1338,21 +1301,15 @@ fn pde_ffi_dispatcher_primary_impl(
             rust_vec_len,
             data_len,
         ),
-        19 => wire__crate__api__inference__load_model_with_onnx_impl(
+        19 => wire__crate__api__inference__predict_impl(port, ptr, rust_vec_len, data_len),
+        20 => wire__crate__api__inference__predict_batch_impl(port, ptr, rust_vec_len, data_len),
+        21 => wire__crate__api__inference__session_config_default_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        20 => wire__crate__api__inference__predict_impl(port, ptr, rust_vec_len, data_len),
-        21 => wire__crate__api__inference__predict_batch_impl(port, ptr, rust_vec_len, data_len),
-        22 => wire__crate__api__inference__session_config_default_impl(
-            port,
-            ptr,
-            rust_vec_len,
-            data_len,
-        ),
-        23 => {
+        22 => {
             wire__crate__api__inference__train_linfa_model_impl(port, ptr, rust_vec_len, data_len)
         }
         _ => unreachable!(),

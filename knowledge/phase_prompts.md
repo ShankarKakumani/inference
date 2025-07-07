@@ -46,7 +46,7 @@ Requirements:
 - Async methods for model loading and prediction
 - Unified tensor interface across all engines
 - Auto-detection based on file extensions and content magic bytes
-- Support .onnx → ORT, .safetensors/.pt/.pth → Candle
+- Support .safetensors/.pt/.pth → Candle
 
 Update @knowledge/project_context.md with progress when complete.
 ```
@@ -73,23 +73,7 @@ Requirements:
 Update @knowledge/project_context.md with progress when complete.
 ```
 
-### Phase 3B: ORT Engine Prompt
-```
-Implement ORT Engine following @knowledge/development_plan.md and @knowledge/inference_brd.md.
 
-Task: Complete ONNX Runtime engine implementation in engines/ort_engine.rs
-
-Requirements:
-- OrtEngine struct implementing InferenceEngine trait
-- SessionBuilder configuration with optimization
-- Multiple execution providers (CUDA, CoreML, CPU)
-- Graph optimization levels
-- Thread configuration
-- Proper error handling with InferenceError
-- Use exact ort 2.0.0-rc.9 dependencies from BRD
-
-Update @knowledge/project_context.md with progress when complete.
-```
 
 ### Phase 3C: Linfa Engine Prompt
 ```
@@ -147,13 +131,13 @@ Tasks to complete:
 3. Create engine-specific session classes
 
 Requirements:
-- InferenceSession with static factory methods (load, loadWithCandle, loadWithOnnx, trainLinfa)
+- InferenceSession with static factory methods (load, loadWithCandle, trainLinfa)
 - Prediction methods (predict, predictBatch)
 - Properties (inputSpecs, outputSpecs, engine)
 - Resource management (dispose)
 - InferenceResult with scalar, vector, matrix accessors
 - Classification helpers (argmax, topK)
-- Engine-specific classes (CandleSession, OnnxSession, LinfaSession)
+- Engine-specific classes (CandleSession, LinfaSession)
 
 Update @knowledge/project_context.md with progress when complete.
 ```
@@ -205,7 +189,7 @@ Task: Build and validate 3-line usage example
 
 Requirements:
 - Create simple example demonstrating:
-  final model = await Inference.load('assets/model.onnx');
+  final model = await Inference.load('assets/model.safetensors');
   final result = await model.predict(inputData);
   print(result);
 - Test auto-detection works

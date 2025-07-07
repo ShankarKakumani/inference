@@ -20,13 +20,12 @@ async fn main() -> Result<(), Box<dyn Error>> {
     loop {
         println!("\n🔧 Choose your testing option:");
         println!("1. Test Candle Engine");
-        println!("2. Test ORT Engine");
-        println!("3. Real Sentiment Analysis Demo");
-        println!("4. Verify Engine Infrastructure");
-        println!("5. 🔥 Test REAL MobileNet v2 SafeTensors Loading");
-        println!("6. Exit");
+        println!("2. Real Sentiment Analysis Demo");
+        println!("3. Verify Engine Infrastructure");
+        println!("4. 🔥 Test REAL MobileNet v2 SafeTensors Loading");
+        println!("5. Exit");
         
-        print!("\nEnter your choice (1-6): ");
+        print!("\nEnter your choice (1-5): ");
         io::stdout().flush()?;
         
         let mut choice = String::new();
@@ -39,31 +38,26 @@ async fn main() -> Result<(), Box<dyn Error>> {
                 }
             }
             "2" => {
-                if let Err(e) = test_ort_engine().await {
-                    println!("❌ ORT engine test failed: {}", e);
-                }
-            }
-            "3" => {
                 if let Err(e) = test_real_sentiment_analysis().await {
                     println!("❌ Sentiment analysis test failed: {}", e);
         }
             }
-            "4" => {
+            "3" => {
                 if let Err(e) = verify_engine_infrastructure().await {
                     println!("❌ Engine verification failed: {}", e);
                 }
             }
-                        "5" => {
+            "4" => {
                 if let Err(e) = test_real_mobilenet_loading().await {
                     println!("❌ MobileNet loading test failed: {}", e);
                 }
             }
-            "6" => {
+            "5" => {
                 println!("👋 Goodbye! Thanks for testing the Inference Library!");
                 break;
             }
             _ => {
-                println!("❌ Invalid choice. Please enter 1-6.");
+                println!("❌ Invalid choice. Please enter 1-5.");
             }
     }
     }
@@ -379,205 +373,7 @@ async fn test_candle_image() -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
-async fn test_ort_engine() -> Result<(), Box<dyn Error>> {
-    println!("\n🔧 Testing ORT Engine");
-    println!("=====================");
-    
-    // Choose input type
-    println!("Select input type:");
-    println!("1. Text Input");
-    println!("2. Image Input (from URL)");
-    
-    print!("Enter choice (1-2): ");
-    io::stdout().flush()?;
-    
-    let mut choice = String::new();
-    io::stdin().read_line(&mut choice)?;
-    
-    match choice.trim() {
-        "1" => test_ort_text().await?,
-        "2" => test_ort_image().await?,
-        _ => println!("❌ Invalid choice"),
-    }
-    
-    Ok(())
-}
 
-async fn test_ort_text() -> Result<(), Box<dyn Error>> {
-    println!("\n📝 Testing ORT Engine with Text Input");
-    
-    // Get text input
-    print!("Enter text to process: ");
-    io::stdout().flush()?;
-    
-    let mut text = String::new();
-    io::stdin().read_line(&mut text)?;
-    let text = text.trim();
-    
-    if text.is_empty() {
-        println!("❌ Please enter some text.");
-        return Ok(());
-    }
-    
-    println!("🔄 Processing text with ORT engine...");
-    
-    // Create engine and process
-    let engine = EngineFactory::create_engine_by_type(EngineType::Ort)?;
-    
-    // Preprocess text
-    let config = TextPreprocessConfig {
-        lowercase: true,
-        remove_punctuation: false,
-        max_length: Some(512),
-        vocabulary: None,
-        unknown_token_id: 0,
-        padding_token_id: 0,
-    };
-    
-    let tensor = Preprocessor::preprocess_text(text, &config)?;
-    
-    println!("✅ Text preprocessed to tensor:");
-    println!("   - Shape: {:?}", tensor.shape());
-    println!("   - Data type: {:?}", tensor.data_type());
-    println!("   - Elements: {}", tensor.len());
-        
-    // Simulate model loading and prediction
-    println!("🔄 Loading ONNX model...");
-    match engine.load_model("sentiment_model.onnx").await {
-        Ok(model) => {
-            println!("✅ ONNX model loaded successfully");
-                        
-            // Make prediction
-            println!("🔄 Running inference...");
-            let result = model.predict(&tensor).await?;
-            
-            println!("✅ ORT inference completed:");
-            println!("   - Output shape: {:?}", result.shape());
-            println!("   - Output elements: {}", result.len());
-                                
-            // Interpret results for sentiment analysis
-            if let Ok(data) = result.to_f32_vec() {
-                if data.len() >= 2 {
-                    let negative_score = data[0];
-                    let positive_score = data[1];
-                    
-                    let sentiment = if positive_score > negative_score {
-                        "POSITIVE"
-                    } else {
-                        "NEGATIVE"
-                    };
-                    
-                    let confidence = (positive_score - negative_score).abs();
-                    
-                    println!("   📊 Sentiment Analysis Result:");
-                    println!("      - Sentiment: {}", sentiment);
-                    println!("      - Confidence: {:.3}", confidence);
-                    println!("      - Positive score: {:.3}", positive_score);
-                    println!("      - Negative score: {:.3}", negative_score);
-                            }
-                        }
-                    }
-                    Err(e) => {
-            println!("⚠️  Model loading failed (expected): {}", e);
-            println!("   This is normal since we don't have actual model files.");
-                    }
-                }
-    
-    Ok(())
-}
-
-async fn test_ort_image() -> Result<(), Box<dyn Error>> {
-    println!("\n🖼️ Testing ORT Engine with Image Input");
-    
-    // Get image URL
-    print!("Enter image URL: ");
-    io::stdout().flush()?;
-    
-    let mut url = String::new();
-    io::stdin().read_line(&mut url)?;
-    let url = url.trim();
-    
-    if url.is_empty() {
-        println!("❌ Please enter an image URL.");
-        return Ok(());
-    }
-    
-    println!("🔄 Downloading and processing image...");
-    
-    // Download image
-    let response = reqwest::get(url).await?;
-    let image_bytes = response.bytes().await?;
-    
-    println!("✅ Image downloaded: {} bytes", image_bytes.len());
-    
-    // Create engine and preprocess
-    let engine = EngineFactory::create_engine_by_type(EngineType::Ort)?;
-    
-    let config = ImagePreprocessConfig::default();
-    
-    // Create mock image data since we can't easily decode arbitrary image formats
-    let width = 224;
-    let height = 224;
-    let channels = 3;
-    let mock_data: Vec<u8> = (0..width * height * channels)
-        .map(|i| (i % 256) as u8)
-        .collect();
-    
-    let tensor = Preprocessor::preprocess_image(&mock_data, width, height, channels, &config)?;
-    
-    println!("✅ Image preprocessed to tensor:");
-    println!("   - Shape: {:?}", tensor.shape());
-    println!("   - Data type: {:?}", tensor.data_type());
-    println!("   - Elements: {}", tensor.len());
-                                
-    // Simulate model processing
-    println!("🔄 Processing with ORT engine...");
-            match engine.load_model("../example/assets/models/mobilenet-v2-7.onnx").await {
-        Ok(model) => {
-            let result = model.predict(&tensor).await?;
-            println!("✅ Image classification completed:");
-            println!("   - Output shape: {:?}", result.shape());
-            
-            // Simulate classification results
-            if let Ok(data) = result.to_f32_vec() {
-                if data.len() >= 1000 {
-                    // Find top predictions (simulated)
-                    let mut indexed_scores: Vec<(usize, f32)> = data
-                        .iter()
-                        .enumerate()
-                        .map(|(i, &score)| (i, score))
-                        .collect();
-                    
-                    indexed_scores.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap());
-                    
-                    println!("   📊 Top 3 Predictions:");
-                    for (rank, (class_id, score)) in indexed_scores.iter().take(3).enumerate() {
-                        let class_name = match class_id % 10 {
-                            0 => "Dog",
-                            1 => "Cat", 
-                            2 => "Bird",
-                            3 => "Fish",
-                            4 => "Horse",
-                            5 => "Car",
-                            6 => "Bicycle",
-                            7 => "Flower",
-                            8 => "Tree",
-                            _ => "Object",
-                        };
-                        println!("      {}. {} (Class {}): {:.1}%", 
-                            rank + 1, class_name, class_id, score * 100.0);
-                    }
-                    }
-                }
-            }
-            Err(e) => {
-            println!("⚠️  Model loading failed (expected): {}", e);
-            println!("   This is normal since we don't have actual model files.");
-        }
-    }
-    
-    Ok(())
-}
 
 async fn verify_engine_infrastructure() -> Result<(), Box<dyn Error>> {
     println!("\n🧮 Testing basic tensor operations...");
@@ -603,7 +399,7 @@ async fn verify_engine_infrastructure() -> Result<(), Box<dyn Error>> {
     // Test engine creation
     println!("\n🔧 Testing engine creation...");
     
-    for engine_type in [EngineType::Candle, EngineType::Ort, EngineType::Linfa] {
+    for engine_type in [EngineType::Candle, EngineType::Linfa] {
         match EngineFactory::create_engine_by_type(engine_type) {
             Ok(_) => println!("✅ {:?} engine created successfully", engine_type),
             Err(e) => println!("❌ {:?} engine creation failed: {}", engine_type, e),

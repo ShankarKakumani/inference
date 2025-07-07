@@ -7,7 +7,6 @@ use std::any::Any;
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum EngineType {
     Candle,
-    Ort,
     Linfa,
 }
 
@@ -16,14 +15,13 @@ pub enum EngineType {
 pub enum ModelFormat {
     SafeTensors,
     PyTorch,
-    Onnx,
     Linfa,
 }
 
 /// Core trait for ML inference engines
 /// 
 /// This trait provides a unified interface for loading and managing ML models
-/// across different backend engines (Candle, ONNX Runtime, Linfa).
+/// across different backend engines (Candle, Linfa).
 #[async_trait]
 pub trait InferenceEngine: Send + Sync + Debug {
     /// Load a model from a file path
@@ -88,10 +86,6 @@ pub mod candle_engine;
 #[cfg(feature = "candle")]
 pub use candle_engine::CandleEngine;
 
-#[cfg(feature = "ort")]
-pub mod ort_engine;
-#[cfg(feature = "ort")]
-pub use ort_engine::OrtEngine;
 
 #[cfg(feature = "linfa")]
 pub mod linfa_engine;

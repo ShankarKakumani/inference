@@ -46,10 +46,10 @@ class _TextSentimentScreenState extends State<TextSentimentScreen> {
     final service = context.read<InferenceService>();
 
     try {
-      // Load ONNX sentiment model from asset bundle
+      // Load sentiment model from asset bundle using Candle
       final model = await service.loadModelFromAsset(
-        'assets/models/onnx/sentiment_model.onnx',
-        'onnx',
+        'assets/models/candle/sentiment_model.safetensors',
+        'candle',
       );
 
       if (model != null && mounted) {
@@ -81,7 +81,7 @@ class _TextSentimentScreenState extends State<TextSentimentScreen> {
 
       // Run inference with timing
       final stopwatch = Stopwatch()..start();
-      final result = await service.runInference(_model!, input, 'onnx');
+      final result = await service.runInference(_model!, input, 'candle');
       stopwatch.stop();
 
       if (result != null && mounted) {
@@ -161,14 +161,14 @@ class _TextSentimentScreenState extends State<TextSentimentScreen> {
                             ),
                             const SizedBox(width: 8),
                             Text(
-                              'ONNX Sentiment Model',
+                              'Candle Sentiment Model',
                               style: Theme.of(context).textTheme.titleMedium,
                             ),
                           ],
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          'ONNX Runtime enabled and ready for text sentiment analysis',
+                          'Candle engine enabled and ready for text sentiment analysis',
                           style: Theme.of(context).textTheme.bodySmall
                               ?.copyWith(color: Colors.green[700]),
                         ),

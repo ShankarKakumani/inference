@@ -10,7 +10,6 @@ export 'src/inference_input.dart';
 
 // Engine-specific sessions
 export 'src/engines/candle_session.dart';
-export 'src/engines/onnx_session.dart';
 export 'src/engines/linfa_session.dart';
 
 // Exceptions
@@ -22,5 +21,4 @@ export 'src/rust/models/tensor.dart';
 export 'src/rust/frb_generated.dart' show RustLib;
 
 // Re-export commonly used types for convenience
-export 'src/engines/onnx_session.dart' show GraphOptimizationLevel, ExecutionProvider;
 export 'src/engines/linfa_session.dart' show LinfaAlgorithm;

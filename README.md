@@ -9,7 +9,7 @@
 
 **Zero-setup machine learning inference for Flutter applications.**
 
-Inference brings the full power of modern ML engines (Candle, ONNX Runtime, Linfa) to Flutter with a unified, developer-friendly API. Load models from anywhere—assets, URLs, Hugging Face Hub—run predictions on any platform, and even train models on-device, all with just a few lines of code.
+Inference brings the full power of modern ML engines (Candle, Linfa) to Flutter with a unified, developer-friendly API. Load models from anywhere—assets, URLs, Hugging Face Hub—run predictions on any platform, and even train models on-device, all with just a few lines of code.
 
 ---
 
@@ -18,7 +18,7 @@ Inference brings the full power of modern ML engines (Candle, ONNX Runtime, Linf
 - **🚀 Zero Configuration**: Install and start using ML models immediately
 - **🌐 Universal Loading**: Load from assets, URLs, files, or Hugging Face Hub
 - **🤗 Hugging Face Ready**: Direct integration with Hugging Face Hub models
-- **🔧 Unified API**: One interface for PyTorch, ONNX, and classical ML models  
+- **🔧 Unified API**: One interface for PyTorch and classical ML models  
 - **📱 Cross-Platform**: Android, iOS, Windows, macOS, Linux support
 - **⚡ Hardware Acceleration**: Automatic GPU/NPU detection and optimization
 - **🎯 Auto-Detection**: Intelligent engine selection based on model format
@@ -52,7 +52,7 @@ flutter pub add inference
 import 'package:inference/inference.dart';
 
 // Load any ML model with automatic engine detection
-final model = await InferenceSession.load('assets/model.onnx');
+final model = await InferenceSession.load('assets/model.safetensors');
 
 // Make predictions with type-safe inputs
 final input = await ImageInput.fromAsset('assets/test_image.jpg');
@@ -74,7 +74,7 @@ Inference supports multiple ways to load models, giving you maximum flexibility:
 
 ```dart
 // Load from app assets
-final model = await InferenceSession.load('assets/models/classifier.onnx');
+final model = await InferenceSession.load('assets/models/classifier.safetensors');
 ```
 
 ### 2. URL Loading (Remote Models)
@@ -82,13 +82,13 @@ final model = await InferenceSession.load('assets/models/classifier.onnx');
 ```dart
 // Load from any URL with automatic caching
 final model = await InferenceSession.loadFromUrl(
-  'https://example.com/models/classifier.onnx',
+  'https://example.com/models/classifier.safetensors',
   cache: true, // Enable caching (default)
 );
 
 // Custom cache key for organization
 final model = await InferenceSession.loadFromUrl(
-  'https://example.com/large_model.onnx',
+  'https://example.com/large_model.safetensors',
   cache: true,
   cacheKey: 'production_classifier_v2',
 );
@@ -100,13 +100,13 @@ final model = await InferenceSession.loadFromUrl(
 // Load directly from Hugging Face
 final detector = await InferenceSession.loadFromHuggingFace(
   'qualcomm/EasyOCR',
-  filename: 'EasyOCR.onnx',
+  filename: 'EasyOCR.safetensors',
 );
 
 // Specify model revision
 final model = await InferenceSession.loadFromHuggingFace(
   'microsoft/DialoGPT-medium',
-  filename: 'pytorch_model.onnx',
+  filename: 'pytorch_model.safetensors',
   revision: 'v1.0.0',
 );
 ```
@@ -115,7 +115,7 @@ final model = await InferenceSession.loadFromHuggingFace(
 
 ```dart
 // Load from local file system
-final model = await InferenceSession.loadFromFile('/path/to/downloaded/model.onnx');
+final model = await InferenceSession.loadFromFile('/path/to/downloaded/model.safetensors');
 ```
 
 ### 5. Cache Management
@@ -144,12 +144,12 @@ class EasyOCRPipeline {
     // Load both models from Hugging Face
     _detector = await InferenceSession.loadFromHuggingFace(
       'qualcomm/EasyOCR',
-      filename: 'EasyOCR.onnx', // Text detection model (79.2 MB)
+      filename: 'EasyOCR.safetensors', // Text detection model (79.2 MB)
     );
     
     _recognizer = await InferenceSession.loadFromHuggingFace(
       'qualcomm/EasyOCR',
-      filename: 'EasyOCRRecognizer.onnx', // Text recognition model (14.7 MB)
+      filename: 'EasyOCRRecognizer.safetensors', // Text recognition model (14.7 MB)
     );
   }
   
@@ -191,7 +191,7 @@ class ImageClassifier {
   Future<void> initialize() async {
     // Download and cache MobileNet from a remote source
     _model = await InferenceSession.loadFromUrl(
-      'https://example.com/models/mobilenet_v2.onnx',
+      'https://example.com/models/mobilenet_v2.safetensors',
       cache: true,
       cacheKey: 'mobilenet_v2_imagenet',
     );
@@ -225,7 +225,7 @@ class SentimentAnalyzer {
   late InferenceSession _model;
   
   Future<void> initialize() async {
-    _model = await InferenceSession.loadWithOnnx('assets/bert_sentiment.onnx');
+    _model = await InferenceSession.loadWithCandle('assets/bert_sentiment.safetensors');
   }
   
   Future<Map<String, dynamic>> analyzeSentiment(String text) async {
@@ -284,7 +284,7 @@ class BatchProcessor {
   late InferenceSession _model;
   
   Future<void> initialize() async {
-    _model = await InferenceSession.load('assets/classifier.onnx');
+    _model = await InferenceSession.load('assets/classifier.safetensors');
   }
   
   Future<List<InferenceResult>> processImages(List<String> imagePaths) async {
@@ -325,7 +325,7 @@ class InferenceSession {
   
   // Engine-specific loading
   static Future<CandleSession> loadWithCandle(String modelPath);
-  static Future<OnnxSession> loadWithOnnx(String modelPath);
+
   
   // On-device training
   static Future<LinfaSession> trainLinfa({
@@ -479,32 +479,7 @@ class CandleSession extends InferenceSession {
 }
 ```
 
-#### `OnnxSession`
 
-For ONNX models with execution provider control.
-
-```dart
-class OnnxSession extends InferenceSession {
-  // Execution providers
-  static Future<OnnxSession> withCuda(String modelPath);
-  static Future<OnnxSession> withCoreML(String modelPath);
-  static Future<OnnxSession> withCpu(String modelPath);
-  
-  // Custom configuration
-  static Future<OnnxSession> withConfig(
-    String modelPath, {
-    ExecutionProvider executionProvider,
-    GraphOptimizationLevel optimizationLevel,
-    int? numThreads,
-  });
-  
-  // Optimization
-  Future<void> optimize({
-    GraphOptimizationLevel level,
-    int? numThreads,
-  });
-}
-```
 
 #### `LinfaSession`
 
@@ -555,18 +530,17 @@ class LinfaSession extends InferenceSession {
 | Engine | Formats | Use Cases |
 |--------|---------|-----------|
 | **Candle** | `.safetensors`, `.pt`, `.pth` | PyTorch models, HuggingFace models, Computer vision, NLP |
-| **ONNX Runtime** | `.onnx` | Cross-platform models, Optimized inference, Production deployment |
 | **Linfa** | Training data | Classical ML, On-device training, Small datasets |
 
 ## Platform Support
 
-| Platform | Candle | ONNX Runtime | Linfa |
-|----------|--------|--------------|-------|
-| Android | ✅ | ✅ | ✅ |
-| iOS | ✅ | ✅ | ✅ |
-| Windows | ✅ | ✅ | ✅ |
-| macOS | ✅ | ✅ | ✅ |
-| Linux | ✅ | ✅ | ✅ |
+| Platform | Candle | Linfa |
+|----------|--------|-------|
+| Android  |   ✅   |   ✅  |
+| iOS      |   ✅   |   ✅  |
+| Windows  |   ✅   |   ✅  |
+| macOS    |   ✅   |   ✅  |
+| Linux    |   ✅   |   ✅  |
 
 ## Performance Tips
 
@@ -575,7 +549,7 @@ class LinfaSession extends InferenceSession {
 Always dispose of sessions when done:
 
 ```dart
-final model = await InferenceSession.load('model.onnx');
+final model = await InferenceSession.load('model.safetensors');
 try {
   // Use model...
 } finally {
@@ -604,10 +578,7 @@ Enable GPU acceleration when available:
 
 ```dart
 // Automatically detect and use best execution provider
-final model = await InferenceSession.load('model.onnx');
-
-// Or explicitly request GPU acceleration
-final gpuModel = await OnnxSession.withCuda('model.onnx');
+final model = await InferenceSession.load('model.safetensors');
 ```
 
 ### Smart Caching
@@ -616,10 +587,10 @@ Models downloaded from URLs are cached automatically:
 
 ```dart
 // First load: downloads and caches
-final model1 = await InferenceSession.loadFromUrl('https://example.com/model.onnx');
+final model1 = await InferenceSession.loadFromUrl('https://example.com/model.safetensors');
 
 // Second load: uses cache (much faster)
-final model2 = await InferenceSession.loadFromUrl('https://example.com/model.onnx');
+final model2 = await InferenceSession.loadFromUrl('https://example.com/model.safetensors');
 
 // Manage cache size
 final sizeBytes = await InferenceSession.getCacheSize();
@@ -628,17 +599,7 @@ if (sizeBytes > 500 * 1024 * 1024) { // If cache > 500MB
 }
 ```
 
-### Model Optimization
 
-Optimize models for better performance:
-
-```dart
-final model = await OnnxSession.withConfig(
-  'model.onnx',
-  optimizationLevel: GraphOptimizationLevel.all,
-  numThreads: 4,
-);
-```
 
 ## Troubleshooting
 
@@ -665,7 +626,7 @@ final model = await OnnxSession.withConfig(
 
 ```dart
 try {
-  final model = await InferenceSession.load('model.onnx');
+  final model = await InferenceSession.load('model.safetensors');
   final result = await model.predict(input);
 } on ModelLoadException catch (e) {
   print('Failed to load model: ${e.message}');
@@ -694,7 +655,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Acknowledgments
 
 - **Candle**: Rust-based PyTorch implementation
-- **ONNX Runtime**: Cross-platform ML inference engine  
 - **Linfa**: Rust machine learning toolkit
 - **Flutter Rust Bridge**: Seamless Rust-Flutter integration
 

@@ -13,7 +13,7 @@ CORE PRINCIPLES:
 
 ARCHITECTURE REQUIREMENTS:
 - Use Flutter Rust Bridge 2.0 for FFI communication
-- Support 3 engines: Candle (PyTorch models), ORT (ONNX models), Linfa (on-device training)
+- Support 3 engines: Candle (PyTorch models), Linfa (on-device training)
 - Auto-detect engine based on file extension and content
 - Provide both simple auto-detection API and explicit engine selection
 - Maintain unified Model trait interface across all engines

@@ -7,7 +7,7 @@ alwaysApply: true
 Follow the exact API design from the BRD:
 
 MAIN INTERFACE (InferenceSession):
-- Static factories: load(), loadWithCandle(), loadWithOnnx(), trainLinfa()
+- Static factories: load(), loadWithCandle(), trainLinfa()
 - Prediction methods: predict(), predictBatch()
 - Properties: inputSpecs, outputSpecs, engine
 - Resource management: dispose()
@@ -24,7 +24,6 @@ RESULTS (InferenceResult):
 
 ENGINE-SPECIFIC APIS:
 - CandleSession: fromHuggingFace(), fromPyTorch(), fromArchitecture()
-- OnnxSession: withCuda(), withCoreML(), withCpu(), optimize()
 - LinfaSession: trainKMeans(), trainLinearRegression(), trainSVM(), serialize()
 
 NEVER create different API signatures or add methods not specified in the BRD.

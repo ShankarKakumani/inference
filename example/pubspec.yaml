@@ -77,13 +77,11 @@ flutter:
   assets:
     - assets/models/
     - assets/models/candle/
-    - assets/models/onnx/
     - assets/models/linfa/
     - assets/images/
     - assets/images/test_images/
     - assets/audio/
     - assets/sample_data/
-    - native_assets/lib/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

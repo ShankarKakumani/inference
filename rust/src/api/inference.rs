@@ -6,7 +6,7 @@ use crate::utils::ModelDetector;
 use flutter_rust_bridge::frb;
 use std::collections::HashMap;
 use std::sync::Arc;
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 use tokio::sync::RwLock;
 
 /// Session handle for managing loaded models
@@ -165,7 +165,6 @@ pub async fn load_model_from_bytes(
         // Use engine type to infer format when explicitly specified
         match engine_type {
             EngineType::Candle => ModelFormat::SafeTensors, // Default for Candle
-            EngineType::Ort => ModelFormat::Onnx,           // Default for ORT
             EngineType::Linfa => ModelFormat::Linfa,        // Default for Linfa
         }
     } else {
@@ -210,12 +209,7 @@ pub async fn load_model_with_candle(model_path: String) -> Result<SessionInfo, I
     }
 }
 
-/// Load a model with explicit ONNX engine
-pub async fn load_model_with_onnx(model_path: String) -> Result<SessionInfo, InferenceError> {
-    let mut config = SessionConfig::default();
-    config.engine_type = Some("onnx".to_string());
-    load_model_with_config(model_path, config).await
-}
+
 
 /// Train a Linfa model
 pub async fn train_linfa_model(
@@ -424,7 +418,7 @@ pub async fn load_from_huggingface(
     filename: Option<String>,
 ) -> Result<SessionInfo, InferenceError> {
     let revision = revision.unwrap_or_else(|| "main".to_string());
-    let filename = filename.unwrap_or_else(|| "model.onnx".to_string());
+    let filename = filename.unwrap_or_else(|| "model.safetensors".to_string());
     
     // Build Hugging Face URL
     let url = format!(
@@ -584,8 +578,8 @@ fn create_session_info(handle: SessionHandle, session: &Session) -> SessionInfo 
 fn parse_engine_type(engine_str: &str) -> Result<EngineType, InferenceError> {
     match engine_str.to_lowercase().as_str() {
         "candle" => Ok(EngineType::Candle),
-        "onnx" | "ort" => Ok(EngineType::Ort),
         "linfa" => Ok(EngineType::Linfa),
+
         _ => Err(InferenceError::unsupported_format(
             format!("Unknown engine type: {}", engine_str)
         )),

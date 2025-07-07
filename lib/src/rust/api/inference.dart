@@ -32,11 +32,6 @@ Future<SessionInfo> loadModelWithCandle({required String modelPath}) =>
     RustLib.instance.api
         .crateApiInferenceLoadModelWithCandle(modelPath: modelPath);
 
-/// Load a model with explicit ONNX engine
-Future<SessionInfo> loadModelWithOnnx({required String modelPath}) =>
-    RustLib.instance.api
-        .crateApiInferenceLoadModelWithOnnx(modelPath: modelPath);
-
 /// Train a Linfa model
 Future<SessionInfo> trainLinfaModel(
         {required List<Float64List> features,

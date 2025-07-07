@@ -93,7 +93,7 @@ inference/                    # ROOT
 
 ## Phase 5A Completion Summary (Core Flutter API)
 ### ✅ Accomplished
-1. **InferenceSession Main Interface**: Complete implementation with static factory methods (load, loadWithCandle, loadWithOnnx, trainLinfa)
+1. **InferenceSession Main Interface**: Complete implementation with static factory methods (load, loadWithCandle, trainLinfa)
 2. **Prediction Methods**: predict() and predictBatch() with async support and proper error handling
 3. **Properties**: inputSpecs, outputSpecs, engine properties with metadata access
 4. **Resource Management**: dispose() method for proper cleanup and memory management
@@ -101,7 +101,7 @@ inference/                    # ROOT
 6. **Classification Helpers**: argmax, topK, topKSoftmax methods for ML model outputs
 7. **Input Type Hierarchy**: Complete InferenceInput hierarchy with ImageInput, NLPInput, TensorInput, AudioInput
 8. **Convenience Constructors**: fromFile, fromAsset, fromBytes, fromPixels constructors for all input types
-9. **Engine-Specific Sessions**: CandleSession, OnnxSession, LinfaSession with specialized functionality
+9. **Engine-Specific Sessions**: CandleSession, LinfaSession with specialized functionality
 10. **Exception Hierarchy**: Comprehensive error handling with ModelLoadException, PredictionException, etc.
 11. **Main API Wrapper**: Convenience Inference class providing exact BRD API
 
@@ -122,7 +122,7 @@ inference/                    # ROOT
 
 ### 🚀 Key Features Implemented
 - **Unified Interface**: Single InferenceSession interface for all engines
-- **Engine-Specific APIs**: Specialized functionality for Candle (HuggingFace), ONNX (execution providers), Linfa (training)
+- **Engine-Specific APIs**: Specialized functionality for Candle (HuggingFace), Linfa (training)
 - **Rich Input Types**: Support for images, text, tensors, and audio with preprocessing
 - **Smart Results**: Convenience methods for common ML operations (classification, regression)
 - **Error Recovery**: Detailed error messages with context for debugging
@@ -151,10 +151,10 @@ inference/                    # ROOT
 
 ### 📊 Test Coverage
 - **3-Line Usage**: ✅ Validates exact BRD promise (load → predict → result)
-- **Auto-Detection**: ✅ Tests .onnx → ORT, .safetensors → Candle, .pt → Candle
+- **Auto-Detection**: ✅ Tests .safetensors → Candle, .pt → Candle
 - **Input Types**: ✅ Validates ImageInput, TensorInput, AudioInput (NLPInput noted as available)
 - **Error Handling**: ✅ Tests nonexistent models, invalid formats, empty inputs
-- **Engine Availability**: ✅ Checks candle, onnx, linfa engine availability
+- **Engine Availability**: ✅ Checks candle, linfa engine availability
 - **Session Management**: ✅ Validates session APIs, input validation, result processing
 
 ### 🎯 Zero-Setup Promise Validation
@@ -211,7 +211,6 @@ inference/                    # ROOT
 ## Phase 3 Completion Summary (All Engines)
 ### ✅ Accomplished
 1. **Candle Engine**: Complete implementation with GPU acceleration and SafeTensors support
-2. **ORT Engine**: ONNX Runtime integration with placeholder implementation ready for real models
 3. **Linfa Engine**: On-device training support for K-means, linear regression, SVM, decision trees
 4. **Engine Factory**: Unified factory with auto-detection and configuration
 5. **Testing**: All 19 tests passing including engine-specific functionality
@@ -221,7 +220,7 @@ inference/                    # ROOT
 - **Three Engines**: Candle, ORT, Linfa all implementing unified InferenceEngine trait
 - **Auto-Detection**: File extension and content-based engine selection
 - **Device Management**: CPU/CUDA detection with graceful fallback
-- **Model Support**: .safetensors, .onnx, .pt/.pth file formats
+- **Model Support**: .safetensors,.pt/.pth file formats
 - **Training**: On-device ML training with Linfa algorithms
 - **Configuration**: Flexible engine configuration with GPU acceleration
 
@@ -243,7 +242,7 @@ inference/                    # ROOT
 ### 🔧 Technical Implementation
 - **Traits**: InferenceEngine and Model traits with async methods
 - **Tensor System**: Unified Tensor struct with f32/f64 support and ndarray conversion
-- **Auto-Detection**: Support for .onnx → ORT, .safetensors/.pt/.pth → Candle
+- **Auto-Detection**: Support for .safetensors/.pt/.pth → Candle
 - **Conversion Utilities**: HWC/CHW format conversion, normalization, standardization
 - **Error Types**: Structured error handling with thiserror integration
 
@@ -312,7 +311,6 @@ pub async fn load_model(model_path: String) -> Result<SessionInfo, InferenceErro
 pub async fn load_model_with_config(model_path: String, config: SessionConfig) -> Result<SessionInfo, InferenceError>
 pub async fn load_model_from_bytes(model_bytes: Vec<u8>, config: SessionConfig) -> Result<SessionInfo, InferenceError>
 pub async fn load_model_with_candle(model_path: String) -> Result<SessionInfo, InferenceError>
-pub async fn load_model_with_onnx(model_path: String) -> Result<SessionInfo, InferenceError>
 pub async fn train_linfa_model(features: Vec<Vec<f32>>, algorithm: String, params: HashMap<String, String>) -> Result<SessionInfo, InferenceError>
 pub async fn predict(session_handle: SessionHandle, input: InferenceInput) -> Result<InferenceResult, InferenceError>
 pub async fn predict_batch(session_handle: SessionHandle, inputs: Vec<InferenceInput>) -> Result<Vec<InferenceResult>, InferenceError>
