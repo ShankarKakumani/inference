@@ -5,7 +5,13 @@
 [![Flutter compatibility](https://img.shields.io/badge/Flutter-3.16%2B-blue)](https://flutter.dev)
 [![Dart compatibility](https://img.shields.io/badge/Dart-3.0%2B-blue)](https://dart.dev)
 
+📦 **[View on pub.dev](https://pub.dev/packages/inference)** | 🚀 **[Try it now](https://pub.dev/packages/inference/install)**
+
+
+
 > **🚧 Beta Release**: This package is in beta. The API is stable but may have minor changes based on community feedback. Perfect for testing and early adoption!
+
+
 
 **Zero-setup machine learning inference for Flutter applications.**
 
@@ -35,7 +41,7 @@ Add `inference` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  inference: ^0.1.0-beta.1
+  inference: ^0.1.0-beta.2
 ```
 
 Or install via command line:
