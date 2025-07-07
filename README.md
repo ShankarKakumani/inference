@@ -5,6 +5,8 @@
 [![Flutter compatibility](https://img.shields.io/badge/Flutter-3.16%2B-blue)](https://flutter.dev)
 [![Dart compatibility](https://img.shields.io/badge/Dart-3.0%2B-blue)](https://dart.dev)
 
+> **🚧 Beta Release**: This package is in beta. The API is stable but may have minor changes based on community feedback. Perfect for testing and early adoption!
+
 **Zero-setup machine learning inference for Flutter applications.**
 
 Inference brings the full power of modern ML engines (Candle, ONNX Runtime, Linfa) to Flutter with a unified, developer-friendly API. Load models from anywhere—assets, URLs, Hugging Face Hub—run predictions on any platform, and even train models on-device, all with just a few lines of code.
@@ -33,7 +35,7 @@ Add `inference` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  inference: ^1.0.0
+  inference: ^0.1.0-beta.1
 ```
 
 Or install via command line:
@@ -41,6 +43,8 @@ Or install via command line:
 ```bash
 flutter pub add inference
 ```
+
+**Note**: Beta versions require explicit version specification in `pubspec.yaml`.
 
 ### Basic Usage
 

@@ -1,6 +1,5 @@
 import 'dart:typed_data';
 import 'package:meta/meta.dart';
-import 'package:flutter/services.dart' show rootBundle;
 
 import 'inference_input.dart';
 import 'inference_result.dart';
