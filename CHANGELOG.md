@@ -1,4 +1,4 @@
-## 0.1.0-beta.4
+## 0.1.0-beta.5
 
 * **Improved pub.dev score** with comprehensive documentation and code quality fixes
 * Added detailed library documentation with examples and feature overview

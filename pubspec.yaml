@@ -1,6 +1,6 @@
 name: inference
 description: Zero-setup ML inference for Flutter using Rust engines (Candle, ONNX, Linfa). Load PyTorch, ONNX models, train on-device with unified API. Cross-platform support.
-version: 0.1.0-beta.4
+version: 0.1.0-beta.5
 topics:
   - machine-learning
   - artificial-intelligence
