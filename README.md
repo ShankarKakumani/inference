@@ -1,11 +1,17 @@
 # Inference
 
 [![pub package](https://img.shields.io/pub/v/inference.svg)](https://pub.dev/packages/inference)
+[![pub points](https://img.shields.io/pub/points/inference?logo=dart)](https://pub.dev/packages/inference/score)
 [![package publisher](https://img.shields.io/pub/publisher/inference.svg)](https://pub.dev/packages/inference/publisher)
 [![Flutter compatibility](https://img.shields.io/badge/Flutter-3.16%2B-blue)](https://flutter.dev)
 [![Dart compatibility](https://img.shields.io/badge/Dart-3.0%2B-blue)](https://dart.dev)
+[![GitHub](https://img.shields.io/github/stars/ShankarKakumani/inference?style=social)](https://github.com/ShankarKakumani/inference)
 
-📦 **[View on pub.dev](https://pub.dev/packages/inference)** | 🚀 **[Try it now](https://pub.dev/packages/inference/install)**
+<div align="center">
+
+📦 **[View on pub.dev](https://pub.dev/packages/inference)** | 🚀 **[Install now](https://pub.dev/packages/inference/install)** | 📖 **[Documentation](https://pub.dev/documentation/inference/latest/)**
+
+</div>
 
 
 

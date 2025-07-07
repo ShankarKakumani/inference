@@ -1,5 +1,5 @@
 name: inference
-description: Zero-setup ML inference for Flutter using Rust engines (Candle, Linfa)
+description: Zero-setup ML inference for Flutter using Rust engines (Candle, ONNX, Linfa). Load PyTorch, ONNX models, train on-device with unified API. Cross-platform support.
 version: 0.1.0-beta.2
 homepage: https://github.com/ShankarKakumani/inference
 repository: https://github.com/ShankarKakumani/inference
