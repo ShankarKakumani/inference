@@ -1,0 +1,30 @@
+# Exclude example directory from published package
+example/
+
+# Exclude development and knowledge files
+knowledge/
+
+# Exclude Rust target directory (if it exists)
+rust/target/
+
+# Exclude any remaining ONNX Runtime files
+**/onnxruntime*/
+**/native_assets/
+
+# Exclude large model files
+**/*.onnx
+**/*.safetensors
+**/*.pt
+**/*.pth
+**/*.tgz
+**/*.tar.gz
+
+# Exclude development scripts
+**/*.py
+**/create_test_models.py
+
+# Exclude test driver
+test_driver/
+
+# Exclude Rust tests
+rust/tests/ 
