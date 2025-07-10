@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
+import 'package:image/image.dart' as img;
 
 import 'rust/api/inference.dart' as rust_api;
 
@@ -83,16 +84,33 @@ class ImageInput extends InferenceInput {
   /// final input = await ImageInput.fromBytes(imageBytes);
   /// ```
   static Future<ImageInput> fromBytes(Uint8List bytes) async {
-    // For now, we'll create a placeholder implementation
-    // In a real implementation, this would decode the image and extract metadata
-    // This would typically use the `image` package or platform-specific decoders
+    // Decode the image using the image package
+    final image = img.decodeImage(bytes);
+    if (image == null) {
+      throw ArgumentError('Failed to decode image from bytes');
+    }
 
-    // Placeholder values - in reality these would be extracted from the image
+    // Resize to 224x224 for MobileNet (common ML input size)
+    final resized = img.copyResize(image, width: 224, height: 224);
+
+    // Extract RGB pixel data
+    final pixelBytes = Uint8List(224 * 224 * 3);
+    int index = 0;
+
+    for (int y = 0; y < 224; y++) {
+      for (int x = 0; x < 224; x++) {
+        final pixel = resized.getPixel(x, y);
+        pixelBytes[index++] = pixel.r.toInt();
+        pixelBytes[index++] = pixel.g.toInt();
+        pixelBytes[index++] = pixel.b.toInt();
+      }
+    }
+
     return ImageInput(
-      bytes: bytes,
-      width: 224, // Common input size for many models
+      bytes: pixelBytes,
+      width: 224,
       height: 224,
-      channels: 3, // RGB
+      channels: 3,
     );
   }
 

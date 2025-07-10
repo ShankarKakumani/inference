@@ -234,17 +234,26 @@ impl CandleEngine {
             return Err(InferenceError::model_load("SafeTensors file too small".to_string()));
         }
         
-        // Check if it starts with JSON metadata (SafeTensors format)
-        if bytes[0] == b'{' {
-            println!("✅ File appears to start with JSON metadata (good)");
+        // SafeTensors format: 8-byte header with JSON length, then JSON metadata
+        let header_len = u64::from_le_bytes([
+            bytes[0], bytes[1], bytes[2], bytes[3],
+            bytes[4], bytes[5], bytes[6], bytes[7]
+        ]);
+        println!("📏 Header length from first 8 bytes: {}", header_len);
+        
+        // Validate the header length is reasonable
+        if header_len > (bytes.len() - 8) as u64 || header_len < 1 {
+            return Err(InferenceError::model_load(format!(
+                "Invalid SafeTensors header length: {} (file size: {})", 
+                header_len, bytes.len()
+            )));
+        }
+        
+        // Check if the JSON metadata starts correctly after the 8-byte header
+        if bytes.len() > 8 && bytes[8] == b'{' {
+            println!("✅ Valid SafeTensors format: 8-byte header + JSON metadata");
         } else {
-            println!("⚠️ File does not start with JSON metadata");
-            // Try to find the header length
-            let header_len = u64::from_le_bytes([
-                bytes[0], bytes[1], bytes[2], bytes[3],
-                bytes[4], bytes[5], bytes[6], bytes[7]
-            ]);
-            println!("📏 Header length from first 8 bytes: {}", header_len);
+            println!("⚠️ Unexpected SafeTensors format, but proceeding with parsing");
         }
         
         // REAL SafeTensors loading using safetensors crate

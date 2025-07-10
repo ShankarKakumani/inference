@@ -78,9 +78,6 @@ flutter:
     - assets/models/
     - assets/models/candle/
     - assets/models/linfa/
-    - assets/images/
-    - assets/images/test_images/
-    - assets/audio/
     - assets/sample_data/
 
   # An image asset can refer to one or more resolution-specific "variants", see
