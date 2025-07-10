@@ -13,7 +13,7 @@ import 'package:inference/inference.dart';
 await RustLib.init();
 
 // Load any ML model with automatic engine detection
-final model = await InferenceSession.load('path/to/model.onnx');
+final model = await InferenceSession.load('path/to/model.safetensors');
 
 // Create input and run inference
 final input = await ImageInput.fromAsset('path/to/image.jpg');
@@ -65,8 +65,8 @@ print('Cluster: ${result.argmax}');
 
 ### 📝 **Text Sentiment Analysis**
 ```dart
-// Load ONNX sentiment model
-final session = await InferenceSession.load('assets/models/sentiment_model.onnx');
+// Load safetensors sentiment model
+final session = await InferenceSession.load('assets/models/sentiment_model.safetensors');
 
 // Analyze text
 final input = NLPInput('This movie is amazing!');
@@ -84,7 +84,6 @@ The package automatically detects and uses the appropriate engine:
 | Engine | Models | Use Cases |
 |--------|--------|-----------|
 | **Candle** | `.safetensors`, `.pt`, `.pth` | PyTorch models, Neural networks |
-| **ONNX Runtime** | `.onnx` | Cross-platform models, Production inference |
 | **Linfa** | On-device training | Classical ML, K-means, SVM, Decision trees |
 
 ## 🏃‍♂️ **Running the Examples**

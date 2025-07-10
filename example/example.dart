@@ -99,7 +99,7 @@ Future<void> quickStartExample() async {
   print('==================================');
 
   // Just 3 lines to get ML inference working!
-  final model = await InferenceSession.load('path/to/model.onnx');
+  final model = await InferenceSession.load('path/to/model.safetensors');
   final input = await ImageInput.fromAsset('path/to/image.jpg');
   final result = await model.predict(input);
 
