@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,69 +9,111 @@ part of 'error.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$InferenceError {
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is InferenceError);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'InferenceError()';
+  }
+}
+
+/// @nodoc
+class $InferenceErrorCopyWith<$Res> {
+  $InferenceErrorCopyWith(InferenceError _, $Res Function(InferenceError) __);
+}
+
+/// Adds pattern-matching-related methods to [InferenceError].
+extension InferenceErrorPatterns on InferenceError {
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
   @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String field0) modelLoad,
-    required TResult Function(String field0) prediction,
-    required TResult Function(String field0) unsupportedFormat,
-    required TResult Function(Uint64List expected, Uint64List actual)
-        invalidShape,
-    required TResult Function(String field0) invalidTensorData,
-    required TResult Function(String field0) engine,
-    required TResult Function(String field0) io,
-    required TResult Function(String field0) serialization,
-    required TResult Function(String field0) configuration,
-    required TResult Function(String field0) resourceNotFound,
-    required TResult Function(String field0) memoryAllocation,
-    required TResult Function(String field0) threadPool,
-    required TResult Function(String field0) gpu,
-    required TResult Function(String field0) formatDetection,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String field0)? modelLoad,
-    TResult? Function(String field0)? prediction,
-    TResult? Function(String field0)? unsupportedFormat,
-    TResult? Function(Uint64List expected, Uint64List actual)? invalidShape,
-    TResult? Function(String field0)? invalidTensorData,
-    TResult? Function(String field0)? engine,
-    TResult? Function(String field0)? io,
-    TResult? Function(String field0)? serialization,
-    TResult? Function(String field0)? configuration,
-    TResult? Function(String field0)? resourceNotFound,
-    TResult? Function(String field0)? memoryAllocation,
-    TResult? Function(String field0)? threadPool,
-    TResult? Function(String field0)? gpu,
-    TResult? Function(String field0)? formatDetection,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String field0)? modelLoad,
-    TResult Function(String field0)? prediction,
-    TResult Function(String field0)? unsupportedFormat,
-    TResult Function(Uint64List expected, Uint64List actual)? invalidShape,
-    TResult Function(String field0)? invalidTensorData,
-    TResult Function(String field0)? engine,
-    TResult Function(String field0)? io,
-    TResult Function(String field0)? serialization,
-    TResult Function(String field0)? configuration,
-    TResult Function(String field0)? resourceNotFound,
-    TResult Function(String field0)? memoryAllocation,
-    TResult Function(String field0)? threadPool,
-    TResult Function(String field0)? gpu,
-    TResult Function(String field0)? formatDetection,
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(InferenceError_ModelLoad value)? modelLoad,
+    TResult Function(InferenceError_Prediction value)? prediction,
+    TResult Function(InferenceError_UnsupportedFormat value)? unsupportedFormat,
+    TResult Function(InferenceError_InvalidShape value)? invalidShape,
+    TResult Function(InferenceError_InvalidTensorData value)? invalidTensorData,
+    TResult Function(InferenceError_Engine value)? engine,
+    TResult Function(InferenceError_Io value)? io,
+    TResult Function(InferenceError_Serialization value)? serialization,
+    TResult Function(InferenceError_Configuration value)? configuration,
+    TResult Function(InferenceError_ResourceNotFound value)? resourceNotFound,
+    TResult Function(InferenceError_MemoryAllocation value)? memoryAllocation,
+    TResult Function(InferenceError_ThreadPool value)? threadPool,
+    TResult Function(InferenceError_Gpu value)? gpu,
+    TResult Function(InferenceError_FormatDetection value)? formatDetection,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  }) {
+    final _that = this;
+    switch (_that) {
+      case InferenceError_ModelLoad() when modelLoad != null:
+        return modelLoad(_that);
+      case InferenceError_Prediction() when prediction != null:
+        return prediction(_that);
+      case InferenceError_UnsupportedFormat() when unsupportedFormat != null:
+        return unsupportedFormat(_that);
+      case InferenceError_InvalidShape() when invalidShape != null:
+        return invalidShape(_that);
+      case InferenceError_InvalidTensorData() when invalidTensorData != null:
+        return invalidTensorData(_that);
+      case InferenceError_Engine() when engine != null:
+        return engine(_that);
+      case InferenceError_Io() when io != null:
+        return io(_that);
+      case InferenceError_Serialization() when serialization != null:
+        return serialization(_that);
+      case InferenceError_Configuration() when configuration != null:
+        return configuration(_that);
+      case InferenceError_ResourceNotFound() when resourceNotFound != null:
+        return resourceNotFound(_that);
+      case InferenceError_MemoryAllocation() when memoryAllocation != null:
+        return memoryAllocation(_that);
+      case InferenceError_ThreadPool() when threadPool != null:
+        return threadPool(_that);
+      case InferenceError_Gpu() when gpu != null:
+        return gpu(_that);
+      case InferenceError_FormatDetection() when formatDetection != null:
+        return formatDetection(_that);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
+
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(InferenceError_ModelLoad value) modelLoad,
@@ -93,8 +135,52 @@ mixin _$InferenceError {
     required TResult Function(InferenceError_Gpu value) gpu,
     required TResult Function(InferenceError_FormatDetection value)
         formatDetection,
-  }) =>
-      throw _privateConstructorUsedError;
+  }) {
+    final _that = this;
+    switch (_that) {
+      case InferenceError_ModelLoad():
+        return modelLoad(_that);
+      case InferenceError_Prediction():
+        return prediction(_that);
+      case InferenceError_UnsupportedFormat():
+        return unsupportedFormat(_that);
+      case InferenceError_InvalidShape():
+        return invalidShape(_that);
+      case InferenceError_InvalidTensorData():
+        return invalidTensorData(_that);
+      case InferenceError_Engine():
+        return engine(_that);
+      case InferenceError_Io():
+        return io(_that);
+      case InferenceError_Serialization():
+        return serialization(_that);
+      case InferenceError_Configuration():
+        return configuration(_that);
+      case InferenceError_ResourceNotFound():
+        return resourceNotFound(_that);
+      case InferenceError_MemoryAllocation():
+        return memoryAllocation(_that);
+      case InferenceError_ThreadPool():
+        return threadPool(_that);
+      case InferenceError_Gpu():
+        return gpu(_that);
+      case InferenceError_FormatDetection():
+        return formatDetection(_that);
+    }
+  }
+
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(InferenceError_ModelLoad value)? modelLoad,
@@ -113,304 +199,295 @@ mixin _$InferenceError {
     TResult? Function(InferenceError_ThreadPool value)? threadPool,
     TResult? Function(InferenceError_Gpu value)? gpu,
     TResult? Function(InferenceError_FormatDetection value)? formatDetection,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(InferenceError_ModelLoad value)? modelLoad,
-    TResult Function(InferenceError_Prediction value)? prediction,
-    TResult Function(InferenceError_UnsupportedFormat value)? unsupportedFormat,
-    TResult Function(InferenceError_InvalidShape value)? invalidShape,
-    TResult Function(InferenceError_InvalidTensorData value)? invalidTensorData,
-    TResult Function(InferenceError_Engine value)? engine,
-    TResult Function(InferenceError_Io value)? io,
-    TResult Function(InferenceError_Serialization value)? serialization,
-    TResult Function(InferenceError_Configuration value)? configuration,
-    TResult Function(InferenceError_ResourceNotFound value)? resourceNotFound,
-    TResult Function(InferenceError_MemoryAllocation value)? memoryAllocation,
-    TResult Function(InferenceError_ThreadPool value)? threadPool,
-    TResult Function(InferenceError_Gpu value)? gpu,
-    TResult Function(InferenceError_FormatDetection value)? formatDetection,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $InferenceErrorCopyWith<$Res> {
-  factory $InferenceErrorCopyWith(
-          InferenceError value, $Res Function(InferenceError) then) =
-      _$InferenceErrorCopyWithImpl<$Res, InferenceError>;
-}
-
-/// @nodoc
-class _$InferenceErrorCopyWithImpl<$Res, $Val extends InferenceError>
-    implements $InferenceErrorCopyWith<$Res> {
-  _$InferenceErrorCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of InferenceError
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-abstract class _$$InferenceError_ModelLoadImplCopyWith<$Res> {
-  factory _$$InferenceError_ModelLoadImplCopyWith(
-          _$InferenceError_ModelLoadImpl value,
-          $Res Function(_$InferenceError_ModelLoadImpl) then) =
-      __$$InferenceError_ModelLoadImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({String field0});
-}
-
-/// @nodoc
-class __$$InferenceError_ModelLoadImplCopyWithImpl<$Res>
-    extends _$InferenceErrorCopyWithImpl<$Res, _$InferenceError_ModelLoadImpl>
-    implements _$$InferenceError_ModelLoadImplCopyWith<$Res> {
-  __$$InferenceError_ModelLoadImplCopyWithImpl(
-      _$InferenceError_ModelLoadImpl _value,
-      $Res Function(_$InferenceError_ModelLoadImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of InferenceError
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? field0 = null,
   }) {
-    return _then(_$InferenceError_ModelLoadImpl(
-      null == field0
-          ? _value.field0
-          : field0 // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
+    final _that = this;
+    switch (_that) {
+      case InferenceError_ModelLoad() when modelLoad != null:
+        return modelLoad(_that);
+      case InferenceError_Prediction() when prediction != null:
+        return prediction(_that);
+      case InferenceError_UnsupportedFormat() when unsupportedFormat != null:
+        return unsupportedFormat(_that);
+      case InferenceError_InvalidShape() when invalidShape != null:
+        return invalidShape(_that);
+      case InferenceError_InvalidTensorData() when invalidTensorData != null:
+        return invalidTensorData(_that);
+      case InferenceError_Engine() when engine != null:
+        return engine(_that);
+      case InferenceError_Io() when io != null:
+        return io(_that);
+      case InferenceError_Serialization() when serialization != null:
+        return serialization(_that);
+      case InferenceError_Configuration() when configuration != null:
+        return configuration(_that);
+      case InferenceError_ResourceNotFound() when resourceNotFound != null:
+        return resourceNotFound(_that);
+      case InferenceError_MemoryAllocation() when memoryAllocation != null:
+        return memoryAllocation(_that);
+      case InferenceError_ThreadPool() when threadPool != null:
+        return threadPool(_that);
+      case InferenceError_Gpu() when gpu != null:
+        return gpu(_that);
+      case InferenceError_FormatDetection() when formatDetection != null:
+        return formatDetection(_that);
+      case _:
+        return null;
+    }
+  }
+
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String field0)? modelLoad,
+    TResult Function(String field0)? prediction,
+    TResult Function(String field0)? unsupportedFormat,
+    TResult Function(Uint64List expected, Uint64List actual)? invalidShape,
+    TResult Function(String field0)? invalidTensorData,
+    TResult Function(String field0)? engine,
+    TResult Function(String field0)? io,
+    TResult Function(String field0)? serialization,
+    TResult Function(String field0)? configuration,
+    TResult Function(String field0)? resourceNotFound,
+    TResult Function(String field0)? memoryAllocation,
+    TResult Function(String field0)? threadPool,
+    TResult Function(String field0)? gpu,
+    TResult Function(String field0)? formatDetection,
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case InferenceError_ModelLoad() when modelLoad != null:
+        return modelLoad(_that.field0);
+      case InferenceError_Prediction() when prediction != null:
+        return prediction(_that.field0);
+      case InferenceError_UnsupportedFormat() when unsupportedFormat != null:
+        return unsupportedFormat(_that.field0);
+      case InferenceError_InvalidShape() when invalidShape != null:
+        return invalidShape(_that.expected, _that.actual);
+      case InferenceError_InvalidTensorData() when invalidTensorData != null:
+        return invalidTensorData(_that.field0);
+      case InferenceError_Engine() when engine != null:
+        return engine(_that.field0);
+      case InferenceError_Io() when io != null:
+        return io(_that.field0);
+      case InferenceError_Serialization() when serialization != null:
+        return serialization(_that.field0);
+      case InferenceError_Configuration() when configuration != null:
+        return configuration(_that.field0);
+      case InferenceError_ResourceNotFound() when resourceNotFound != null:
+        return resourceNotFound(_that.field0);
+      case InferenceError_MemoryAllocation() when memoryAllocation != null:
+        return memoryAllocation(_that.field0);
+      case InferenceError_ThreadPool() when threadPool != null:
+        return threadPool(_that.field0);
+      case InferenceError_Gpu() when gpu != null:
+        return gpu(_that.field0);
+      case InferenceError_FormatDetection() when formatDetection != null:
+        return formatDetection(_that.field0);
+      case _:
+        return orElse();
+    }
+  }
+
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String field0) modelLoad,
+    required TResult Function(String field0) prediction,
+    required TResult Function(String field0) unsupportedFormat,
+    required TResult Function(Uint64List expected, Uint64List actual)
+        invalidShape,
+    required TResult Function(String field0) invalidTensorData,
+    required TResult Function(String field0) engine,
+    required TResult Function(String field0) io,
+    required TResult Function(String field0) serialization,
+    required TResult Function(String field0) configuration,
+    required TResult Function(String field0) resourceNotFound,
+    required TResult Function(String field0) memoryAllocation,
+    required TResult Function(String field0) threadPool,
+    required TResult Function(String field0) gpu,
+    required TResult Function(String field0) formatDetection,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case InferenceError_ModelLoad():
+        return modelLoad(_that.field0);
+      case InferenceError_Prediction():
+        return prediction(_that.field0);
+      case InferenceError_UnsupportedFormat():
+        return unsupportedFormat(_that.field0);
+      case InferenceError_InvalidShape():
+        return invalidShape(_that.expected, _that.actual);
+      case InferenceError_InvalidTensorData():
+        return invalidTensorData(_that.field0);
+      case InferenceError_Engine():
+        return engine(_that.field0);
+      case InferenceError_Io():
+        return io(_that.field0);
+      case InferenceError_Serialization():
+        return serialization(_that.field0);
+      case InferenceError_Configuration():
+        return configuration(_that.field0);
+      case InferenceError_ResourceNotFound():
+        return resourceNotFound(_that.field0);
+      case InferenceError_MemoryAllocation():
+        return memoryAllocation(_that.field0);
+      case InferenceError_ThreadPool():
+        return threadPool(_that.field0);
+      case InferenceError_Gpu():
+        return gpu(_that.field0);
+      case InferenceError_FormatDetection():
+        return formatDetection(_that.field0);
+    }
+  }
+
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
+
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String field0)? modelLoad,
+    TResult? Function(String field0)? prediction,
+    TResult? Function(String field0)? unsupportedFormat,
+    TResult? Function(Uint64List expected, Uint64List actual)? invalidShape,
+    TResult? Function(String field0)? invalidTensorData,
+    TResult? Function(String field0)? engine,
+    TResult? Function(String field0)? io,
+    TResult? Function(String field0)? serialization,
+    TResult? Function(String field0)? configuration,
+    TResult? Function(String field0)? resourceNotFound,
+    TResult? Function(String field0)? memoryAllocation,
+    TResult? Function(String field0)? threadPool,
+    TResult? Function(String field0)? gpu,
+    TResult? Function(String field0)? formatDetection,
+  }) {
+    final _that = this;
+    switch (_that) {
+      case InferenceError_ModelLoad() when modelLoad != null:
+        return modelLoad(_that.field0);
+      case InferenceError_Prediction() when prediction != null:
+        return prediction(_that.field0);
+      case InferenceError_UnsupportedFormat() when unsupportedFormat != null:
+        return unsupportedFormat(_that.field0);
+      case InferenceError_InvalidShape() when invalidShape != null:
+        return invalidShape(_that.expected, _that.actual);
+      case InferenceError_InvalidTensorData() when invalidTensorData != null:
+        return invalidTensorData(_that.field0);
+      case InferenceError_Engine() when engine != null:
+        return engine(_that.field0);
+      case InferenceError_Io() when io != null:
+        return io(_that.field0);
+      case InferenceError_Serialization() when serialization != null:
+        return serialization(_that.field0);
+      case InferenceError_Configuration() when configuration != null:
+        return configuration(_that.field0);
+      case InferenceError_ResourceNotFound() when resourceNotFound != null:
+        return resourceNotFound(_that.field0);
+      case InferenceError_MemoryAllocation() when memoryAllocation != null:
+        return memoryAllocation(_that.field0);
+      case InferenceError_ThreadPool() when threadPool != null:
+        return threadPool(_that.field0);
+      case InferenceError_Gpu() when gpu != null:
+        return gpu(_that.field0);
+      case InferenceError_FormatDetection() when formatDetection != null:
+        return formatDetection(_that.field0);
+      case _:
+        return null;
+    }
   }
 }
 
 /// @nodoc
 
-class _$InferenceError_ModelLoadImpl extends InferenceError_ModelLoad {
-  const _$InferenceError_ModelLoadImpl(this.field0) : super._();
+class InferenceError_ModelLoad extends InferenceError {
+  const InferenceError_ModelLoad(this.field0) : super._();
+
+  final String field0;
+
+  /// Create a copy of InferenceError
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $InferenceError_ModelLoadCopyWith<InferenceError_ModelLoad> get copyWith =>
+      _$InferenceError_ModelLoadCopyWithImpl<InferenceError_ModelLoad>(
+          this, _$identity);
 
   @override
-  final String field0;
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is InferenceError_ModelLoad &&
+            (identical(other.field0, field0) || other.field0 == field0));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, field0);
 
   @override
   String toString() {
     return 'InferenceError.modelLoad(field0: $field0)';
   }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$InferenceError_ModelLoadImpl &&
-            (identical(other.field0, field0) || other.field0 == field0));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, field0);
-
-  /// Create a copy of InferenceError
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$InferenceError_ModelLoadImplCopyWith<_$InferenceError_ModelLoadImpl>
-      get copyWith => __$$InferenceError_ModelLoadImplCopyWithImpl<
-          _$InferenceError_ModelLoadImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String field0) modelLoad,
-    required TResult Function(String field0) prediction,
-    required TResult Function(String field0) unsupportedFormat,
-    required TResult Function(Uint64List expected, Uint64List actual)
-        invalidShape,
-    required TResult Function(String field0) invalidTensorData,
-    required TResult Function(String field0) engine,
-    required TResult Function(String field0) io,
-    required TResult Function(String field0) serialization,
-    required TResult Function(String field0) configuration,
-    required TResult Function(String field0) resourceNotFound,
-    required TResult Function(String field0) memoryAllocation,
-    required TResult Function(String field0) threadPool,
-    required TResult Function(String field0) gpu,
-    required TResult Function(String field0) formatDetection,
-  }) {
-    return modelLoad(field0);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String field0)? modelLoad,
-    TResult? Function(String field0)? prediction,
-    TResult? Function(String field0)? unsupportedFormat,
-    TResult? Function(Uint64List expected, Uint64List actual)? invalidShape,
-    TResult? Function(String field0)? invalidTensorData,
-    TResult? Function(String field0)? engine,
-    TResult? Function(String field0)? io,
-    TResult? Function(String field0)? serialization,
-    TResult? Function(String field0)? configuration,
-    TResult? Function(String field0)? resourceNotFound,
-    TResult? Function(String field0)? memoryAllocation,
-    TResult? Function(String field0)? threadPool,
-    TResult? Function(String field0)? gpu,
-    TResult? Function(String field0)? formatDetection,
-  }) {
-    return modelLoad?.call(field0);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String field0)? modelLoad,
-    TResult Function(String field0)? prediction,
-    TResult Function(String field0)? unsupportedFormat,
-    TResult Function(Uint64List expected, Uint64List actual)? invalidShape,
-    TResult Function(String field0)? invalidTensorData,
-    TResult Function(String field0)? engine,
-    TResult Function(String field0)? io,
-    TResult Function(String field0)? serialization,
-    TResult Function(String field0)? configuration,
-    TResult Function(String field0)? resourceNotFound,
-    TResult Function(String field0)? memoryAllocation,
-    TResult Function(String field0)? threadPool,
-    TResult Function(String field0)? gpu,
-    TResult Function(String field0)? formatDetection,
-    required TResult orElse(),
-  }) {
-    if (modelLoad != null) {
-      return modelLoad(field0);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(InferenceError_ModelLoad value) modelLoad,
-    required TResult Function(InferenceError_Prediction value) prediction,
-    required TResult Function(InferenceError_UnsupportedFormat value)
-        unsupportedFormat,
-    required TResult Function(InferenceError_InvalidShape value) invalidShape,
-    required TResult Function(InferenceError_InvalidTensorData value)
-        invalidTensorData,
-    required TResult Function(InferenceError_Engine value) engine,
-    required TResult Function(InferenceError_Io value) io,
-    required TResult Function(InferenceError_Serialization value) serialization,
-    required TResult Function(InferenceError_Configuration value) configuration,
-    required TResult Function(InferenceError_ResourceNotFound value)
-        resourceNotFound,
-    required TResult Function(InferenceError_MemoryAllocation value)
-        memoryAllocation,
-    required TResult Function(InferenceError_ThreadPool value) threadPool,
-    required TResult Function(InferenceError_Gpu value) gpu,
-    required TResult Function(InferenceError_FormatDetection value)
-        formatDetection,
-  }) {
-    return modelLoad(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(InferenceError_ModelLoad value)? modelLoad,
-    TResult? Function(InferenceError_Prediction value)? prediction,
-    TResult? Function(InferenceError_UnsupportedFormat value)?
-        unsupportedFormat,
-    TResult? Function(InferenceError_InvalidShape value)? invalidShape,
-    TResult? Function(InferenceError_InvalidTensorData value)?
-        invalidTensorData,
-    TResult? Function(InferenceError_Engine value)? engine,
-    TResult? Function(InferenceError_Io value)? io,
-    TResult? Function(InferenceError_Serialization value)? serialization,
-    TResult? Function(InferenceError_Configuration value)? configuration,
-    TResult? Function(InferenceError_ResourceNotFound value)? resourceNotFound,
-    TResult? Function(InferenceError_MemoryAllocation value)? memoryAllocation,
-    TResult? Function(InferenceError_ThreadPool value)? threadPool,
-    TResult? Function(InferenceError_Gpu value)? gpu,
-    TResult? Function(InferenceError_FormatDetection value)? formatDetection,
-  }) {
-    return modelLoad?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(InferenceError_ModelLoad value)? modelLoad,
-    TResult Function(InferenceError_Prediction value)? prediction,
-    TResult Function(InferenceError_UnsupportedFormat value)? unsupportedFormat,
-    TResult Function(InferenceError_InvalidShape value)? invalidShape,
-    TResult Function(InferenceError_InvalidTensorData value)? invalidTensorData,
-    TResult Function(InferenceError_Engine value)? engine,
-    TResult Function(InferenceError_Io value)? io,
-    TResult Function(InferenceError_Serialization value)? serialization,
-    TResult Function(InferenceError_Configuration value)? configuration,
-    TResult Function(InferenceError_ResourceNotFound value)? resourceNotFound,
-    TResult Function(InferenceError_MemoryAllocation value)? memoryAllocation,
-    TResult Function(InferenceError_ThreadPool value)? threadPool,
-    TResult Function(InferenceError_Gpu value)? gpu,
-    TResult Function(InferenceError_FormatDetection value)? formatDetection,
-    required TResult orElse(),
-  }) {
-    if (modelLoad != null) {
-      return modelLoad(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class InferenceError_ModelLoad extends InferenceError {
-  const factory InferenceError_ModelLoad(final String field0) =
-      _$InferenceError_ModelLoadImpl;
-  const InferenceError_ModelLoad._() : super._();
-
-  String get field0;
-
-  /// Create a copy of InferenceError
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$InferenceError_ModelLoadImplCopyWith<_$InferenceError_ModelLoadImpl>
-      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$InferenceError_PredictionImplCopyWith<$Res> {
-  factory _$$InferenceError_PredictionImplCopyWith(
-          _$InferenceError_PredictionImpl value,
-          $Res Function(_$InferenceError_PredictionImpl) then) =
-      __$$InferenceError_PredictionImplCopyWithImpl<$Res>;
+abstract mixin class $InferenceError_ModelLoadCopyWith<$Res>
+    implements $InferenceErrorCopyWith<$Res> {
+  factory $InferenceError_ModelLoadCopyWith(InferenceError_ModelLoad value,
+          $Res Function(InferenceError_ModelLoad) _then) =
+      _$InferenceError_ModelLoadCopyWithImpl;
   @useResult
   $Res call({String field0});
 }
 
 /// @nodoc
-class __$$InferenceError_PredictionImplCopyWithImpl<$Res>
-    extends _$InferenceErrorCopyWithImpl<$Res, _$InferenceError_PredictionImpl>
-    implements _$$InferenceError_PredictionImplCopyWith<$Res> {
-  __$$InferenceError_PredictionImplCopyWithImpl(
-      _$InferenceError_PredictionImpl _value,
-      $Res Function(_$InferenceError_PredictionImpl) _then)
-      : super(_value, _then);
+class _$InferenceError_ModelLoadCopyWithImpl<$Res>
+    implements $InferenceError_ModelLoadCopyWith<$Res> {
+  _$InferenceError_ModelLoadCopyWithImpl(this._self, this._then);
+
+  final InferenceError_ModelLoad _self;
+  final $Res Function(InferenceError_ModelLoad) _then;
 
   /// Create a copy of InferenceError
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? field0 = null,
   }) {
-    return _then(_$InferenceError_PredictionImpl(
+    return _then(InferenceError_ModelLoad(
       null == field0
-          ? _value.field0
+          ? _self.field0
           : field0 // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -419,224 +496,63 @@ class __$$InferenceError_PredictionImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$InferenceError_PredictionImpl extends InferenceError_Prediction {
-  const _$InferenceError_PredictionImpl(this.field0) : super._();
+class InferenceError_Prediction extends InferenceError {
+  const InferenceError_Prediction(this.field0) : super._();
+
+  final String field0;
+
+  /// Create a copy of InferenceError
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $InferenceError_PredictionCopyWith<InferenceError_Prediction> get copyWith =>
+      _$InferenceError_PredictionCopyWithImpl<InferenceError_Prediction>(
+          this, _$identity);
 
   @override
-  final String field0;
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is InferenceError_Prediction &&
+            (identical(other.field0, field0) || other.field0 == field0));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, field0);
 
   @override
   String toString() {
     return 'InferenceError.prediction(field0: $field0)';
   }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$InferenceError_PredictionImpl &&
-            (identical(other.field0, field0) || other.field0 == field0));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, field0);
-
-  /// Create a copy of InferenceError
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$InferenceError_PredictionImplCopyWith<_$InferenceError_PredictionImpl>
-      get copyWith => __$$InferenceError_PredictionImplCopyWithImpl<
-          _$InferenceError_PredictionImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String field0) modelLoad,
-    required TResult Function(String field0) prediction,
-    required TResult Function(String field0) unsupportedFormat,
-    required TResult Function(Uint64List expected, Uint64List actual)
-        invalidShape,
-    required TResult Function(String field0) invalidTensorData,
-    required TResult Function(String field0) engine,
-    required TResult Function(String field0) io,
-    required TResult Function(String field0) serialization,
-    required TResult Function(String field0) configuration,
-    required TResult Function(String field0) resourceNotFound,
-    required TResult Function(String field0) memoryAllocation,
-    required TResult Function(String field0) threadPool,
-    required TResult Function(String field0) gpu,
-    required TResult Function(String field0) formatDetection,
-  }) {
-    return prediction(field0);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String field0)? modelLoad,
-    TResult? Function(String field0)? prediction,
-    TResult? Function(String field0)? unsupportedFormat,
-    TResult? Function(Uint64List expected, Uint64List actual)? invalidShape,
-    TResult? Function(String field0)? invalidTensorData,
-    TResult? Function(String field0)? engine,
-    TResult? Function(String field0)? io,
-    TResult? Function(String field0)? serialization,
-    TResult? Function(String field0)? configuration,
-    TResult? Function(String field0)? resourceNotFound,
-    TResult? Function(String field0)? memoryAllocation,
-    TResult? Function(String field0)? threadPool,
-    TResult? Function(String field0)? gpu,
-    TResult? Function(String field0)? formatDetection,
-  }) {
-    return prediction?.call(field0);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String field0)? modelLoad,
-    TResult Function(String field0)? prediction,
-    TResult Function(String field0)? unsupportedFormat,
-    TResult Function(Uint64List expected, Uint64List actual)? invalidShape,
-    TResult Function(String field0)? invalidTensorData,
-    TResult Function(String field0)? engine,
-    TResult Function(String field0)? io,
-    TResult Function(String field0)? serialization,
-    TResult Function(String field0)? configuration,
-    TResult Function(String field0)? resourceNotFound,
-    TResult Function(String field0)? memoryAllocation,
-    TResult Function(String field0)? threadPool,
-    TResult Function(String field0)? gpu,
-    TResult Function(String field0)? formatDetection,
-    required TResult orElse(),
-  }) {
-    if (prediction != null) {
-      return prediction(field0);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(InferenceError_ModelLoad value) modelLoad,
-    required TResult Function(InferenceError_Prediction value) prediction,
-    required TResult Function(InferenceError_UnsupportedFormat value)
-        unsupportedFormat,
-    required TResult Function(InferenceError_InvalidShape value) invalidShape,
-    required TResult Function(InferenceError_InvalidTensorData value)
-        invalidTensorData,
-    required TResult Function(InferenceError_Engine value) engine,
-    required TResult Function(InferenceError_Io value) io,
-    required TResult Function(InferenceError_Serialization value) serialization,
-    required TResult Function(InferenceError_Configuration value) configuration,
-    required TResult Function(InferenceError_ResourceNotFound value)
-        resourceNotFound,
-    required TResult Function(InferenceError_MemoryAllocation value)
-        memoryAllocation,
-    required TResult Function(InferenceError_ThreadPool value) threadPool,
-    required TResult Function(InferenceError_Gpu value) gpu,
-    required TResult Function(InferenceError_FormatDetection value)
-        formatDetection,
-  }) {
-    return prediction(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(InferenceError_ModelLoad value)? modelLoad,
-    TResult? Function(InferenceError_Prediction value)? prediction,
-    TResult? Function(InferenceError_UnsupportedFormat value)?
-        unsupportedFormat,
-    TResult? Function(InferenceError_InvalidShape value)? invalidShape,
-    TResult? Function(InferenceError_InvalidTensorData value)?
-        invalidTensorData,
-    TResult? Function(InferenceError_Engine value)? engine,
-    TResult? Function(InferenceError_Io value)? io,
-    TResult? Function(InferenceError_Serialization value)? serialization,
-    TResult? Function(InferenceError_Configuration value)? configuration,
-    TResult? Function(InferenceError_ResourceNotFound value)? resourceNotFound,
-    TResult? Function(InferenceError_MemoryAllocation value)? memoryAllocation,
-    TResult? Function(InferenceError_ThreadPool value)? threadPool,
-    TResult? Function(InferenceError_Gpu value)? gpu,
-    TResult? Function(InferenceError_FormatDetection value)? formatDetection,
-  }) {
-    return prediction?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(InferenceError_ModelLoad value)? modelLoad,
-    TResult Function(InferenceError_Prediction value)? prediction,
-    TResult Function(InferenceError_UnsupportedFormat value)? unsupportedFormat,
-    TResult Function(InferenceError_InvalidShape value)? invalidShape,
-    TResult Function(InferenceError_InvalidTensorData value)? invalidTensorData,
-    TResult Function(InferenceError_Engine value)? engine,
-    TResult Function(InferenceError_Io value)? io,
-    TResult Function(InferenceError_Serialization value)? serialization,
-    TResult Function(InferenceError_Configuration value)? configuration,
-    TResult Function(InferenceError_ResourceNotFound value)? resourceNotFound,
-    TResult Function(InferenceError_MemoryAllocation value)? memoryAllocation,
-    TResult Function(InferenceError_ThreadPool value)? threadPool,
-    TResult Function(InferenceError_Gpu value)? gpu,
-    TResult Function(InferenceError_FormatDetection value)? formatDetection,
-    required TResult orElse(),
-  }) {
-    if (prediction != null) {
-      return prediction(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class InferenceError_Prediction extends InferenceError {
-  const factory InferenceError_Prediction(final String field0) =
-      _$InferenceError_PredictionImpl;
-  const InferenceError_Prediction._() : super._();
-
-  String get field0;
-
-  /// Create a copy of InferenceError
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$InferenceError_PredictionImplCopyWith<_$InferenceError_PredictionImpl>
-      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$InferenceError_UnsupportedFormatImplCopyWith<$Res> {
-  factory _$$InferenceError_UnsupportedFormatImplCopyWith(
-          _$InferenceError_UnsupportedFormatImpl value,
-          $Res Function(_$InferenceError_UnsupportedFormatImpl) then) =
-      __$$InferenceError_UnsupportedFormatImplCopyWithImpl<$Res>;
+abstract mixin class $InferenceError_PredictionCopyWith<$Res>
+    implements $InferenceErrorCopyWith<$Res> {
+  factory $InferenceError_PredictionCopyWith(InferenceError_Prediction value,
+          $Res Function(InferenceError_Prediction) _then) =
+      _$InferenceError_PredictionCopyWithImpl;
   @useResult
   $Res call({String field0});
 }
 
 /// @nodoc
-class __$$InferenceError_UnsupportedFormatImplCopyWithImpl<$Res>
-    extends _$InferenceErrorCopyWithImpl<$Res,
-        _$InferenceError_UnsupportedFormatImpl>
-    implements _$$InferenceError_UnsupportedFormatImplCopyWith<$Res> {
-  __$$InferenceError_UnsupportedFormatImplCopyWithImpl(
-      _$InferenceError_UnsupportedFormatImpl _value,
-      $Res Function(_$InferenceError_UnsupportedFormatImpl) _then)
-      : super(_value, _then);
+class _$InferenceError_PredictionCopyWithImpl<$Res>
+    implements $InferenceError_PredictionCopyWith<$Res> {
+  _$InferenceError_PredictionCopyWithImpl(this._self, this._then);
+
+  final InferenceError_Prediction _self;
+  final $Res Function(InferenceError_Prediction) _then;
 
   /// Create a copy of InferenceError
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? field0 = null,
   }) {
-    return _then(_$InferenceError_UnsupportedFormatImpl(
+    return _then(InferenceError_Prediction(
       null == field0
-          ? _value.field0
+          ? _self.field0
           : field0 // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -645,260 +561,93 @@ class __$$InferenceError_UnsupportedFormatImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$InferenceError_UnsupportedFormatImpl
-    extends InferenceError_UnsupportedFormat {
-  const _$InferenceError_UnsupportedFormatImpl(this.field0) : super._();
+class InferenceError_UnsupportedFormat extends InferenceError {
+  const InferenceError_UnsupportedFormat(this.field0) : super._();
 
-  @override
   final String field0;
 
-  @override
-  String toString() {
-    return 'InferenceError.unsupportedFormat(field0: $field0)';
-  }
+  /// Create a copy of InferenceError
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $InferenceError_UnsupportedFormatCopyWith<InferenceError_UnsupportedFormat>
+      get copyWith => _$InferenceError_UnsupportedFormatCopyWithImpl<
+          InferenceError_UnsupportedFormat>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$InferenceError_UnsupportedFormatImpl &&
+            other is InferenceError_UnsupportedFormat &&
             (identical(other.field0, field0) || other.field0 == field0));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
-  /// Create a copy of InferenceError
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$InferenceError_UnsupportedFormatImplCopyWith<
-          _$InferenceError_UnsupportedFormatImpl>
-      get copyWith => __$$InferenceError_UnsupportedFormatImplCopyWithImpl<
-          _$InferenceError_UnsupportedFormatImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String field0) modelLoad,
-    required TResult Function(String field0) prediction,
-    required TResult Function(String field0) unsupportedFormat,
-    required TResult Function(Uint64List expected, Uint64List actual)
-        invalidShape,
-    required TResult Function(String field0) invalidTensorData,
-    required TResult Function(String field0) engine,
-    required TResult Function(String field0) io,
-    required TResult Function(String field0) serialization,
-    required TResult Function(String field0) configuration,
-    required TResult Function(String field0) resourceNotFound,
-    required TResult Function(String field0) memoryAllocation,
-    required TResult Function(String field0) threadPool,
-    required TResult Function(String field0) gpu,
-    required TResult Function(String field0) formatDetection,
-  }) {
-    return unsupportedFormat(field0);
+  String toString() {
+    return 'InferenceError.unsupportedFormat(field0: $field0)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String field0)? modelLoad,
-    TResult? Function(String field0)? prediction,
-    TResult? Function(String field0)? unsupportedFormat,
-    TResult? Function(Uint64List expected, Uint64List actual)? invalidShape,
-    TResult? Function(String field0)? invalidTensorData,
-    TResult? Function(String field0)? engine,
-    TResult? Function(String field0)? io,
-    TResult? Function(String field0)? serialization,
-    TResult? Function(String field0)? configuration,
-    TResult? Function(String field0)? resourceNotFound,
-    TResult? Function(String field0)? memoryAllocation,
-    TResult? Function(String field0)? threadPool,
-    TResult? Function(String field0)? gpu,
-    TResult? Function(String field0)? formatDetection,
-  }) {
-    return unsupportedFormat?.call(field0);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String field0)? modelLoad,
-    TResult Function(String field0)? prediction,
-    TResult Function(String field0)? unsupportedFormat,
-    TResult Function(Uint64List expected, Uint64List actual)? invalidShape,
-    TResult Function(String field0)? invalidTensorData,
-    TResult Function(String field0)? engine,
-    TResult Function(String field0)? io,
-    TResult Function(String field0)? serialization,
-    TResult Function(String field0)? configuration,
-    TResult Function(String field0)? resourceNotFound,
-    TResult Function(String field0)? memoryAllocation,
-    TResult Function(String field0)? threadPool,
-    TResult Function(String field0)? gpu,
-    TResult Function(String field0)? formatDetection,
-    required TResult orElse(),
-  }) {
-    if (unsupportedFormat != null) {
-      return unsupportedFormat(field0);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(InferenceError_ModelLoad value) modelLoad,
-    required TResult Function(InferenceError_Prediction value) prediction,
-    required TResult Function(InferenceError_UnsupportedFormat value)
-        unsupportedFormat,
-    required TResult Function(InferenceError_InvalidShape value) invalidShape,
-    required TResult Function(InferenceError_InvalidTensorData value)
-        invalidTensorData,
-    required TResult Function(InferenceError_Engine value) engine,
-    required TResult Function(InferenceError_Io value) io,
-    required TResult Function(InferenceError_Serialization value) serialization,
-    required TResult Function(InferenceError_Configuration value) configuration,
-    required TResult Function(InferenceError_ResourceNotFound value)
-        resourceNotFound,
-    required TResult Function(InferenceError_MemoryAllocation value)
-        memoryAllocation,
-    required TResult Function(InferenceError_ThreadPool value) threadPool,
-    required TResult Function(InferenceError_Gpu value) gpu,
-    required TResult Function(InferenceError_FormatDetection value)
-        formatDetection,
-  }) {
-    return unsupportedFormat(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(InferenceError_ModelLoad value)? modelLoad,
-    TResult? Function(InferenceError_Prediction value)? prediction,
-    TResult? Function(InferenceError_UnsupportedFormat value)?
-        unsupportedFormat,
-    TResult? Function(InferenceError_InvalidShape value)? invalidShape,
-    TResult? Function(InferenceError_InvalidTensorData value)?
-        invalidTensorData,
-    TResult? Function(InferenceError_Engine value)? engine,
-    TResult? Function(InferenceError_Io value)? io,
-    TResult? Function(InferenceError_Serialization value)? serialization,
-    TResult? Function(InferenceError_Configuration value)? configuration,
-    TResult? Function(InferenceError_ResourceNotFound value)? resourceNotFound,
-    TResult? Function(InferenceError_MemoryAllocation value)? memoryAllocation,
-    TResult? Function(InferenceError_ThreadPool value)? threadPool,
-    TResult? Function(InferenceError_Gpu value)? gpu,
-    TResult? Function(InferenceError_FormatDetection value)? formatDetection,
-  }) {
-    return unsupportedFormat?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(InferenceError_ModelLoad value)? modelLoad,
-    TResult Function(InferenceError_Prediction value)? prediction,
-    TResult Function(InferenceError_UnsupportedFormat value)? unsupportedFormat,
-    TResult Function(InferenceError_InvalidShape value)? invalidShape,
-    TResult Function(InferenceError_InvalidTensorData value)? invalidTensorData,
-    TResult Function(InferenceError_Engine value)? engine,
-    TResult Function(InferenceError_Io value)? io,
-    TResult Function(InferenceError_Serialization value)? serialization,
-    TResult Function(InferenceError_Configuration value)? configuration,
-    TResult Function(InferenceError_ResourceNotFound value)? resourceNotFound,
-    TResult Function(InferenceError_MemoryAllocation value)? memoryAllocation,
-    TResult Function(InferenceError_ThreadPool value)? threadPool,
-    TResult Function(InferenceError_Gpu value)? gpu,
-    TResult Function(InferenceError_FormatDetection value)? formatDetection,
-    required TResult orElse(),
-  }) {
-    if (unsupportedFormat != null) {
-      return unsupportedFormat(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class InferenceError_UnsupportedFormat extends InferenceError {
-  const factory InferenceError_UnsupportedFormat(final String field0) =
-      _$InferenceError_UnsupportedFormatImpl;
-  const InferenceError_UnsupportedFormat._() : super._();
-
-  String get field0;
-
-  /// Create a copy of InferenceError
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$InferenceError_UnsupportedFormatImplCopyWith<
-          _$InferenceError_UnsupportedFormatImpl>
-      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$InferenceError_InvalidShapeImplCopyWith<$Res> {
-  factory _$$InferenceError_InvalidShapeImplCopyWith(
-          _$InferenceError_InvalidShapeImpl value,
-          $Res Function(_$InferenceError_InvalidShapeImpl) then) =
-      __$$InferenceError_InvalidShapeImplCopyWithImpl<$Res>;
+abstract mixin class $InferenceError_UnsupportedFormatCopyWith<$Res>
+    implements $InferenceErrorCopyWith<$Res> {
+  factory $InferenceError_UnsupportedFormatCopyWith(
+          InferenceError_UnsupportedFormat value,
+          $Res Function(InferenceError_UnsupportedFormat) _then) =
+      _$InferenceError_UnsupportedFormatCopyWithImpl;
   @useResult
-  $Res call({Uint64List expected, Uint64List actual});
+  $Res call({String field0});
 }
 
 /// @nodoc
-class __$$InferenceError_InvalidShapeImplCopyWithImpl<$Res>
-    extends _$InferenceErrorCopyWithImpl<$Res,
-        _$InferenceError_InvalidShapeImpl>
-    implements _$$InferenceError_InvalidShapeImplCopyWith<$Res> {
-  __$$InferenceError_InvalidShapeImplCopyWithImpl(
-      _$InferenceError_InvalidShapeImpl _value,
-      $Res Function(_$InferenceError_InvalidShapeImpl) _then)
-      : super(_value, _then);
+class _$InferenceError_UnsupportedFormatCopyWithImpl<$Res>
+    implements $InferenceError_UnsupportedFormatCopyWith<$Res> {
+  _$InferenceError_UnsupportedFormatCopyWithImpl(this._self, this._then);
+
+  final InferenceError_UnsupportedFormat _self;
+  final $Res Function(InferenceError_UnsupportedFormat) _then;
 
   /// Create a copy of InferenceError
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
-    Object? expected = null,
-    Object? actual = null,
+    Object? field0 = null,
   }) {
-    return _then(_$InferenceError_InvalidShapeImpl(
-      expected: null == expected
-          ? _value.expected
-          : expected // ignore: cast_nullable_to_non_nullable
-              as Uint64List,
-      actual: null == actual
-          ? _value.actual
-          : actual // ignore: cast_nullable_to_non_nullable
-              as Uint64List,
+    return _then(InferenceError_UnsupportedFormat(
+      null == field0
+          ? _self.field0
+          : field0 // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
 
 /// @nodoc
 
-class _$InferenceError_InvalidShapeImpl extends InferenceError_InvalidShape {
-  const _$InferenceError_InvalidShapeImpl(
+class InferenceError_InvalidShape extends InferenceError {
+  const InferenceError_InvalidShape(
       {required this.expected, required this.actual})
       : super._();
 
-  @override
   final Uint64List expected;
-  @override
   final Uint64List actual;
 
-  @override
-  String toString() {
-    return 'InferenceError.invalidShape(expected: $expected, actual: $actual)';
-  }
+  /// Create a copy of InferenceError
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $InferenceError_InvalidShapeCopyWith<InferenceError_InvalidShape>
+      get copyWith => _$InferenceError_InvalidShapeCopyWithImpl<
+          InferenceError_InvalidShape>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$InferenceError_InvalidShapeImpl &&
+            other is InferenceError_InvalidShape &&
             const DeepCollectionEquality().equals(other.expected, expected) &&
             const DeepCollectionEquality().equals(other.actual, actual));
   }
@@ -909,431 +658,111 @@ class _$InferenceError_InvalidShapeImpl extends InferenceError_InvalidShape {
       const DeepCollectionEquality().hash(expected),
       const DeepCollectionEquality().hash(actual));
 
-  /// Create a copy of InferenceError
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$InferenceError_InvalidShapeImplCopyWith<_$InferenceError_InvalidShapeImpl>
-      get copyWith => __$$InferenceError_InvalidShapeImplCopyWithImpl<
-          _$InferenceError_InvalidShapeImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String field0) modelLoad,
-    required TResult Function(String field0) prediction,
-    required TResult Function(String field0) unsupportedFormat,
-    required TResult Function(Uint64List expected, Uint64List actual)
-        invalidShape,
-    required TResult Function(String field0) invalidTensorData,
-    required TResult Function(String field0) engine,
-    required TResult Function(String field0) io,
-    required TResult Function(String field0) serialization,
-    required TResult Function(String field0) configuration,
-    required TResult Function(String field0) resourceNotFound,
-    required TResult Function(String field0) memoryAllocation,
-    required TResult Function(String field0) threadPool,
-    required TResult Function(String field0) gpu,
-    required TResult Function(String field0) formatDetection,
-  }) {
-    return invalidShape(expected, actual);
+  String toString() {
+    return 'InferenceError.invalidShape(expected: $expected, actual: $actual)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String field0)? modelLoad,
-    TResult? Function(String field0)? prediction,
-    TResult? Function(String field0)? unsupportedFormat,
-    TResult? Function(Uint64List expected, Uint64List actual)? invalidShape,
-    TResult? Function(String field0)? invalidTensorData,
-    TResult? Function(String field0)? engine,
-    TResult? Function(String field0)? io,
-    TResult? Function(String field0)? serialization,
-    TResult? Function(String field0)? configuration,
-    TResult? Function(String field0)? resourceNotFound,
-    TResult? Function(String field0)? memoryAllocation,
-    TResult? Function(String field0)? threadPool,
-    TResult? Function(String field0)? gpu,
-    TResult? Function(String field0)? formatDetection,
-  }) {
-    return invalidShape?.call(expected, actual);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String field0)? modelLoad,
-    TResult Function(String field0)? prediction,
-    TResult Function(String field0)? unsupportedFormat,
-    TResult Function(Uint64List expected, Uint64List actual)? invalidShape,
-    TResult Function(String field0)? invalidTensorData,
-    TResult Function(String field0)? engine,
-    TResult Function(String field0)? io,
-    TResult Function(String field0)? serialization,
-    TResult Function(String field0)? configuration,
-    TResult Function(String field0)? resourceNotFound,
-    TResult Function(String field0)? memoryAllocation,
-    TResult Function(String field0)? threadPool,
-    TResult Function(String field0)? gpu,
-    TResult Function(String field0)? formatDetection,
-    required TResult orElse(),
-  }) {
-    if (invalidShape != null) {
-      return invalidShape(expected, actual);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(InferenceError_ModelLoad value) modelLoad,
-    required TResult Function(InferenceError_Prediction value) prediction,
-    required TResult Function(InferenceError_UnsupportedFormat value)
-        unsupportedFormat,
-    required TResult Function(InferenceError_InvalidShape value) invalidShape,
-    required TResult Function(InferenceError_InvalidTensorData value)
-        invalidTensorData,
-    required TResult Function(InferenceError_Engine value) engine,
-    required TResult Function(InferenceError_Io value) io,
-    required TResult Function(InferenceError_Serialization value) serialization,
-    required TResult Function(InferenceError_Configuration value) configuration,
-    required TResult Function(InferenceError_ResourceNotFound value)
-        resourceNotFound,
-    required TResult Function(InferenceError_MemoryAllocation value)
-        memoryAllocation,
-    required TResult Function(InferenceError_ThreadPool value) threadPool,
-    required TResult Function(InferenceError_Gpu value) gpu,
-    required TResult Function(InferenceError_FormatDetection value)
-        formatDetection,
-  }) {
-    return invalidShape(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(InferenceError_ModelLoad value)? modelLoad,
-    TResult? Function(InferenceError_Prediction value)? prediction,
-    TResult? Function(InferenceError_UnsupportedFormat value)?
-        unsupportedFormat,
-    TResult? Function(InferenceError_InvalidShape value)? invalidShape,
-    TResult? Function(InferenceError_InvalidTensorData value)?
-        invalidTensorData,
-    TResult? Function(InferenceError_Engine value)? engine,
-    TResult? Function(InferenceError_Io value)? io,
-    TResult? Function(InferenceError_Serialization value)? serialization,
-    TResult? Function(InferenceError_Configuration value)? configuration,
-    TResult? Function(InferenceError_ResourceNotFound value)? resourceNotFound,
-    TResult? Function(InferenceError_MemoryAllocation value)? memoryAllocation,
-    TResult? Function(InferenceError_ThreadPool value)? threadPool,
-    TResult? Function(InferenceError_Gpu value)? gpu,
-    TResult? Function(InferenceError_FormatDetection value)? formatDetection,
-  }) {
-    return invalidShape?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(InferenceError_ModelLoad value)? modelLoad,
-    TResult Function(InferenceError_Prediction value)? prediction,
-    TResult Function(InferenceError_UnsupportedFormat value)? unsupportedFormat,
-    TResult Function(InferenceError_InvalidShape value)? invalidShape,
-    TResult Function(InferenceError_InvalidTensorData value)? invalidTensorData,
-    TResult Function(InferenceError_Engine value)? engine,
-    TResult Function(InferenceError_Io value)? io,
-    TResult Function(InferenceError_Serialization value)? serialization,
-    TResult Function(InferenceError_Configuration value)? configuration,
-    TResult Function(InferenceError_ResourceNotFound value)? resourceNotFound,
-    TResult Function(InferenceError_MemoryAllocation value)? memoryAllocation,
-    TResult Function(InferenceError_ThreadPool value)? threadPool,
-    TResult Function(InferenceError_Gpu value)? gpu,
-    TResult Function(InferenceError_FormatDetection value)? formatDetection,
-    required TResult orElse(),
-  }) {
-    if (invalidShape != null) {
-      return invalidShape(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class InferenceError_InvalidShape extends InferenceError {
-  const factory InferenceError_InvalidShape(
-      {required final Uint64List expected,
-      required final Uint64List actual}) = _$InferenceError_InvalidShapeImpl;
-  const InferenceError_InvalidShape._() : super._();
-
-  Uint64List get expected;
-  Uint64List get actual;
-
-  /// Create a copy of InferenceError
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$InferenceError_InvalidShapeImplCopyWith<_$InferenceError_InvalidShapeImpl>
-      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$InferenceError_InvalidTensorDataImplCopyWith<$Res> {
-  factory _$$InferenceError_InvalidTensorDataImplCopyWith(
-          _$InferenceError_InvalidTensorDataImpl value,
-          $Res Function(_$InferenceError_InvalidTensorDataImpl) then) =
-      __$$InferenceError_InvalidTensorDataImplCopyWithImpl<$Res>;
+abstract mixin class $InferenceError_InvalidShapeCopyWith<$Res>
+    implements $InferenceErrorCopyWith<$Res> {
+  factory $InferenceError_InvalidShapeCopyWith(
+          InferenceError_InvalidShape value,
+          $Res Function(InferenceError_InvalidShape) _then) =
+      _$InferenceError_InvalidShapeCopyWithImpl;
   @useResult
-  $Res call({String field0});
+  $Res call({Uint64List expected, Uint64List actual});
 }
 
 /// @nodoc
-class __$$InferenceError_InvalidTensorDataImplCopyWithImpl<$Res>
-    extends _$InferenceErrorCopyWithImpl<$Res,
-        _$InferenceError_InvalidTensorDataImpl>
-    implements _$$InferenceError_InvalidTensorDataImplCopyWith<$Res> {
-  __$$InferenceError_InvalidTensorDataImplCopyWithImpl(
-      _$InferenceError_InvalidTensorDataImpl _value,
-      $Res Function(_$InferenceError_InvalidTensorDataImpl) _then)
-      : super(_value, _then);
+class _$InferenceError_InvalidShapeCopyWithImpl<$Res>
+    implements $InferenceError_InvalidShapeCopyWith<$Res> {
+  _$InferenceError_InvalidShapeCopyWithImpl(this._self, this._then);
+
+  final InferenceError_InvalidShape _self;
+  final $Res Function(InferenceError_InvalidShape) _then;
 
   /// Create a copy of InferenceError
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
-    Object? field0 = null,
+    Object? expected = null,
+    Object? actual = null,
   }) {
-    return _then(_$InferenceError_InvalidTensorDataImpl(
-      null == field0
-          ? _value.field0
-          : field0 // ignore: cast_nullable_to_non_nullable
-              as String,
+    return _then(InferenceError_InvalidShape(
+      expected: null == expected
+          ? _self.expected
+          : expected // ignore: cast_nullable_to_non_nullable
+              as Uint64List,
+      actual: null == actual
+          ? _self.actual
+          : actual // ignore: cast_nullable_to_non_nullable
+              as Uint64List,
     ));
   }
 }
 
 /// @nodoc
 
-class _$InferenceError_InvalidTensorDataImpl
-    extends InferenceError_InvalidTensorData {
-  const _$InferenceError_InvalidTensorDataImpl(this.field0) : super._();
+class InferenceError_InvalidTensorData extends InferenceError {
+  const InferenceError_InvalidTensorData(this.field0) : super._();
+
+  final String field0;
+
+  /// Create a copy of InferenceError
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $InferenceError_InvalidTensorDataCopyWith<InferenceError_InvalidTensorData>
+      get copyWith => _$InferenceError_InvalidTensorDataCopyWithImpl<
+          InferenceError_InvalidTensorData>(this, _$identity);
 
   @override
-  final String field0;
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is InferenceError_InvalidTensorData &&
+            (identical(other.field0, field0) || other.field0 == field0));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, field0);
 
   @override
   String toString() {
     return 'InferenceError.invalidTensorData(field0: $field0)';
   }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$InferenceError_InvalidTensorDataImpl &&
-            (identical(other.field0, field0) || other.field0 == field0));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, field0);
-
-  /// Create a copy of InferenceError
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$InferenceError_InvalidTensorDataImplCopyWith<
-          _$InferenceError_InvalidTensorDataImpl>
-      get copyWith => __$$InferenceError_InvalidTensorDataImplCopyWithImpl<
-          _$InferenceError_InvalidTensorDataImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String field0) modelLoad,
-    required TResult Function(String field0) prediction,
-    required TResult Function(String field0) unsupportedFormat,
-    required TResult Function(Uint64List expected, Uint64List actual)
-        invalidShape,
-    required TResult Function(String field0) invalidTensorData,
-    required TResult Function(String field0) engine,
-    required TResult Function(String field0) io,
-    required TResult Function(String field0) serialization,
-    required TResult Function(String field0) configuration,
-    required TResult Function(String field0) resourceNotFound,
-    required TResult Function(String field0) memoryAllocation,
-    required TResult Function(String field0) threadPool,
-    required TResult Function(String field0) gpu,
-    required TResult Function(String field0) formatDetection,
-  }) {
-    return invalidTensorData(field0);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String field0)? modelLoad,
-    TResult? Function(String field0)? prediction,
-    TResult? Function(String field0)? unsupportedFormat,
-    TResult? Function(Uint64List expected, Uint64List actual)? invalidShape,
-    TResult? Function(String field0)? invalidTensorData,
-    TResult? Function(String field0)? engine,
-    TResult? Function(String field0)? io,
-    TResult? Function(String field0)? serialization,
-    TResult? Function(String field0)? configuration,
-    TResult? Function(String field0)? resourceNotFound,
-    TResult? Function(String field0)? memoryAllocation,
-    TResult? Function(String field0)? threadPool,
-    TResult? Function(String field0)? gpu,
-    TResult? Function(String field0)? formatDetection,
-  }) {
-    return invalidTensorData?.call(field0);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String field0)? modelLoad,
-    TResult Function(String field0)? prediction,
-    TResult Function(String field0)? unsupportedFormat,
-    TResult Function(Uint64List expected, Uint64List actual)? invalidShape,
-    TResult Function(String field0)? invalidTensorData,
-    TResult Function(String field0)? engine,
-    TResult Function(String field0)? io,
-    TResult Function(String field0)? serialization,
-    TResult Function(String field0)? configuration,
-    TResult Function(String field0)? resourceNotFound,
-    TResult Function(String field0)? memoryAllocation,
-    TResult Function(String field0)? threadPool,
-    TResult Function(String field0)? gpu,
-    TResult Function(String field0)? formatDetection,
-    required TResult orElse(),
-  }) {
-    if (invalidTensorData != null) {
-      return invalidTensorData(field0);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(InferenceError_ModelLoad value) modelLoad,
-    required TResult Function(InferenceError_Prediction value) prediction,
-    required TResult Function(InferenceError_UnsupportedFormat value)
-        unsupportedFormat,
-    required TResult Function(InferenceError_InvalidShape value) invalidShape,
-    required TResult Function(InferenceError_InvalidTensorData value)
-        invalidTensorData,
-    required TResult Function(InferenceError_Engine value) engine,
-    required TResult Function(InferenceError_Io value) io,
-    required TResult Function(InferenceError_Serialization value) serialization,
-    required TResult Function(InferenceError_Configuration value) configuration,
-    required TResult Function(InferenceError_ResourceNotFound value)
-        resourceNotFound,
-    required TResult Function(InferenceError_MemoryAllocation value)
-        memoryAllocation,
-    required TResult Function(InferenceError_ThreadPool value) threadPool,
-    required TResult Function(InferenceError_Gpu value) gpu,
-    required TResult Function(InferenceError_FormatDetection value)
-        formatDetection,
-  }) {
-    return invalidTensorData(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(InferenceError_ModelLoad value)? modelLoad,
-    TResult? Function(InferenceError_Prediction value)? prediction,
-    TResult? Function(InferenceError_UnsupportedFormat value)?
-        unsupportedFormat,
-    TResult? Function(InferenceError_InvalidShape value)? invalidShape,
-    TResult? Function(InferenceError_InvalidTensorData value)?
-        invalidTensorData,
-    TResult? Function(InferenceError_Engine value)? engine,
-    TResult? Function(InferenceError_Io value)? io,
-    TResult? Function(InferenceError_Serialization value)? serialization,
-    TResult? Function(InferenceError_Configuration value)? configuration,
-    TResult? Function(InferenceError_ResourceNotFound value)? resourceNotFound,
-    TResult? Function(InferenceError_MemoryAllocation value)? memoryAllocation,
-    TResult? Function(InferenceError_ThreadPool value)? threadPool,
-    TResult? Function(InferenceError_Gpu value)? gpu,
-    TResult? Function(InferenceError_FormatDetection value)? formatDetection,
-  }) {
-    return invalidTensorData?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(InferenceError_ModelLoad value)? modelLoad,
-    TResult Function(InferenceError_Prediction value)? prediction,
-    TResult Function(InferenceError_UnsupportedFormat value)? unsupportedFormat,
-    TResult Function(InferenceError_InvalidShape value)? invalidShape,
-    TResult Function(InferenceError_InvalidTensorData value)? invalidTensorData,
-    TResult Function(InferenceError_Engine value)? engine,
-    TResult Function(InferenceError_Io value)? io,
-    TResult Function(InferenceError_Serialization value)? serialization,
-    TResult Function(InferenceError_Configuration value)? configuration,
-    TResult Function(InferenceError_ResourceNotFound value)? resourceNotFound,
-    TResult Function(InferenceError_MemoryAllocation value)? memoryAllocation,
-    TResult Function(InferenceError_ThreadPool value)? threadPool,
-    TResult Function(InferenceError_Gpu value)? gpu,
-    TResult Function(InferenceError_FormatDetection value)? formatDetection,
-    required TResult orElse(),
-  }) {
-    if (invalidTensorData != null) {
-      return invalidTensorData(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class InferenceError_InvalidTensorData extends InferenceError {
-  const factory InferenceError_InvalidTensorData(final String field0) =
-      _$InferenceError_InvalidTensorDataImpl;
-  const InferenceError_InvalidTensorData._() : super._();
-
-  String get field0;
-
-  /// Create a copy of InferenceError
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$InferenceError_InvalidTensorDataImplCopyWith<
-          _$InferenceError_InvalidTensorDataImpl>
-      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$InferenceError_EngineImplCopyWith<$Res> {
-  factory _$$InferenceError_EngineImplCopyWith(
-          _$InferenceError_EngineImpl value,
-          $Res Function(_$InferenceError_EngineImpl) then) =
-      __$$InferenceError_EngineImplCopyWithImpl<$Res>;
+abstract mixin class $InferenceError_InvalidTensorDataCopyWith<$Res>
+    implements $InferenceErrorCopyWith<$Res> {
+  factory $InferenceError_InvalidTensorDataCopyWith(
+          InferenceError_InvalidTensorData value,
+          $Res Function(InferenceError_InvalidTensorData) _then) =
+      _$InferenceError_InvalidTensorDataCopyWithImpl;
   @useResult
   $Res call({String field0});
 }
 
 /// @nodoc
-class __$$InferenceError_EngineImplCopyWithImpl<$Res>
-    extends _$InferenceErrorCopyWithImpl<$Res, _$InferenceError_EngineImpl>
-    implements _$$InferenceError_EngineImplCopyWith<$Res> {
-  __$$InferenceError_EngineImplCopyWithImpl(_$InferenceError_EngineImpl _value,
-      $Res Function(_$InferenceError_EngineImpl) _then)
-      : super(_value, _then);
+class _$InferenceError_InvalidTensorDataCopyWithImpl<$Res>
+    implements $InferenceError_InvalidTensorDataCopyWith<$Res> {
+  _$InferenceError_InvalidTensorDataCopyWithImpl(this._self, this._then);
+
+  final InferenceError_InvalidTensorData _self;
+  final $Res Function(InferenceError_InvalidTensorData) _then;
 
   /// Create a copy of InferenceError
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? field0 = null,
   }) {
-    return _then(_$InferenceError_EngineImpl(
+    return _then(InferenceError_InvalidTensorData(
       null == field0
-          ? _value.field0
+          ? _self.field0
           : field0 // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -1342,221 +771,63 @@ class __$$InferenceError_EngineImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$InferenceError_EngineImpl extends InferenceError_Engine {
-  const _$InferenceError_EngineImpl(this.field0) : super._();
+class InferenceError_Engine extends InferenceError {
+  const InferenceError_Engine(this.field0) : super._();
+
+  final String field0;
+
+  /// Create a copy of InferenceError
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $InferenceError_EngineCopyWith<InferenceError_Engine> get copyWith =>
+      _$InferenceError_EngineCopyWithImpl<InferenceError_Engine>(
+          this, _$identity);
 
   @override
-  final String field0;
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is InferenceError_Engine &&
+            (identical(other.field0, field0) || other.field0 == field0));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, field0);
 
   @override
   String toString() {
     return 'InferenceError.engine(field0: $field0)';
   }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$InferenceError_EngineImpl &&
-            (identical(other.field0, field0) || other.field0 == field0));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, field0);
-
-  /// Create a copy of InferenceError
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$InferenceError_EngineImplCopyWith<_$InferenceError_EngineImpl>
-      get copyWith => __$$InferenceError_EngineImplCopyWithImpl<
-          _$InferenceError_EngineImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String field0) modelLoad,
-    required TResult Function(String field0) prediction,
-    required TResult Function(String field0) unsupportedFormat,
-    required TResult Function(Uint64List expected, Uint64List actual)
-        invalidShape,
-    required TResult Function(String field0) invalidTensorData,
-    required TResult Function(String field0) engine,
-    required TResult Function(String field0) io,
-    required TResult Function(String field0) serialization,
-    required TResult Function(String field0) configuration,
-    required TResult Function(String field0) resourceNotFound,
-    required TResult Function(String field0) memoryAllocation,
-    required TResult Function(String field0) threadPool,
-    required TResult Function(String field0) gpu,
-    required TResult Function(String field0) formatDetection,
-  }) {
-    return engine(field0);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String field0)? modelLoad,
-    TResult? Function(String field0)? prediction,
-    TResult? Function(String field0)? unsupportedFormat,
-    TResult? Function(Uint64List expected, Uint64List actual)? invalidShape,
-    TResult? Function(String field0)? invalidTensorData,
-    TResult? Function(String field0)? engine,
-    TResult? Function(String field0)? io,
-    TResult? Function(String field0)? serialization,
-    TResult? Function(String field0)? configuration,
-    TResult? Function(String field0)? resourceNotFound,
-    TResult? Function(String field0)? memoryAllocation,
-    TResult? Function(String field0)? threadPool,
-    TResult? Function(String field0)? gpu,
-    TResult? Function(String field0)? formatDetection,
-  }) {
-    return engine?.call(field0);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String field0)? modelLoad,
-    TResult Function(String field0)? prediction,
-    TResult Function(String field0)? unsupportedFormat,
-    TResult Function(Uint64List expected, Uint64List actual)? invalidShape,
-    TResult Function(String field0)? invalidTensorData,
-    TResult Function(String field0)? engine,
-    TResult Function(String field0)? io,
-    TResult Function(String field0)? serialization,
-    TResult Function(String field0)? configuration,
-    TResult Function(String field0)? resourceNotFound,
-    TResult Function(String field0)? memoryAllocation,
-    TResult Function(String field0)? threadPool,
-    TResult Function(String field0)? gpu,
-    TResult Function(String field0)? formatDetection,
-    required TResult orElse(),
-  }) {
-    if (engine != null) {
-      return engine(field0);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(InferenceError_ModelLoad value) modelLoad,
-    required TResult Function(InferenceError_Prediction value) prediction,
-    required TResult Function(InferenceError_UnsupportedFormat value)
-        unsupportedFormat,
-    required TResult Function(InferenceError_InvalidShape value) invalidShape,
-    required TResult Function(InferenceError_InvalidTensorData value)
-        invalidTensorData,
-    required TResult Function(InferenceError_Engine value) engine,
-    required TResult Function(InferenceError_Io value) io,
-    required TResult Function(InferenceError_Serialization value) serialization,
-    required TResult Function(InferenceError_Configuration value) configuration,
-    required TResult Function(InferenceError_ResourceNotFound value)
-        resourceNotFound,
-    required TResult Function(InferenceError_MemoryAllocation value)
-        memoryAllocation,
-    required TResult Function(InferenceError_ThreadPool value) threadPool,
-    required TResult Function(InferenceError_Gpu value) gpu,
-    required TResult Function(InferenceError_FormatDetection value)
-        formatDetection,
-  }) {
-    return engine(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(InferenceError_ModelLoad value)? modelLoad,
-    TResult? Function(InferenceError_Prediction value)? prediction,
-    TResult? Function(InferenceError_UnsupportedFormat value)?
-        unsupportedFormat,
-    TResult? Function(InferenceError_InvalidShape value)? invalidShape,
-    TResult? Function(InferenceError_InvalidTensorData value)?
-        invalidTensorData,
-    TResult? Function(InferenceError_Engine value)? engine,
-    TResult? Function(InferenceError_Io value)? io,
-    TResult? Function(InferenceError_Serialization value)? serialization,
-    TResult? Function(InferenceError_Configuration value)? configuration,
-    TResult? Function(InferenceError_ResourceNotFound value)? resourceNotFound,
-    TResult? Function(InferenceError_MemoryAllocation value)? memoryAllocation,
-    TResult? Function(InferenceError_ThreadPool value)? threadPool,
-    TResult? Function(InferenceError_Gpu value)? gpu,
-    TResult? Function(InferenceError_FormatDetection value)? formatDetection,
-  }) {
-    return engine?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(InferenceError_ModelLoad value)? modelLoad,
-    TResult Function(InferenceError_Prediction value)? prediction,
-    TResult Function(InferenceError_UnsupportedFormat value)? unsupportedFormat,
-    TResult Function(InferenceError_InvalidShape value)? invalidShape,
-    TResult Function(InferenceError_InvalidTensorData value)? invalidTensorData,
-    TResult Function(InferenceError_Engine value)? engine,
-    TResult Function(InferenceError_Io value)? io,
-    TResult Function(InferenceError_Serialization value)? serialization,
-    TResult Function(InferenceError_Configuration value)? configuration,
-    TResult Function(InferenceError_ResourceNotFound value)? resourceNotFound,
-    TResult Function(InferenceError_MemoryAllocation value)? memoryAllocation,
-    TResult Function(InferenceError_ThreadPool value)? threadPool,
-    TResult Function(InferenceError_Gpu value)? gpu,
-    TResult Function(InferenceError_FormatDetection value)? formatDetection,
-    required TResult orElse(),
-  }) {
-    if (engine != null) {
-      return engine(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class InferenceError_Engine extends InferenceError {
-  const factory InferenceError_Engine(final String field0) =
-      _$InferenceError_EngineImpl;
-  const InferenceError_Engine._() : super._();
-
-  String get field0;
-
-  /// Create a copy of InferenceError
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$InferenceError_EngineImplCopyWith<_$InferenceError_EngineImpl>
-      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$InferenceError_IoImplCopyWith<$Res> {
-  factory _$$InferenceError_IoImplCopyWith(_$InferenceError_IoImpl value,
-          $Res Function(_$InferenceError_IoImpl) then) =
-      __$$InferenceError_IoImplCopyWithImpl<$Res>;
+abstract mixin class $InferenceError_EngineCopyWith<$Res>
+    implements $InferenceErrorCopyWith<$Res> {
+  factory $InferenceError_EngineCopyWith(InferenceError_Engine value,
+          $Res Function(InferenceError_Engine) _then) =
+      _$InferenceError_EngineCopyWithImpl;
   @useResult
   $Res call({String field0});
 }
 
 /// @nodoc
-class __$$InferenceError_IoImplCopyWithImpl<$Res>
-    extends _$InferenceErrorCopyWithImpl<$Res, _$InferenceError_IoImpl>
-    implements _$$InferenceError_IoImplCopyWith<$Res> {
-  __$$InferenceError_IoImplCopyWithImpl(_$InferenceError_IoImpl _value,
-      $Res Function(_$InferenceError_IoImpl) _then)
-      : super(_value, _then);
+class _$InferenceError_EngineCopyWithImpl<$Res>
+    implements $InferenceError_EngineCopyWith<$Res> {
+  _$InferenceError_EngineCopyWithImpl(this._self, this._then);
+
+  final InferenceError_Engine _self;
+  final $Res Function(InferenceError_Engine) _then;
 
   /// Create a copy of InferenceError
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? field0 = null,
   }) {
-    return _then(_$InferenceError_IoImpl(
+    return _then(InferenceError_Engine(
       null == field0
-          ? _value.field0
+          ? _self.field0
           : field0 // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -1565,224 +836,62 @@ class __$$InferenceError_IoImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$InferenceError_IoImpl extends InferenceError_Io {
-  const _$InferenceError_IoImpl(this.field0) : super._();
+class InferenceError_Io extends InferenceError {
+  const InferenceError_Io(this.field0) : super._();
+
+  final String field0;
+
+  /// Create a copy of InferenceError
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $InferenceError_IoCopyWith<InferenceError_Io> get copyWith =>
+      _$InferenceError_IoCopyWithImpl<InferenceError_Io>(this, _$identity);
 
   @override
-  final String field0;
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is InferenceError_Io &&
+            (identical(other.field0, field0) || other.field0 == field0));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, field0);
 
   @override
   String toString() {
     return 'InferenceError.io(field0: $field0)';
   }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$InferenceError_IoImpl &&
-            (identical(other.field0, field0) || other.field0 == field0));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, field0);
-
-  /// Create a copy of InferenceError
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$InferenceError_IoImplCopyWith<_$InferenceError_IoImpl> get copyWith =>
-      __$$InferenceError_IoImplCopyWithImpl<_$InferenceError_IoImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String field0) modelLoad,
-    required TResult Function(String field0) prediction,
-    required TResult Function(String field0) unsupportedFormat,
-    required TResult Function(Uint64List expected, Uint64List actual)
-        invalidShape,
-    required TResult Function(String field0) invalidTensorData,
-    required TResult Function(String field0) engine,
-    required TResult Function(String field0) io,
-    required TResult Function(String field0) serialization,
-    required TResult Function(String field0) configuration,
-    required TResult Function(String field0) resourceNotFound,
-    required TResult Function(String field0) memoryAllocation,
-    required TResult Function(String field0) threadPool,
-    required TResult Function(String field0) gpu,
-    required TResult Function(String field0) formatDetection,
-  }) {
-    return io(field0);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String field0)? modelLoad,
-    TResult? Function(String field0)? prediction,
-    TResult? Function(String field0)? unsupportedFormat,
-    TResult? Function(Uint64List expected, Uint64List actual)? invalidShape,
-    TResult? Function(String field0)? invalidTensorData,
-    TResult? Function(String field0)? engine,
-    TResult? Function(String field0)? io,
-    TResult? Function(String field0)? serialization,
-    TResult? Function(String field0)? configuration,
-    TResult? Function(String field0)? resourceNotFound,
-    TResult? Function(String field0)? memoryAllocation,
-    TResult? Function(String field0)? threadPool,
-    TResult? Function(String field0)? gpu,
-    TResult? Function(String field0)? formatDetection,
-  }) {
-    return io?.call(field0);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String field0)? modelLoad,
-    TResult Function(String field0)? prediction,
-    TResult Function(String field0)? unsupportedFormat,
-    TResult Function(Uint64List expected, Uint64List actual)? invalidShape,
-    TResult Function(String field0)? invalidTensorData,
-    TResult Function(String field0)? engine,
-    TResult Function(String field0)? io,
-    TResult Function(String field0)? serialization,
-    TResult Function(String field0)? configuration,
-    TResult Function(String field0)? resourceNotFound,
-    TResult Function(String field0)? memoryAllocation,
-    TResult Function(String field0)? threadPool,
-    TResult Function(String field0)? gpu,
-    TResult Function(String field0)? formatDetection,
-    required TResult orElse(),
-  }) {
-    if (io != null) {
-      return io(field0);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(InferenceError_ModelLoad value) modelLoad,
-    required TResult Function(InferenceError_Prediction value) prediction,
-    required TResult Function(InferenceError_UnsupportedFormat value)
-        unsupportedFormat,
-    required TResult Function(InferenceError_InvalidShape value) invalidShape,
-    required TResult Function(InferenceError_InvalidTensorData value)
-        invalidTensorData,
-    required TResult Function(InferenceError_Engine value) engine,
-    required TResult Function(InferenceError_Io value) io,
-    required TResult Function(InferenceError_Serialization value) serialization,
-    required TResult Function(InferenceError_Configuration value) configuration,
-    required TResult Function(InferenceError_ResourceNotFound value)
-        resourceNotFound,
-    required TResult Function(InferenceError_MemoryAllocation value)
-        memoryAllocation,
-    required TResult Function(InferenceError_ThreadPool value) threadPool,
-    required TResult Function(InferenceError_Gpu value) gpu,
-    required TResult Function(InferenceError_FormatDetection value)
-        formatDetection,
-  }) {
-    return io(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(InferenceError_ModelLoad value)? modelLoad,
-    TResult? Function(InferenceError_Prediction value)? prediction,
-    TResult? Function(InferenceError_UnsupportedFormat value)?
-        unsupportedFormat,
-    TResult? Function(InferenceError_InvalidShape value)? invalidShape,
-    TResult? Function(InferenceError_InvalidTensorData value)?
-        invalidTensorData,
-    TResult? Function(InferenceError_Engine value)? engine,
-    TResult? Function(InferenceError_Io value)? io,
-    TResult? Function(InferenceError_Serialization value)? serialization,
-    TResult? Function(InferenceError_Configuration value)? configuration,
-    TResult? Function(InferenceError_ResourceNotFound value)? resourceNotFound,
-    TResult? Function(InferenceError_MemoryAllocation value)? memoryAllocation,
-    TResult? Function(InferenceError_ThreadPool value)? threadPool,
-    TResult? Function(InferenceError_Gpu value)? gpu,
-    TResult? Function(InferenceError_FormatDetection value)? formatDetection,
-  }) {
-    return io?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(InferenceError_ModelLoad value)? modelLoad,
-    TResult Function(InferenceError_Prediction value)? prediction,
-    TResult Function(InferenceError_UnsupportedFormat value)? unsupportedFormat,
-    TResult Function(InferenceError_InvalidShape value)? invalidShape,
-    TResult Function(InferenceError_InvalidTensorData value)? invalidTensorData,
-    TResult Function(InferenceError_Engine value)? engine,
-    TResult Function(InferenceError_Io value)? io,
-    TResult Function(InferenceError_Serialization value)? serialization,
-    TResult Function(InferenceError_Configuration value)? configuration,
-    TResult Function(InferenceError_ResourceNotFound value)? resourceNotFound,
-    TResult Function(InferenceError_MemoryAllocation value)? memoryAllocation,
-    TResult Function(InferenceError_ThreadPool value)? threadPool,
-    TResult Function(InferenceError_Gpu value)? gpu,
-    TResult Function(InferenceError_FormatDetection value)? formatDetection,
-    required TResult orElse(),
-  }) {
-    if (io != null) {
-      return io(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class InferenceError_Io extends InferenceError {
-  const factory InferenceError_Io(final String field0) =
-      _$InferenceError_IoImpl;
-  const InferenceError_Io._() : super._();
-
-  String get field0;
-
-  /// Create a copy of InferenceError
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$InferenceError_IoImplCopyWith<_$InferenceError_IoImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$InferenceError_SerializationImplCopyWith<$Res> {
-  factory _$$InferenceError_SerializationImplCopyWith(
-          _$InferenceError_SerializationImpl value,
-          $Res Function(_$InferenceError_SerializationImpl) then) =
-      __$$InferenceError_SerializationImplCopyWithImpl<$Res>;
+abstract mixin class $InferenceError_IoCopyWith<$Res>
+    implements $InferenceErrorCopyWith<$Res> {
+  factory $InferenceError_IoCopyWith(
+          InferenceError_Io value, $Res Function(InferenceError_Io) _then) =
+      _$InferenceError_IoCopyWithImpl;
   @useResult
   $Res call({String field0});
 }
 
 /// @nodoc
-class __$$InferenceError_SerializationImplCopyWithImpl<$Res>
-    extends _$InferenceErrorCopyWithImpl<$Res,
-        _$InferenceError_SerializationImpl>
-    implements _$$InferenceError_SerializationImplCopyWith<$Res> {
-  __$$InferenceError_SerializationImplCopyWithImpl(
-      _$InferenceError_SerializationImpl _value,
-      $Res Function(_$InferenceError_SerializationImpl) _then)
-      : super(_value, _then);
+class _$InferenceError_IoCopyWithImpl<$Res>
+    implements $InferenceError_IoCopyWith<$Res> {
+  _$InferenceError_IoCopyWithImpl(this._self, this._then);
+
+  final InferenceError_Io _self;
+  final $Res Function(InferenceError_Io) _then;
 
   /// Create a copy of InferenceError
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? field0 = null,
   }) {
-    return _then(_$InferenceError_SerializationImpl(
+    return _then(InferenceError_Io(
       null == field0
-          ? _value.field0
+          ? _self.field0
           : field0 // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -1791,226 +900,64 @@ class __$$InferenceError_SerializationImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$InferenceError_SerializationImpl extends InferenceError_Serialization {
-  const _$InferenceError_SerializationImpl(this.field0) : super._();
+class InferenceError_Serialization extends InferenceError {
+  const InferenceError_Serialization(this.field0) : super._();
+
+  final String field0;
+
+  /// Create a copy of InferenceError
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $InferenceError_SerializationCopyWith<InferenceError_Serialization>
+      get copyWith => _$InferenceError_SerializationCopyWithImpl<
+          InferenceError_Serialization>(this, _$identity);
 
   @override
-  final String field0;
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is InferenceError_Serialization &&
+            (identical(other.field0, field0) || other.field0 == field0));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, field0);
 
   @override
   String toString() {
     return 'InferenceError.serialization(field0: $field0)';
   }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$InferenceError_SerializationImpl &&
-            (identical(other.field0, field0) || other.field0 == field0));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, field0);
-
-  /// Create a copy of InferenceError
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$InferenceError_SerializationImplCopyWith<
-          _$InferenceError_SerializationImpl>
-      get copyWith => __$$InferenceError_SerializationImplCopyWithImpl<
-          _$InferenceError_SerializationImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String field0) modelLoad,
-    required TResult Function(String field0) prediction,
-    required TResult Function(String field0) unsupportedFormat,
-    required TResult Function(Uint64List expected, Uint64List actual)
-        invalidShape,
-    required TResult Function(String field0) invalidTensorData,
-    required TResult Function(String field0) engine,
-    required TResult Function(String field0) io,
-    required TResult Function(String field0) serialization,
-    required TResult Function(String field0) configuration,
-    required TResult Function(String field0) resourceNotFound,
-    required TResult Function(String field0) memoryAllocation,
-    required TResult Function(String field0) threadPool,
-    required TResult Function(String field0) gpu,
-    required TResult Function(String field0) formatDetection,
-  }) {
-    return serialization(field0);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String field0)? modelLoad,
-    TResult? Function(String field0)? prediction,
-    TResult? Function(String field0)? unsupportedFormat,
-    TResult? Function(Uint64List expected, Uint64List actual)? invalidShape,
-    TResult? Function(String field0)? invalidTensorData,
-    TResult? Function(String field0)? engine,
-    TResult? Function(String field0)? io,
-    TResult? Function(String field0)? serialization,
-    TResult? Function(String field0)? configuration,
-    TResult? Function(String field0)? resourceNotFound,
-    TResult? Function(String field0)? memoryAllocation,
-    TResult? Function(String field0)? threadPool,
-    TResult? Function(String field0)? gpu,
-    TResult? Function(String field0)? formatDetection,
-  }) {
-    return serialization?.call(field0);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String field0)? modelLoad,
-    TResult Function(String field0)? prediction,
-    TResult Function(String field0)? unsupportedFormat,
-    TResult Function(Uint64List expected, Uint64List actual)? invalidShape,
-    TResult Function(String field0)? invalidTensorData,
-    TResult Function(String field0)? engine,
-    TResult Function(String field0)? io,
-    TResult Function(String field0)? serialization,
-    TResult Function(String field0)? configuration,
-    TResult Function(String field0)? resourceNotFound,
-    TResult Function(String field0)? memoryAllocation,
-    TResult Function(String field0)? threadPool,
-    TResult Function(String field0)? gpu,
-    TResult Function(String field0)? formatDetection,
-    required TResult orElse(),
-  }) {
-    if (serialization != null) {
-      return serialization(field0);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(InferenceError_ModelLoad value) modelLoad,
-    required TResult Function(InferenceError_Prediction value) prediction,
-    required TResult Function(InferenceError_UnsupportedFormat value)
-        unsupportedFormat,
-    required TResult Function(InferenceError_InvalidShape value) invalidShape,
-    required TResult Function(InferenceError_InvalidTensorData value)
-        invalidTensorData,
-    required TResult Function(InferenceError_Engine value) engine,
-    required TResult Function(InferenceError_Io value) io,
-    required TResult Function(InferenceError_Serialization value) serialization,
-    required TResult Function(InferenceError_Configuration value) configuration,
-    required TResult Function(InferenceError_ResourceNotFound value)
-        resourceNotFound,
-    required TResult Function(InferenceError_MemoryAllocation value)
-        memoryAllocation,
-    required TResult Function(InferenceError_ThreadPool value) threadPool,
-    required TResult Function(InferenceError_Gpu value) gpu,
-    required TResult Function(InferenceError_FormatDetection value)
-        formatDetection,
-  }) {
-    return serialization(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(InferenceError_ModelLoad value)? modelLoad,
-    TResult? Function(InferenceError_Prediction value)? prediction,
-    TResult? Function(InferenceError_UnsupportedFormat value)?
-        unsupportedFormat,
-    TResult? Function(InferenceError_InvalidShape value)? invalidShape,
-    TResult? Function(InferenceError_InvalidTensorData value)?
-        invalidTensorData,
-    TResult? Function(InferenceError_Engine value)? engine,
-    TResult? Function(InferenceError_Io value)? io,
-    TResult? Function(InferenceError_Serialization value)? serialization,
-    TResult? Function(InferenceError_Configuration value)? configuration,
-    TResult? Function(InferenceError_ResourceNotFound value)? resourceNotFound,
-    TResult? Function(InferenceError_MemoryAllocation value)? memoryAllocation,
-    TResult? Function(InferenceError_ThreadPool value)? threadPool,
-    TResult? Function(InferenceError_Gpu value)? gpu,
-    TResult? Function(InferenceError_FormatDetection value)? formatDetection,
-  }) {
-    return serialization?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(InferenceError_ModelLoad value)? modelLoad,
-    TResult Function(InferenceError_Prediction value)? prediction,
-    TResult Function(InferenceError_UnsupportedFormat value)? unsupportedFormat,
-    TResult Function(InferenceError_InvalidShape value)? invalidShape,
-    TResult Function(InferenceError_InvalidTensorData value)? invalidTensorData,
-    TResult Function(InferenceError_Engine value)? engine,
-    TResult Function(InferenceError_Io value)? io,
-    TResult Function(InferenceError_Serialization value)? serialization,
-    TResult Function(InferenceError_Configuration value)? configuration,
-    TResult Function(InferenceError_ResourceNotFound value)? resourceNotFound,
-    TResult Function(InferenceError_MemoryAllocation value)? memoryAllocation,
-    TResult Function(InferenceError_ThreadPool value)? threadPool,
-    TResult Function(InferenceError_Gpu value)? gpu,
-    TResult Function(InferenceError_FormatDetection value)? formatDetection,
-    required TResult orElse(),
-  }) {
-    if (serialization != null) {
-      return serialization(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class InferenceError_Serialization extends InferenceError {
-  const factory InferenceError_Serialization(final String field0) =
-      _$InferenceError_SerializationImpl;
-  const InferenceError_Serialization._() : super._();
-
-  String get field0;
-
-  /// Create a copy of InferenceError
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$InferenceError_SerializationImplCopyWith<
-          _$InferenceError_SerializationImpl>
-      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$InferenceError_ConfigurationImplCopyWith<$Res> {
-  factory _$$InferenceError_ConfigurationImplCopyWith(
-          _$InferenceError_ConfigurationImpl value,
-          $Res Function(_$InferenceError_ConfigurationImpl) then) =
-      __$$InferenceError_ConfigurationImplCopyWithImpl<$Res>;
+abstract mixin class $InferenceError_SerializationCopyWith<$Res>
+    implements $InferenceErrorCopyWith<$Res> {
+  factory $InferenceError_SerializationCopyWith(
+          InferenceError_Serialization value,
+          $Res Function(InferenceError_Serialization) _then) =
+      _$InferenceError_SerializationCopyWithImpl;
   @useResult
   $Res call({String field0});
 }
 
 /// @nodoc
-class __$$InferenceError_ConfigurationImplCopyWithImpl<$Res>
-    extends _$InferenceErrorCopyWithImpl<$Res,
-        _$InferenceError_ConfigurationImpl>
-    implements _$$InferenceError_ConfigurationImplCopyWith<$Res> {
-  __$$InferenceError_ConfigurationImplCopyWithImpl(
-      _$InferenceError_ConfigurationImpl _value,
-      $Res Function(_$InferenceError_ConfigurationImpl) _then)
-      : super(_value, _then);
+class _$InferenceError_SerializationCopyWithImpl<$Res>
+    implements $InferenceError_SerializationCopyWith<$Res> {
+  _$InferenceError_SerializationCopyWithImpl(this._self, this._then);
+
+  final InferenceError_Serialization _self;
+  final $Res Function(InferenceError_Serialization) _then;
 
   /// Create a copy of InferenceError
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? field0 = null,
   }) {
-    return _then(_$InferenceError_ConfigurationImpl(
+    return _then(InferenceError_Serialization(
       null == field0
-          ? _value.field0
+          ? _self.field0
           : field0 // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -2019,226 +966,64 @@ class __$$InferenceError_ConfigurationImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$InferenceError_ConfigurationImpl extends InferenceError_Configuration {
-  const _$InferenceError_ConfigurationImpl(this.field0) : super._();
+class InferenceError_Configuration extends InferenceError {
+  const InferenceError_Configuration(this.field0) : super._();
+
+  final String field0;
+
+  /// Create a copy of InferenceError
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $InferenceError_ConfigurationCopyWith<InferenceError_Configuration>
+      get copyWith => _$InferenceError_ConfigurationCopyWithImpl<
+          InferenceError_Configuration>(this, _$identity);
 
   @override
-  final String field0;
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is InferenceError_Configuration &&
+            (identical(other.field0, field0) || other.field0 == field0));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, field0);
 
   @override
   String toString() {
     return 'InferenceError.configuration(field0: $field0)';
   }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$InferenceError_ConfigurationImpl &&
-            (identical(other.field0, field0) || other.field0 == field0));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, field0);
-
-  /// Create a copy of InferenceError
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$InferenceError_ConfigurationImplCopyWith<
-          _$InferenceError_ConfigurationImpl>
-      get copyWith => __$$InferenceError_ConfigurationImplCopyWithImpl<
-          _$InferenceError_ConfigurationImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String field0) modelLoad,
-    required TResult Function(String field0) prediction,
-    required TResult Function(String field0) unsupportedFormat,
-    required TResult Function(Uint64List expected, Uint64List actual)
-        invalidShape,
-    required TResult Function(String field0) invalidTensorData,
-    required TResult Function(String field0) engine,
-    required TResult Function(String field0) io,
-    required TResult Function(String field0) serialization,
-    required TResult Function(String field0) configuration,
-    required TResult Function(String field0) resourceNotFound,
-    required TResult Function(String field0) memoryAllocation,
-    required TResult Function(String field0) threadPool,
-    required TResult Function(String field0) gpu,
-    required TResult Function(String field0) formatDetection,
-  }) {
-    return configuration(field0);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String field0)? modelLoad,
-    TResult? Function(String field0)? prediction,
-    TResult? Function(String field0)? unsupportedFormat,
-    TResult? Function(Uint64List expected, Uint64List actual)? invalidShape,
-    TResult? Function(String field0)? invalidTensorData,
-    TResult? Function(String field0)? engine,
-    TResult? Function(String field0)? io,
-    TResult? Function(String field0)? serialization,
-    TResult? Function(String field0)? configuration,
-    TResult? Function(String field0)? resourceNotFound,
-    TResult? Function(String field0)? memoryAllocation,
-    TResult? Function(String field0)? threadPool,
-    TResult? Function(String field0)? gpu,
-    TResult? Function(String field0)? formatDetection,
-  }) {
-    return configuration?.call(field0);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String field0)? modelLoad,
-    TResult Function(String field0)? prediction,
-    TResult Function(String field0)? unsupportedFormat,
-    TResult Function(Uint64List expected, Uint64List actual)? invalidShape,
-    TResult Function(String field0)? invalidTensorData,
-    TResult Function(String field0)? engine,
-    TResult Function(String field0)? io,
-    TResult Function(String field0)? serialization,
-    TResult Function(String field0)? configuration,
-    TResult Function(String field0)? resourceNotFound,
-    TResult Function(String field0)? memoryAllocation,
-    TResult Function(String field0)? threadPool,
-    TResult Function(String field0)? gpu,
-    TResult Function(String field0)? formatDetection,
-    required TResult orElse(),
-  }) {
-    if (configuration != null) {
-      return configuration(field0);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(InferenceError_ModelLoad value) modelLoad,
-    required TResult Function(InferenceError_Prediction value) prediction,
-    required TResult Function(InferenceError_UnsupportedFormat value)
-        unsupportedFormat,
-    required TResult Function(InferenceError_InvalidShape value) invalidShape,
-    required TResult Function(InferenceError_InvalidTensorData value)
-        invalidTensorData,
-    required TResult Function(InferenceError_Engine value) engine,
-    required TResult Function(InferenceError_Io value) io,
-    required TResult Function(InferenceError_Serialization value) serialization,
-    required TResult Function(InferenceError_Configuration value) configuration,
-    required TResult Function(InferenceError_ResourceNotFound value)
-        resourceNotFound,
-    required TResult Function(InferenceError_MemoryAllocation value)
-        memoryAllocation,
-    required TResult Function(InferenceError_ThreadPool value) threadPool,
-    required TResult Function(InferenceError_Gpu value) gpu,
-    required TResult Function(InferenceError_FormatDetection value)
-        formatDetection,
-  }) {
-    return configuration(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(InferenceError_ModelLoad value)? modelLoad,
-    TResult? Function(InferenceError_Prediction value)? prediction,
-    TResult? Function(InferenceError_UnsupportedFormat value)?
-        unsupportedFormat,
-    TResult? Function(InferenceError_InvalidShape value)? invalidShape,
-    TResult? Function(InferenceError_InvalidTensorData value)?
-        invalidTensorData,
-    TResult? Function(InferenceError_Engine value)? engine,
-    TResult? Function(InferenceError_Io value)? io,
-    TResult? Function(InferenceError_Serialization value)? serialization,
-    TResult? Function(InferenceError_Configuration value)? configuration,
-    TResult? Function(InferenceError_ResourceNotFound value)? resourceNotFound,
-    TResult? Function(InferenceError_MemoryAllocation value)? memoryAllocation,
-    TResult? Function(InferenceError_ThreadPool value)? threadPool,
-    TResult? Function(InferenceError_Gpu value)? gpu,
-    TResult? Function(InferenceError_FormatDetection value)? formatDetection,
-  }) {
-    return configuration?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(InferenceError_ModelLoad value)? modelLoad,
-    TResult Function(InferenceError_Prediction value)? prediction,
-    TResult Function(InferenceError_UnsupportedFormat value)? unsupportedFormat,
-    TResult Function(InferenceError_InvalidShape value)? invalidShape,
-    TResult Function(InferenceError_InvalidTensorData value)? invalidTensorData,
-    TResult Function(InferenceError_Engine value)? engine,
-    TResult Function(InferenceError_Io value)? io,
-    TResult Function(InferenceError_Serialization value)? serialization,
-    TResult Function(InferenceError_Configuration value)? configuration,
-    TResult Function(InferenceError_ResourceNotFound value)? resourceNotFound,
-    TResult Function(InferenceError_MemoryAllocation value)? memoryAllocation,
-    TResult Function(InferenceError_ThreadPool value)? threadPool,
-    TResult Function(InferenceError_Gpu value)? gpu,
-    TResult Function(InferenceError_FormatDetection value)? formatDetection,
-    required TResult orElse(),
-  }) {
-    if (configuration != null) {
-      return configuration(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class InferenceError_Configuration extends InferenceError {
-  const factory InferenceError_Configuration(final String field0) =
-      _$InferenceError_ConfigurationImpl;
-  const InferenceError_Configuration._() : super._();
-
-  String get field0;
-
-  /// Create a copy of InferenceError
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$InferenceError_ConfigurationImplCopyWith<
-          _$InferenceError_ConfigurationImpl>
-      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$InferenceError_ResourceNotFoundImplCopyWith<$Res> {
-  factory _$$InferenceError_ResourceNotFoundImplCopyWith(
-          _$InferenceError_ResourceNotFoundImpl value,
-          $Res Function(_$InferenceError_ResourceNotFoundImpl) then) =
-      __$$InferenceError_ResourceNotFoundImplCopyWithImpl<$Res>;
+abstract mixin class $InferenceError_ConfigurationCopyWith<$Res>
+    implements $InferenceErrorCopyWith<$Res> {
+  factory $InferenceError_ConfigurationCopyWith(
+          InferenceError_Configuration value,
+          $Res Function(InferenceError_Configuration) _then) =
+      _$InferenceError_ConfigurationCopyWithImpl;
   @useResult
   $Res call({String field0});
 }
 
 /// @nodoc
-class __$$InferenceError_ResourceNotFoundImplCopyWithImpl<$Res>
-    extends _$InferenceErrorCopyWithImpl<$Res,
-        _$InferenceError_ResourceNotFoundImpl>
-    implements _$$InferenceError_ResourceNotFoundImplCopyWith<$Res> {
-  __$$InferenceError_ResourceNotFoundImplCopyWithImpl(
-      _$InferenceError_ResourceNotFoundImpl _value,
-      $Res Function(_$InferenceError_ResourceNotFoundImpl) _then)
-      : super(_value, _then);
+class _$InferenceError_ConfigurationCopyWithImpl<$Res>
+    implements $InferenceError_ConfigurationCopyWith<$Res> {
+  _$InferenceError_ConfigurationCopyWithImpl(this._self, this._then);
+
+  final InferenceError_Configuration _self;
+  final $Res Function(InferenceError_Configuration) _then;
 
   /// Create a copy of InferenceError
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? field0 = null,
   }) {
-    return _then(_$InferenceError_ResourceNotFoundImpl(
+    return _then(InferenceError_Configuration(
       null == field0
-          ? _value.field0
+          ? _self.field0
           : field0 // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -2247,227 +1032,64 @@ class __$$InferenceError_ResourceNotFoundImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$InferenceError_ResourceNotFoundImpl
-    extends InferenceError_ResourceNotFound {
-  const _$InferenceError_ResourceNotFoundImpl(this.field0) : super._();
+class InferenceError_ResourceNotFound extends InferenceError {
+  const InferenceError_ResourceNotFound(this.field0) : super._();
+
+  final String field0;
+
+  /// Create a copy of InferenceError
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $InferenceError_ResourceNotFoundCopyWith<InferenceError_ResourceNotFound>
+      get copyWith => _$InferenceError_ResourceNotFoundCopyWithImpl<
+          InferenceError_ResourceNotFound>(this, _$identity);
 
   @override
-  final String field0;
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is InferenceError_ResourceNotFound &&
+            (identical(other.field0, field0) || other.field0 == field0));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, field0);
 
   @override
   String toString() {
     return 'InferenceError.resourceNotFound(field0: $field0)';
   }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$InferenceError_ResourceNotFoundImpl &&
-            (identical(other.field0, field0) || other.field0 == field0));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, field0);
-
-  /// Create a copy of InferenceError
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$InferenceError_ResourceNotFoundImplCopyWith<
-          _$InferenceError_ResourceNotFoundImpl>
-      get copyWith => __$$InferenceError_ResourceNotFoundImplCopyWithImpl<
-          _$InferenceError_ResourceNotFoundImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String field0) modelLoad,
-    required TResult Function(String field0) prediction,
-    required TResult Function(String field0) unsupportedFormat,
-    required TResult Function(Uint64List expected, Uint64List actual)
-        invalidShape,
-    required TResult Function(String field0) invalidTensorData,
-    required TResult Function(String field0) engine,
-    required TResult Function(String field0) io,
-    required TResult Function(String field0) serialization,
-    required TResult Function(String field0) configuration,
-    required TResult Function(String field0) resourceNotFound,
-    required TResult Function(String field0) memoryAllocation,
-    required TResult Function(String field0) threadPool,
-    required TResult Function(String field0) gpu,
-    required TResult Function(String field0) formatDetection,
-  }) {
-    return resourceNotFound(field0);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String field0)? modelLoad,
-    TResult? Function(String field0)? prediction,
-    TResult? Function(String field0)? unsupportedFormat,
-    TResult? Function(Uint64List expected, Uint64List actual)? invalidShape,
-    TResult? Function(String field0)? invalidTensorData,
-    TResult? Function(String field0)? engine,
-    TResult? Function(String field0)? io,
-    TResult? Function(String field0)? serialization,
-    TResult? Function(String field0)? configuration,
-    TResult? Function(String field0)? resourceNotFound,
-    TResult? Function(String field0)? memoryAllocation,
-    TResult? Function(String field0)? threadPool,
-    TResult? Function(String field0)? gpu,
-    TResult? Function(String field0)? formatDetection,
-  }) {
-    return resourceNotFound?.call(field0);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String field0)? modelLoad,
-    TResult Function(String field0)? prediction,
-    TResult Function(String field0)? unsupportedFormat,
-    TResult Function(Uint64List expected, Uint64List actual)? invalidShape,
-    TResult Function(String field0)? invalidTensorData,
-    TResult Function(String field0)? engine,
-    TResult Function(String field0)? io,
-    TResult Function(String field0)? serialization,
-    TResult Function(String field0)? configuration,
-    TResult Function(String field0)? resourceNotFound,
-    TResult Function(String field0)? memoryAllocation,
-    TResult Function(String field0)? threadPool,
-    TResult Function(String field0)? gpu,
-    TResult Function(String field0)? formatDetection,
-    required TResult orElse(),
-  }) {
-    if (resourceNotFound != null) {
-      return resourceNotFound(field0);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(InferenceError_ModelLoad value) modelLoad,
-    required TResult Function(InferenceError_Prediction value) prediction,
-    required TResult Function(InferenceError_UnsupportedFormat value)
-        unsupportedFormat,
-    required TResult Function(InferenceError_InvalidShape value) invalidShape,
-    required TResult Function(InferenceError_InvalidTensorData value)
-        invalidTensorData,
-    required TResult Function(InferenceError_Engine value) engine,
-    required TResult Function(InferenceError_Io value) io,
-    required TResult Function(InferenceError_Serialization value) serialization,
-    required TResult Function(InferenceError_Configuration value) configuration,
-    required TResult Function(InferenceError_ResourceNotFound value)
-        resourceNotFound,
-    required TResult Function(InferenceError_MemoryAllocation value)
-        memoryAllocation,
-    required TResult Function(InferenceError_ThreadPool value) threadPool,
-    required TResult Function(InferenceError_Gpu value) gpu,
-    required TResult Function(InferenceError_FormatDetection value)
-        formatDetection,
-  }) {
-    return resourceNotFound(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(InferenceError_ModelLoad value)? modelLoad,
-    TResult? Function(InferenceError_Prediction value)? prediction,
-    TResult? Function(InferenceError_UnsupportedFormat value)?
-        unsupportedFormat,
-    TResult? Function(InferenceError_InvalidShape value)? invalidShape,
-    TResult? Function(InferenceError_InvalidTensorData value)?
-        invalidTensorData,
-    TResult? Function(InferenceError_Engine value)? engine,
-    TResult? Function(InferenceError_Io value)? io,
-    TResult? Function(InferenceError_Serialization value)? serialization,
-    TResult? Function(InferenceError_Configuration value)? configuration,
-    TResult? Function(InferenceError_ResourceNotFound value)? resourceNotFound,
-    TResult? Function(InferenceError_MemoryAllocation value)? memoryAllocation,
-    TResult? Function(InferenceError_ThreadPool value)? threadPool,
-    TResult? Function(InferenceError_Gpu value)? gpu,
-    TResult? Function(InferenceError_FormatDetection value)? formatDetection,
-  }) {
-    return resourceNotFound?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(InferenceError_ModelLoad value)? modelLoad,
-    TResult Function(InferenceError_Prediction value)? prediction,
-    TResult Function(InferenceError_UnsupportedFormat value)? unsupportedFormat,
-    TResult Function(InferenceError_InvalidShape value)? invalidShape,
-    TResult Function(InferenceError_InvalidTensorData value)? invalidTensorData,
-    TResult Function(InferenceError_Engine value)? engine,
-    TResult Function(InferenceError_Io value)? io,
-    TResult Function(InferenceError_Serialization value)? serialization,
-    TResult Function(InferenceError_Configuration value)? configuration,
-    TResult Function(InferenceError_ResourceNotFound value)? resourceNotFound,
-    TResult Function(InferenceError_MemoryAllocation value)? memoryAllocation,
-    TResult Function(InferenceError_ThreadPool value)? threadPool,
-    TResult Function(InferenceError_Gpu value)? gpu,
-    TResult Function(InferenceError_FormatDetection value)? formatDetection,
-    required TResult orElse(),
-  }) {
-    if (resourceNotFound != null) {
-      return resourceNotFound(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class InferenceError_ResourceNotFound extends InferenceError {
-  const factory InferenceError_ResourceNotFound(final String field0) =
-      _$InferenceError_ResourceNotFoundImpl;
-  const InferenceError_ResourceNotFound._() : super._();
-
-  String get field0;
-
-  /// Create a copy of InferenceError
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$InferenceError_ResourceNotFoundImplCopyWith<
-          _$InferenceError_ResourceNotFoundImpl>
-      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$InferenceError_MemoryAllocationImplCopyWith<$Res> {
-  factory _$$InferenceError_MemoryAllocationImplCopyWith(
-          _$InferenceError_MemoryAllocationImpl value,
-          $Res Function(_$InferenceError_MemoryAllocationImpl) then) =
-      __$$InferenceError_MemoryAllocationImplCopyWithImpl<$Res>;
+abstract mixin class $InferenceError_ResourceNotFoundCopyWith<$Res>
+    implements $InferenceErrorCopyWith<$Res> {
+  factory $InferenceError_ResourceNotFoundCopyWith(
+          InferenceError_ResourceNotFound value,
+          $Res Function(InferenceError_ResourceNotFound) _then) =
+      _$InferenceError_ResourceNotFoundCopyWithImpl;
   @useResult
   $Res call({String field0});
 }
 
 /// @nodoc
-class __$$InferenceError_MemoryAllocationImplCopyWithImpl<$Res>
-    extends _$InferenceErrorCopyWithImpl<$Res,
-        _$InferenceError_MemoryAllocationImpl>
-    implements _$$InferenceError_MemoryAllocationImplCopyWith<$Res> {
-  __$$InferenceError_MemoryAllocationImplCopyWithImpl(
-      _$InferenceError_MemoryAllocationImpl _value,
-      $Res Function(_$InferenceError_MemoryAllocationImpl) _then)
-      : super(_value, _then);
+class _$InferenceError_ResourceNotFoundCopyWithImpl<$Res>
+    implements $InferenceError_ResourceNotFoundCopyWith<$Res> {
+  _$InferenceError_ResourceNotFoundCopyWithImpl(this._self, this._then);
+
+  final InferenceError_ResourceNotFound _self;
+  final $Res Function(InferenceError_ResourceNotFound) _then;
 
   /// Create a copy of InferenceError
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? field0 = null,
   }) {
-    return _then(_$InferenceError_MemoryAllocationImpl(
+    return _then(InferenceError_ResourceNotFound(
       null == field0
-          ? _value.field0
+          ? _self.field0
           : field0 // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -2476,226 +1098,64 @@ class __$$InferenceError_MemoryAllocationImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$InferenceError_MemoryAllocationImpl
-    extends InferenceError_MemoryAllocation {
-  const _$InferenceError_MemoryAllocationImpl(this.field0) : super._();
+class InferenceError_MemoryAllocation extends InferenceError {
+  const InferenceError_MemoryAllocation(this.field0) : super._();
+
+  final String field0;
+
+  /// Create a copy of InferenceError
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $InferenceError_MemoryAllocationCopyWith<InferenceError_MemoryAllocation>
+      get copyWith => _$InferenceError_MemoryAllocationCopyWithImpl<
+          InferenceError_MemoryAllocation>(this, _$identity);
 
   @override
-  final String field0;
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is InferenceError_MemoryAllocation &&
+            (identical(other.field0, field0) || other.field0 == field0));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, field0);
 
   @override
   String toString() {
     return 'InferenceError.memoryAllocation(field0: $field0)';
   }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$InferenceError_MemoryAllocationImpl &&
-            (identical(other.field0, field0) || other.field0 == field0));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, field0);
-
-  /// Create a copy of InferenceError
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$InferenceError_MemoryAllocationImplCopyWith<
-          _$InferenceError_MemoryAllocationImpl>
-      get copyWith => __$$InferenceError_MemoryAllocationImplCopyWithImpl<
-          _$InferenceError_MemoryAllocationImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String field0) modelLoad,
-    required TResult Function(String field0) prediction,
-    required TResult Function(String field0) unsupportedFormat,
-    required TResult Function(Uint64List expected, Uint64List actual)
-        invalidShape,
-    required TResult Function(String field0) invalidTensorData,
-    required TResult Function(String field0) engine,
-    required TResult Function(String field0) io,
-    required TResult Function(String field0) serialization,
-    required TResult Function(String field0) configuration,
-    required TResult Function(String field0) resourceNotFound,
-    required TResult Function(String field0) memoryAllocation,
-    required TResult Function(String field0) threadPool,
-    required TResult Function(String field0) gpu,
-    required TResult Function(String field0) formatDetection,
-  }) {
-    return memoryAllocation(field0);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String field0)? modelLoad,
-    TResult? Function(String field0)? prediction,
-    TResult? Function(String field0)? unsupportedFormat,
-    TResult? Function(Uint64List expected, Uint64List actual)? invalidShape,
-    TResult? Function(String field0)? invalidTensorData,
-    TResult? Function(String field0)? engine,
-    TResult? Function(String field0)? io,
-    TResult? Function(String field0)? serialization,
-    TResult? Function(String field0)? configuration,
-    TResult? Function(String field0)? resourceNotFound,
-    TResult? Function(String field0)? memoryAllocation,
-    TResult? Function(String field0)? threadPool,
-    TResult? Function(String field0)? gpu,
-    TResult? Function(String field0)? formatDetection,
-  }) {
-    return memoryAllocation?.call(field0);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String field0)? modelLoad,
-    TResult Function(String field0)? prediction,
-    TResult Function(String field0)? unsupportedFormat,
-    TResult Function(Uint64List expected, Uint64List actual)? invalidShape,
-    TResult Function(String field0)? invalidTensorData,
-    TResult Function(String field0)? engine,
-    TResult Function(String field0)? io,
-    TResult Function(String field0)? serialization,
-    TResult Function(String field0)? configuration,
-    TResult Function(String field0)? resourceNotFound,
-    TResult Function(String field0)? memoryAllocation,
-    TResult Function(String field0)? threadPool,
-    TResult Function(String field0)? gpu,
-    TResult Function(String field0)? formatDetection,
-    required TResult orElse(),
-  }) {
-    if (memoryAllocation != null) {
-      return memoryAllocation(field0);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(InferenceError_ModelLoad value) modelLoad,
-    required TResult Function(InferenceError_Prediction value) prediction,
-    required TResult Function(InferenceError_UnsupportedFormat value)
-        unsupportedFormat,
-    required TResult Function(InferenceError_InvalidShape value) invalidShape,
-    required TResult Function(InferenceError_InvalidTensorData value)
-        invalidTensorData,
-    required TResult Function(InferenceError_Engine value) engine,
-    required TResult Function(InferenceError_Io value) io,
-    required TResult Function(InferenceError_Serialization value) serialization,
-    required TResult Function(InferenceError_Configuration value) configuration,
-    required TResult Function(InferenceError_ResourceNotFound value)
-        resourceNotFound,
-    required TResult Function(InferenceError_MemoryAllocation value)
-        memoryAllocation,
-    required TResult Function(InferenceError_ThreadPool value) threadPool,
-    required TResult Function(InferenceError_Gpu value) gpu,
-    required TResult Function(InferenceError_FormatDetection value)
-        formatDetection,
-  }) {
-    return memoryAllocation(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(InferenceError_ModelLoad value)? modelLoad,
-    TResult? Function(InferenceError_Prediction value)? prediction,
-    TResult? Function(InferenceError_UnsupportedFormat value)?
-        unsupportedFormat,
-    TResult? Function(InferenceError_InvalidShape value)? invalidShape,
-    TResult? Function(InferenceError_InvalidTensorData value)?
-        invalidTensorData,
-    TResult? Function(InferenceError_Engine value)? engine,
-    TResult? Function(InferenceError_Io value)? io,
-    TResult? Function(InferenceError_Serialization value)? serialization,
-    TResult? Function(InferenceError_Configuration value)? configuration,
-    TResult? Function(InferenceError_ResourceNotFound value)? resourceNotFound,
-    TResult? Function(InferenceError_MemoryAllocation value)? memoryAllocation,
-    TResult? Function(InferenceError_ThreadPool value)? threadPool,
-    TResult? Function(InferenceError_Gpu value)? gpu,
-    TResult? Function(InferenceError_FormatDetection value)? formatDetection,
-  }) {
-    return memoryAllocation?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(InferenceError_ModelLoad value)? modelLoad,
-    TResult Function(InferenceError_Prediction value)? prediction,
-    TResult Function(InferenceError_UnsupportedFormat value)? unsupportedFormat,
-    TResult Function(InferenceError_InvalidShape value)? invalidShape,
-    TResult Function(InferenceError_InvalidTensorData value)? invalidTensorData,
-    TResult Function(InferenceError_Engine value)? engine,
-    TResult Function(InferenceError_Io value)? io,
-    TResult Function(InferenceError_Serialization value)? serialization,
-    TResult Function(InferenceError_Configuration value)? configuration,
-    TResult Function(InferenceError_ResourceNotFound value)? resourceNotFound,
-    TResult Function(InferenceError_MemoryAllocation value)? memoryAllocation,
-    TResult Function(InferenceError_ThreadPool value)? threadPool,
-    TResult Function(InferenceError_Gpu value)? gpu,
-    TResult Function(InferenceError_FormatDetection value)? formatDetection,
-    required TResult orElse(),
-  }) {
-    if (memoryAllocation != null) {
-      return memoryAllocation(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class InferenceError_MemoryAllocation extends InferenceError {
-  const factory InferenceError_MemoryAllocation(final String field0) =
-      _$InferenceError_MemoryAllocationImpl;
-  const InferenceError_MemoryAllocation._() : super._();
-
-  String get field0;
-
-  /// Create a copy of InferenceError
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$InferenceError_MemoryAllocationImplCopyWith<
-          _$InferenceError_MemoryAllocationImpl>
-      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$InferenceError_ThreadPoolImplCopyWith<$Res> {
-  factory _$$InferenceError_ThreadPoolImplCopyWith(
-          _$InferenceError_ThreadPoolImpl value,
-          $Res Function(_$InferenceError_ThreadPoolImpl) then) =
-      __$$InferenceError_ThreadPoolImplCopyWithImpl<$Res>;
+abstract mixin class $InferenceError_MemoryAllocationCopyWith<$Res>
+    implements $InferenceErrorCopyWith<$Res> {
+  factory $InferenceError_MemoryAllocationCopyWith(
+          InferenceError_MemoryAllocation value,
+          $Res Function(InferenceError_MemoryAllocation) _then) =
+      _$InferenceError_MemoryAllocationCopyWithImpl;
   @useResult
   $Res call({String field0});
 }
 
 /// @nodoc
-class __$$InferenceError_ThreadPoolImplCopyWithImpl<$Res>
-    extends _$InferenceErrorCopyWithImpl<$Res, _$InferenceError_ThreadPoolImpl>
-    implements _$$InferenceError_ThreadPoolImplCopyWith<$Res> {
-  __$$InferenceError_ThreadPoolImplCopyWithImpl(
-      _$InferenceError_ThreadPoolImpl _value,
-      $Res Function(_$InferenceError_ThreadPoolImpl) _then)
-      : super(_value, _then);
+class _$InferenceError_MemoryAllocationCopyWithImpl<$Res>
+    implements $InferenceError_MemoryAllocationCopyWith<$Res> {
+  _$InferenceError_MemoryAllocationCopyWithImpl(this._self, this._then);
+
+  final InferenceError_MemoryAllocation _self;
+  final $Res Function(InferenceError_MemoryAllocation) _then;
 
   /// Create a copy of InferenceError
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? field0 = null,
   }) {
-    return _then(_$InferenceError_ThreadPoolImpl(
+    return _then(InferenceError_MemoryAllocation(
       null == field0
-          ? _value.field0
+          ? _self.field0
           : field0 // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -2704,221 +1164,63 @@ class __$$InferenceError_ThreadPoolImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$InferenceError_ThreadPoolImpl extends InferenceError_ThreadPool {
-  const _$InferenceError_ThreadPoolImpl(this.field0) : super._();
+class InferenceError_ThreadPool extends InferenceError {
+  const InferenceError_ThreadPool(this.field0) : super._();
+
+  final String field0;
+
+  /// Create a copy of InferenceError
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $InferenceError_ThreadPoolCopyWith<InferenceError_ThreadPool> get copyWith =>
+      _$InferenceError_ThreadPoolCopyWithImpl<InferenceError_ThreadPool>(
+          this, _$identity);
 
   @override
-  final String field0;
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is InferenceError_ThreadPool &&
+            (identical(other.field0, field0) || other.field0 == field0));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, field0);
 
   @override
   String toString() {
     return 'InferenceError.threadPool(field0: $field0)';
   }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$InferenceError_ThreadPoolImpl &&
-            (identical(other.field0, field0) || other.field0 == field0));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, field0);
-
-  /// Create a copy of InferenceError
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$InferenceError_ThreadPoolImplCopyWith<_$InferenceError_ThreadPoolImpl>
-      get copyWith => __$$InferenceError_ThreadPoolImplCopyWithImpl<
-          _$InferenceError_ThreadPoolImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String field0) modelLoad,
-    required TResult Function(String field0) prediction,
-    required TResult Function(String field0) unsupportedFormat,
-    required TResult Function(Uint64List expected, Uint64List actual)
-        invalidShape,
-    required TResult Function(String field0) invalidTensorData,
-    required TResult Function(String field0) engine,
-    required TResult Function(String field0) io,
-    required TResult Function(String field0) serialization,
-    required TResult Function(String field0) configuration,
-    required TResult Function(String field0) resourceNotFound,
-    required TResult Function(String field0) memoryAllocation,
-    required TResult Function(String field0) threadPool,
-    required TResult Function(String field0) gpu,
-    required TResult Function(String field0) formatDetection,
-  }) {
-    return threadPool(field0);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String field0)? modelLoad,
-    TResult? Function(String field0)? prediction,
-    TResult? Function(String field0)? unsupportedFormat,
-    TResult? Function(Uint64List expected, Uint64List actual)? invalidShape,
-    TResult? Function(String field0)? invalidTensorData,
-    TResult? Function(String field0)? engine,
-    TResult? Function(String field0)? io,
-    TResult? Function(String field0)? serialization,
-    TResult? Function(String field0)? configuration,
-    TResult? Function(String field0)? resourceNotFound,
-    TResult? Function(String field0)? memoryAllocation,
-    TResult? Function(String field0)? threadPool,
-    TResult? Function(String field0)? gpu,
-    TResult? Function(String field0)? formatDetection,
-  }) {
-    return threadPool?.call(field0);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String field0)? modelLoad,
-    TResult Function(String field0)? prediction,
-    TResult Function(String field0)? unsupportedFormat,
-    TResult Function(Uint64List expected, Uint64List actual)? invalidShape,
-    TResult Function(String field0)? invalidTensorData,
-    TResult Function(String field0)? engine,
-    TResult Function(String field0)? io,
-    TResult Function(String field0)? serialization,
-    TResult Function(String field0)? configuration,
-    TResult Function(String field0)? resourceNotFound,
-    TResult Function(String field0)? memoryAllocation,
-    TResult Function(String field0)? threadPool,
-    TResult Function(String field0)? gpu,
-    TResult Function(String field0)? formatDetection,
-    required TResult orElse(),
-  }) {
-    if (threadPool != null) {
-      return threadPool(field0);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(InferenceError_ModelLoad value) modelLoad,
-    required TResult Function(InferenceError_Prediction value) prediction,
-    required TResult Function(InferenceError_UnsupportedFormat value)
-        unsupportedFormat,
-    required TResult Function(InferenceError_InvalidShape value) invalidShape,
-    required TResult Function(InferenceError_InvalidTensorData value)
-        invalidTensorData,
-    required TResult Function(InferenceError_Engine value) engine,
-    required TResult Function(InferenceError_Io value) io,
-    required TResult Function(InferenceError_Serialization value) serialization,
-    required TResult Function(InferenceError_Configuration value) configuration,
-    required TResult Function(InferenceError_ResourceNotFound value)
-        resourceNotFound,
-    required TResult Function(InferenceError_MemoryAllocation value)
-        memoryAllocation,
-    required TResult Function(InferenceError_ThreadPool value) threadPool,
-    required TResult Function(InferenceError_Gpu value) gpu,
-    required TResult Function(InferenceError_FormatDetection value)
-        formatDetection,
-  }) {
-    return threadPool(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(InferenceError_ModelLoad value)? modelLoad,
-    TResult? Function(InferenceError_Prediction value)? prediction,
-    TResult? Function(InferenceError_UnsupportedFormat value)?
-        unsupportedFormat,
-    TResult? Function(InferenceError_InvalidShape value)? invalidShape,
-    TResult? Function(InferenceError_InvalidTensorData value)?
-        invalidTensorData,
-    TResult? Function(InferenceError_Engine value)? engine,
-    TResult? Function(InferenceError_Io value)? io,
-    TResult? Function(InferenceError_Serialization value)? serialization,
-    TResult? Function(InferenceError_Configuration value)? configuration,
-    TResult? Function(InferenceError_ResourceNotFound value)? resourceNotFound,
-    TResult? Function(InferenceError_MemoryAllocation value)? memoryAllocation,
-    TResult? Function(InferenceError_ThreadPool value)? threadPool,
-    TResult? Function(InferenceError_Gpu value)? gpu,
-    TResult? Function(InferenceError_FormatDetection value)? formatDetection,
-  }) {
-    return threadPool?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(InferenceError_ModelLoad value)? modelLoad,
-    TResult Function(InferenceError_Prediction value)? prediction,
-    TResult Function(InferenceError_UnsupportedFormat value)? unsupportedFormat,
-    TResult Function(InferenceError_InvalidShape value)? invalidShape,
-    TResult Function(InferenceError_InvalidTensorData value)? invalidTensorData,
-    TResult Function(InferenceError_Engine value)? engine,
-    TResult Function(InferenceError_Io value)? io,
-    TResult Function(InferenceError_Serialization value)? serialization,
-    TResult Function(InferenceError_Configuration value)? configuration,
-    TResult Function(InferenceError_ResourceNotFound value)? resourceNotFound,
-    TResult Function(InferenceError_MemoryAllocation value)? memoryAllocation,
-    TResult Function(InferenceError_ThreadPool value)? threadPool,
-    TResult Function(InferenceError_Gpu value)? gpu,
-    TResult Function(InferenceError_FormatDetection value)? formatDetection,
-    required TResult orElse(),
-  }) {
-    if (threadPool != null) {
-      return threadPool(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class InferenceError_ThreadPool extends InferenceError {
-  const factory InferenceError_ThreadPool(final String field0) =
-      _$InferenceError_ThreadPoolImpl;
-  const InferenceError_ThreadPool._() : super._();
-
-  String get field0;
-
-  /// Create a copy of InferenceError
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$InferenceError_ThreadPoolImplCopyWith<_$InferenceError_ThreadPoolImpl>
-      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$InferenceError_GpuImplCopyWith<$Res> {
-  factory _$$InferenceError_GpuImplCopyWith(_$InferenceError_GpuImpl value,
-          $Res Function(_$InferenceError_GpuImpl) then) =
-      __$$InferenceError_GpuImplCopyWithImpl<$Res>;
+abstract mixin class $InferenceError_ThreadPoolCopyWith<$Res>
+    implements $InferenceErrorCopyWith<$Res> {
+  factory $InferenceError_ThreadPoolCopyWith(InferenceError_ThreadPool value,
+          $Res Function(InferenceError_ThreadPool) _then) =
+      _$InferenceError_ThreadPoolCopyWithImpl;
   @useResult
   $Res call({String field0});
 }
 
 /// @nodoc
-class __$$InferenceError_GpuImplCopyWithImpl<$Res>
-    extends _$InferenceErrorCopyWithImpl<$Res, _$InferenceError_GpuImpl>
-    implements _$$InferenceError_GpuImplCopyWith<$Res> {
-  __$$InferenceError_GpuImplCopyWithImpl(_$InferenceError_GpuImpl _value,
-      $Res Function(_$InferenceError_GpuImpl) _then)
-      : super(_value, _then);
+class _$InferenceError_ThreadPoolCopyWithImpl<$Res>
+    implements $InferenceError_ThreadPoolCopyWith<$Res> {
+  _$InferenceError_ThreadPoolCopyWithImpl(this._self, this._then);
+
+  final InferenceError_ThreadPool _self;
+  final $Res Function(InferenceError_ThreadPool) _then;
 
   /// Create a copy of InferenceError
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? field0 = null,
   }) {
-    return _then(_$InferenceError_GpuImpl(
+    return _then(InferenceError_ThreadPool(
       null == field0
-          ? _value.field0
+          ? _self.field0
           : field0 // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -2927,224 +1229,62 @@ class __$$InferenceError_GpuImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$InferenceError_GpuImpl extends InferenceError_Gpu {
-  const _$InferenceError_GpuImpl(this.field0) : super._();
+class InferenceError_Gpu extends InferenceError {
+  const InferenceError_Gpu(this.field0) : super._();
+
+  final String field0;
+
+  /// Create a copy of InferenceError
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $InferenceError_GpuCopyWith<InferenceError_Gpu> get copyWith =>
+      _$InferenceError_GpuCopyWithImpl<InferenceError_Gpu>(this, _$identity);
 
   @override
-  final String field0;
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is InferenceError_Gpu &&
+            (identical(other.field0, field0) || other.field0 == field0));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, field0);
 
   @override
   String toString() {
     return 'InferenceError.gpu(field0: $field0)';
   }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$InferenceError_GpuImpl &&
-            (identical(other.field0, field0) || other.field0 == field0));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, field0);
-
-  /// Create a copy of InferenceError
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$InferenceError_GpuImplCopyWith<_$InferenceError_GpuImpl> get copyWith =>
-      __$$InferenceError_GpuImplCopyWithImpl<_$InferenceError_GpuImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String field0) modelLoad,
-    required TResult Function(String field0) prediction,
-    required TResult Function(String field0) unsupportedFormat,
-    required TResult Function(Uint64List expected, Uint64List actual)
-        invalidShape,
-    required TResult Function(String field0) invalidTensorData,
-    required TResult Function(String field0) engine,
-    required TResult Function(String field0) io,
-    required TResult Function(String field0) serialization,
-    required TResult Function(String field0) configuration,
-    required TResult Function(String field0) resourceNotFound,
-    required TResult Function(String field0) memoryAllocation,
-    required TResult Function(String field0) threadPool,
-    required TResult Function(String field0) gpu,
-    required TResult Function(String field0) formatDetection,
-  }) {
-    return gpu(field0);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String field0)? modelLoad,
-    TResult? Function(String field0)? prediction,
-    TResult? Function(String field0)? unsupportedFormat,
-    TResult? Function(Uint64List expected, Uint64List actual)? invalidShape,
-    TResult? Function(String field0)? invalidTensorData,
-    TResult? Function(String field0)? engine,
-    TResult? Function(String field0)? io,
-    TResult? Function(String field0)? serialization,
-    TResult? Function(String field0)? configuration,
-    TResult? Function(String field0)? resourceNotFound,
-    TResult? Function(String field0)? memoryAllocation,
-    TResult? Function(String field0)? threadPool,
-    TResult? Function(String field0)? gpu,
-    TResult? Function(String field0)? formatDetection,
-  }) {
-    return gpu?.call(field0);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String field0)? modelLoad,
-    TResult Function(String field0)? prediction,
-    TResult Function(String field0)? unsupportedFormat,
-    TResult Function(Uint64List expected, Uint64List actual)? invalidShape,
-    TResult Function(String field0)? invalidTensorData,
-    TResult Function(String field0)? engine,
-    TResult Function(String field0)? io,
-    TResult Function(String field0)? serialization,
-    TResult Function(String field0)? configuration,
-    TResult Function(String field0)? resourceNotFound,
-    TResult Function(String field0)? memoryAllocation,
-    TResult Function(String field0)? threadPool,
-    TResult Function(String field0)? gpu,
-    TResult Function(String field0)? formatDetection,
-    required TResult orElse(),
-  }) {
-    if (gpu != null) {
-      return gpu(field0);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(InferenceError_ModelLoad value) modelLoad,
-    required TResult Function(InferenceError_Prediction value) prediction,
-    required TResult Function(InferenceError_UnsupportedFormat value)
-        unsupportedFormat,
-    required TResult Function(InferenceError_InvalidShape value) invalidShape,
-    required TResult Function(InferenceError_InvalidTensorData value)
-        invalidTensorData,
-    required TResult Function(InferenceError_Engine value) engine,
-    required TResult Function(InferenceError_Io value) io,
-    required TResult Function(InferenceError_Serialization value) serialization,
-    required TResult Function(InferenceError_Configuration value) configuration,
-    required TResult Function(InferenceError_ResourceNotFound value)
-        resourceNotFound,
-    required TResult Function(InferenceError_MemoryAllocation value)
-        memoryAllocation,
-    required TResult Function(InferenceError_ThreadPool value) threadPool,
-    required TResult Function(InferenceError_Gpu value) gpu,
-    required TResult Function(InferenceError_FormatDetection value)
-        formatDetection,
-  }) {
-    return gpu(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(InferenceError_ModelLoad value)? modelLoad,
-    TResult? Function(InferenceError_Prediction value)? prediction,
-    TResult? Function(InferenceError_UnsupportedFormat value)?
-        unsupportedFormat,
-    TResult? Function(InferenceError_InvalidShape value)? invalidShape,
-    TResult? Function(InferenceError_InvalidTensorData value)?
-        invalidTensorData,
-    TResult? Function(InferenceError_Engine value)? engine,
-    TResult? Function(InferenceError_Io value)? io,
-    TResult? Function(InferenceError_Serialization value)? serialization,
-    TResult? Function(InferenceError_Configuration value)? configuration,
-    TResult? Function(InferenceError_ResourceNotFound value)? resourceNotFound,
-    TResult? Function(InferenceError_MemoryAllocation value)? memoryAllocation,
-    TResult? Function(InferenceError_ThreadPool value)? threadPool,
-    TResult? Function(InferenceError_Gpu value)? gpu,
-    TResult? Function(InferenceError_FormatDetection value)? formatDetection,
-  }) {
-    return gpu?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(InferenceError_ModelLoad value)? modelLoad,
-    TResult Function(InferenceError_Prediction value)? prediction,
-    TResult Function(InferenceError_UnsupportedFormat value)? unsupportedFormat,
-    TResult Function(InferenceError_InvalidShape value)? invalidShape,
-    TResult Function(InferenceError_InvalidTensorData value)? invalidTensorData,
-    TResult Function(InferenceError_Engine value)? engine,
-    TResult Function(InferenceError_Io value)? io,
-    TResult Function(InferenceError_Serialization value)? serialization,
-    TResult Function(InferenceError_Configuration value)? configuration,
-    TResult Function(InferenceError_ResourceNotFound value)? resourceNotFound,
-    TResult Function(InferenceError_MemoryAllocation value)? memoryAllocation,
-    TResult Function(InferenceError_ThreadPool value)? threadPool,
-    TResult Function(InferenceError_Gpu value)? gpu,
-    TResult Function(InferenceError_FormatDetection value)? formatDetection,
-    required TResult orElse(),
-  }) {
-    if (gpu != null) {
-      return gpu(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class InferenceError_Gpu extends InferenceError {
-  const factory InferenceError_Gpu(final String field0) =
-      _$InferenceError_GpuImpl;
-  const InferenceError_Gpu._() : super._();
-
-  String get field0;
-
-  /// Create a copy of InferenceError
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$InferenceError_GpuImplCopyWith<_$InferenceError_GpuImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$InferenceError_FormatDetectionImplCopyWith<$Res> {
-  factory _$$InferenceError_FormatDetectionImplCopyWith(
-          _$InferenceError_FormatDetectionImpl value,
-          $Res Function(_$InferenceError_FormatDetectionImpl) then) =
-      __$$InferenceError_FormatDetectionImplCopyWithImpl<$Res>;
+abstract mixin class $InferenceError_GpuCopyWith<$Res>
+    implements $InferenceErrorCopyWith<$Res> {
+  factory $InferenceError_GpuCopyWith(
+          InferenceError_Gpu value, $Res Function(InferenceError_Gpu) _then) =
+      _$InferenceError_GpuCopyWithImpl;
   @useResult
   $Res call({String field0});
 }
 
 /// @nodoc
-class __$$InferenceError_FormatDetectionImplCopyWithImpl<$Res>
-    extends _$InferenceErrorCopyWithImpl<$Res,
-        _$InferenceError_FormatDetectionImpl>
-    implements _$$InferenceError_FormatDetectionImplCopyWith<$Res> {
-  __$$InferenceError_FormatDetectionImplCopyWithImpl(
-      _$InferenceError_FormatDetectionImpl _value,
-      $Res Function(_$InferenceError_FormatDetectionImpl) _then)
-      : super(_value, _then);
+class _$InferenceError_GpuCopyWithImpl<$Res>
+    implements $InferenceError_GpuCopyWith<$Res> {
+  _$InferenceError_GpuCopyWithImpl(this._self, this._then);
+
+  final InferenceError_Gpu _self;
+  final $Res Function(InferenceError_Gpu) _then;
 
   /// Create a copy of InferenceError
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? field0 = null,
   }) {
-    return _then(_$InferenceError_FormatDetectionImpl(
+    return _then(InferenceError_Gpu(
       null == field0
-          ? _value.field0
+          ? _self.field0
           : field0 // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -3153,193 +1293,68 @@ class __$$InferenceError_FormatDetectionImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$InferenceError_FormatDetectionImpl
-    extends InferenceError_FormatDetection {
-  const _$InferenceError_FormatDetectionImpl(this.field0) : super._();
+class InferenceError_FormatDetection extends InferenceError {
+  const InferenceError_FormatDetection(this.field0) : super._();
 
-  @override
   final String field0;
 
-  @override
-  String toString() {
-    return 'InferenceError.formatDetection(field0: $field0)';
-  }
+  /// Create a copy of InferenceError
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $InferenceError_FormatDetectionCopyWith<InferenceError_FormatDetection>
+      get copyWith => _$InferenceError_FormatDetectionCopyWithImpl<
+          InferenceError_FormatDetection>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$InferenceError_FormatDetectionImpl &&
+            other is InferenceError_FormatDetection &&
             (identical(other.field0, field0) || other.field0 == field0));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, field0);
 
+  @override
+  String toString() {
+    return 'InferenceError.formatDetection(field0: $field0)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $InferenceError_FormatDetectionCopyWith<$Res>
+    implements $InferenceErrorCopyWith<$Res> {
+  factory $InferenceError_FormatDetectionCopyWith(
+          InferenceError_FormatDetection value,
+          $Res Function(InferenceError_FormatDetection) _then) =
+      _$InferenceError_FormatDetectionCopyWithImpl;
+  @useResult
+  $Res call({String field0});
+}
+
+/// @nodoc
+class _$InferenceError_FormatDetectionCopyWithImpl<$Res>
+    implements $InferenceError_FormatDetectionCopyWith<$Res> {
+  _$InferenceError_FormatDetectionCopyWithImpl(this._self, this._then);
+
+  final InferenceError_FormatDetection _self;
+  final $Res Function(InferenceError_FormatDetection) _then;
+
   /// Create a copy of InferenceError
   /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
   @pragma('vm:prefer-inline')
-  _$$InferenceError_FormatDetectionImplCopyWith<
-          _$InferenceError_FormatDetectionImpl>
-      get copyWith => __$$InferenceError_FormatDetectionImplCopyWithImpl<
-          _$InferenceError_FormatDetectionImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String field0) modelLoad,
-    required TResult Function(String field0) prediction,
-    required TResult Function(String field0) unsupportedFormat,
-    required TResult Function(Uint64List expected, Uint64List actual)
-        invalidShape,
-    required TResult Function(String field0) invalidTensorData,
-    required TResult Function(String field0) engine,
-    required TResult Function(String field0) io,
-    required TResult Function(String field0) serialization,
-    required TResult Function(String field0) configuration,
-    required TResult Function(String field0) resourceNotFound,
-    required TResult Function(String field0) memoryAllocation,
-    required TResult Function(String field0) threadPool,
-    required TResult Function(String field0) gpu,
-    required TResult Function(String field0) formatDetection,
+  $Res call({
+    Object? field0 = null,
   }) {
-    return formatDetection(field0);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String field0)? modelLoad,
-    TResult? Function(String field0)? prediction,
-    TResult? Function(String field0)? unsupportedFormat,
-    TResult? Function(Uint64List expected, Uint64List actual)? invalidShape,
-    TResult? Function(String field0)? invalidTensorData,
-    TResult? Function(String field0)? engine,
-    TResult? Function(String field0)? io,
-    TResult? Function(String field0)? serialization,
-    TResult? Function(String field0)? configuration,
-    TResult? Function(String field0)? resourceNotFound,
-    TResult? Function(String field0)? memoryAllocation,
-    TResult? Function(String field0)? threadPool,
-    TResult? Function(String field0)? gpu,
-    TResult? Function(String field0)? formatDetection,
-  }) {
-    return formatDetection?.call(field0);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String field0)? modelLoad,
-    TResult Function(String field0)? prediction,
-    TResult Function(String field0)? unsupportedFormat,
-    TResult Function(Uint64List expected, Uint64List actual)? invalidShape,
-    TResult Function(String field0)? invalidTensorData,
-    TResult Function(String field0)? engine,
-    TResult Function(String field0)? io,
-    TResult Function(String field0)? serialization,
-    TResult Function(String field0)? configuration,
-    TResult Function(String field0)? resourceNotFound,
-    TResult Function(String field0)? memoryAllocation,
-    TResult Function(String field0)? threadPool,
-    TResult Function(String field0)? gpu,
-    TResult Function(String field0)? formatDetection,
-    required TResult orElse(),
-  }) {
-    if (formatDetection != null) {
-      return formatDetection(field0);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(InferenceError_ModelLoad value) modelLoad,
-    required TResult Function(InferenceError_Prediction value) prediction,
-    required TResult Function(InferenceError_UnsupportedFormat value)
-        unsupportedFormat,
-    required TResult Function(InferenceError_InvalidShape value) invalidShape,
-    required TResult Function(InferenceError_InvalidTensorData value)
-        invalidTensorData,
-    required TResult Function(InferenceError_Engine value) engine,
-    required TResult Function(InferenceError_Io value) io,
-    required TResult Function(InferenceError_Serialization value) serialization,
-    required TResult Function(InferenceError_Configuration value) configuration,
-    required TResult Function(InferenceError_ResourceNotFound value)
-        resourceNotFound,
-    required TResult Function(InferenceError_MemoryAllocation value)
-        memoryAllocation,
-    required TResult Function(InferenceError_ThreadPool value) threadPool,
-    required TResult Function(InferenceError_Gpu value) gpu,
-    required TResult Function(InferenceError_FormatDetection value)
-        formatDetection,
-  }) {
-    return formatDetection(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(InferenceError_ModelLoad value)? modelLoad,
-    TResult? Function(InferenceError_Prediction value)? prediction,
-    TResult? Function(InferenceError_UnsupportedFormat value)?
-        unsupportedFormat,
-    TResult? Function(InferenceError_InvalidShape value)? invalidShape,
-    TResult? Function(InferenceError_InvalidTensorData value)?
-        invalidTensorData,
-    TResult? Function(InferenceError_Engine value)? engine,
-    TResult? Function(InferenceError_Io value)? io,
-    TResult? Function(InferenceError_Serialization value)? serialization,
-    TResult? Function(InferenceError_Configuration value)? configuration,
-    TResult? Function(InferenceError_ResourceNotFound value)? resourceNotFound,
-    TResult? Function(InferenceError_MemoryAllocation value)? memoryAllocation,
-    TResult? Function(InferenceError_ThreadPool value)? threadPool,
-    TResult? Function(InferenceError_Gpu value)? gpu,
-    TResult? Function(InferenceError_FormatDetection value)? formatDetection,
-  }) {
-    return formatDetection?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(InferenceError_ModelLoad value)? modelLoad,
-    TResult Function(InferenceError_Prediction value)? prediction,
-    TResult Function(InferenceError_UnsupportedFormat value)? unsupportedFormat,
-    TResult Function(InferenceError_InvalidShape value)? invalidShape,
-    TResult Function(InferenceError_InvalidTensorData value)? invalidTensorData,
-    TResult Function(InferenceError_Engine value)? engine,
-    TResult Function(InferenceError_Io value)? io,
-    TResult Function(InferenceError_Serialization value)? serialization,
-    TResult Function(InferenceError_Configuration value)? configuration,
-    TResult Function(InferenceError_ResourceNotFound value)? resourceNotFound,
-    TResult Function(InferenceError_MemoryAllocation value)? memoryAllocation,
-    TResult Function(InferenceError_ThreadPool value)? threadPool,
-    TResult Function(InferenceError_Gpu value)? gpu,
-    TResult Function(InferenceError_FormatDetection value)? formatDetection,
-    required TResult orElse(),
-  }) {
-    if (formatDetection != null) {
-      return formatDetection(this);
-    }
-    return orElse();
+    return _then(InferenceError_FormatDetection(
+      null == field0
+          ? _self.field0
+          : field0 // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
   }
 }
 
-abstract class InferenceError_FormatDetection extends InferenceError {
-  const factory InferenceError_FormatDetection(final String field0) =
-      _$InferenceError_FormatDetectionImpl;
-  const InferenceError_FormatDetection._() : super._();
-
-  String get field0;
-
-  /// Create a copy of InferenceError
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$InferenceError_FormatDetectionImplCopyWith<
-          _$InferenceError_FormatDetectionImpl>
-      get copyWith => throw _privateConstructorUsedError;
-}
+// dart format on
