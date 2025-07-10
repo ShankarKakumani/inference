@@ -9,9 +9,10 @@
 
 <div align="center">
 
-📦 **[View on pub.dev](https://pub.dev/packages/inference)** | 🚀 **[Install now](https://pub.dev/packages/inference/install)** | 📖 **[Documentation](https://pub.dev/documentation/inference/latest/)**
+🚀 **[Install now](https://pub.dev/packages/inference/install)** | 📖 **[Documentation](https://pub.dev/documentation/inference/latest/)**
 
 </div>
+
 
 
 
