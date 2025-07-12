@@ -15,7 +15,7 @@
 
 
 
-> **🚧 Beta Release**: This package is in beta. The API is stable but may have minor changes based on community feedback. Perfect for testing and early adoption!
+> **🚧 Development Status**: This package is under active development. The core API is implemented and functional, but some advanced features are still being added. Currently supports basic model loading and inference with Candle and Linfa engines.
 
 
 
@@ -47,7 +47,7 @@ Add `inference` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  inference: ^0.1.0-beta.2
+  inference: ^1.0.0
 ```
 
 Or install via command line:
@@ -55,8 +55,6 @@ Or install via command line:
 ```bash
 flutter pub add inference
 ```
-
-**Note**: Beta versions require explicit version specification in `pubspec.yaml`.
 
 ### Basic Usage
 
@@ -337,7 +335,6 @@ class InferenceSession {
   
   // Engine-specific loading
   static Future<CandleSession> loadWithCandle(String modelPath);
-
   
   // On-device training
   static Future<LinfaSession> trainLinfa({
@@ -483,11 +480,10 @@ class CandleSession extends InferenceSession {
     required String weightsPath,
   });
   
-  // Device management
+  // Device management (read-only properties)
   bool get isCudaAvailable;
   bool get isMklAvailable;
   String get device;
-  Future<void> toDevice(String device);
 }
 ```
 
@@ -539,10 +535,24 @@ class LinfaSession extends InferenceSession {
 
 ## Supported Formats
 
-| Engine | Formats | Use Cases |
-|--------|---------|-----------|
-| **Candle** | `.safetensors`, `.pt`, `.pth` | PyTorch models, HuggingFace models, Computer vision, NLP |
-| **Linfa** | Training data | Classical ML, On-device training, Small datasets |
+| Engine | Formats | Use Cases | Status |
+|--------|---------|-----------|---------|
+| **Candle** | `.safetensors`, `.pt`, `.pth` | PyTorch models, HuggingFace models, Computer vision, NLP | ✅ Core functionality implemented |
+| **Linfa** | Training data | Classical ML, On-device training, Small datasets | ✅ Basic training implemented |
+
+### Current Model Architecture Support
+
+**Currently Supported:**
+- ✅ **Generic SafeTensors Loading**: Any SafeTensors model can be loaded
+- ✅ **BERT Models**: Text classification and NLP tasks
+- ✅ **ResNet Models**: Image classification
+- ✅ **K-means Clustering**: On-device training
+
+**In Development (see [Model Wrappers Roadmap](knowledge/model_wrappers_roadmap.md)):**
+- 🚧 **Llama Models**: Text generation
+- 🚧 **Whisper Models**: Speech recognition  
+- 🚧 **GPT-2 Models**: Text generation
+- 🚧 **20+ additional architectures**: Comprehensive model support
 
 ## Platform Support
 
@@ -591,6 +601,7 @@ Enable GPU acceleration when available:
 ```dart
 // Automatically detect and use best execution provider
 final model = await InferenceSession.load('model.safetensors');
+// GPU will be used automatically if available
 ```
 
 ### Smart Caching
@@ -619,20 +630,20 @@ if (sizeBytes > 500 * 1024 * 1024) { // If cache > 500MB
 
 **Model loading fails**
 - Verify the model file exists and is accessible
-- Check that the model format is supported  
+- Check that the model format is supported (.safetensors, .pt, .pth)
 - Ensure sufficient memory is available
 - For URL loading: check internet connectivity and URL validity
 - For Hugging Face models: verify repository and filename exist
 
 **Slow inference**
-- Enable GPU acceleration if available
+- GPU acceleration is automatically enabled when available
 - Use batch processing for multiple inputs
-- Optimize model with appropriate optimization level
+- Ensure model is properly optimized
 
 **Memory issues**
 - Always call `dispose()` on sessions
 - Avoid loading multiple large models simultaneously
-- Consider model quantization for memory-constrained devices
+- Monitor cache size and clear when necessary
 
 ### Error Handling
 
@@ -644,8 +655,8 @@ try {
   print('Failed to load model: ${e.message}');
 } on PredictionException catch (e) {
   print('Prediction failed: ${e.message}');
-} on UnsupportedEngineException catch (e) {
-  print('Engine not supported: ${e.message}');
+} on UnsupportedFormatException catch (e) {
+  print('Format not supported: ${e.message}');
 }
 ```
 
