@@ -8,10 +8,18 @@ import '../models/error.dart';
 import '../models/tensor.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-// These functions are ignored because they are not marked as `pub`: `create_session_info`, `download_model_progress_stream`, `download_model_with_progress_callback`, `download_model_with_progress`, `download_model`, `get_cache_dir`, `load_from_cache`, `parse_data_type`, `parse_engine_type`, `save_to_cache`, `url_to_cache_key`
-// These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `DownloadPhase`, `DownloadProgress`
+// These functions are ignored because they are not marked as `pub`: `create_session_info`, `download_model_progress_stream`, `download_model_with_progress_callback_fn`, `download_model_with_progress_callback`, `download_model_with_progress_tracking`, `download_model_with_progress`, `download_model`, `get_cache_dir`, `load_from_cache`, `parse_data_type`, `parse_engine_type`, `save_to_cache`, `url_to_cache_key`
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`
-// These functions have error during generation (see debug logs or enable `stop_on_error: true` for more details): `download_progress_stream`
+
+/// Get current download progress for a repository
+Future<DownloadProgress?> getDownloadProgress({required String repo}) =>
+    RustLib.instance.api.crateApiInferenceGetDownloadProgress(repo: repo);
+
+/// Start downloading a model from HuggingFace with progress tracking
+Future<String> startDownloadWithProgress(
+        {required String repo, String? revision, String? filename}) =>
+    RustLib.instance.api.crateApiInferenceStartDownloadWithProgress(
+        repo: repo, revision: revision, filename: filename);
 
 /// Load a model with automatic engine detection
 Future<SessionInfo> loadModel({required String modelPath}) =>
@@ -104,6 +112,73 @@ Future<void> clearCache() => RustLib.instance.api.crateApiInferenceClearCache();
 /// Get cache size in bytes
 Future<BigInt> getCacheSize() =>
     RustLib.instance.api.crateApiInferenceGetCacheSize();
+
+/// Different phases of the download process
+enum DownloadPhase {
+  /// Connecting to server
+  connecting,
+
+  /// Downloading model data
+  downloading,
+
+  /// Processing/validating downloaded data
+  processing,
+
+  /// Saving to cache
+  caching,
+
+  /// Download completed
+  completed,
+
+  /// Download failed
+  failed,
+  ;
+}
+
+/// Download progress information
+class DownloadProgress {
+  /// Total bytes to download (if known)
+  final BigInt? totalBytes;
+
+  /// Bytes downloaded so far
+  final BigInt downloadedBytes;
+
+  /// Download progress percentage (0-100)
+  final double percentage;
+
+  /// Current download phase
+  final DownloadPhase phase;
+
+  /// Optional message
+  final String? message;
+
+  const DownloadProgress({
+    this.totalBytes,
+    required this.downloadedBytes,
+    required this.percentage,
+    required this.phase,
+    this.message,
+  });
+
+  @override
+  int get hashCode =>
+      totalBytes.hashCode ^
+      downloadedBytes.hashCode ^
+      percentage.hashCode ^
+      phase.hashCode ^
+      message.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is DownloadProgress &&
+          runtimeType == other.runtimeType &&
+          totalBytes == other.totalBytes &&
+          downloadedBytes == other.downloadedBytes &&
+          percentage == other.percentage &&
+          phase == other.phase &&
+          message == other.message;
+}
 
 /// Input data for inference
 class InferenceInput {

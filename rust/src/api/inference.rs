@@ -11,6 +11,7 @@ use tokio::sync::RwLock;
 
 // Add progress reporting types
 /// Download progress information
+#[frb]
 #[derive(Debug, Clone)]
 pub struct DownloadProgress {
     /// Total bytes to download (if known)
@@ -26,6 +27,7 @@ pub struct DownloadProgress {
 }
 
 /// Different phases of the download process
+#[frb]
 #[derive(Debug, Clone)]
 pub enum DownloadPhase {
     /// Connecting to server
@@ -40,6 +42,221 @@ pub enum DownloadPhase {
     Completed,
     /// Download failed
     Failed,
+}
+
+// Global progress state
+static DOWNLOAD_PROGRESS: once_cell::sync::Lazy<Arc<RwLock<HashMap<String, DownloadProgress>>>> = 
+    once_cell::sync::Lazy::new(|| Arc::new(RwLock::new(HashMap::new())));
+
+/// Get current download progress for a repository
+pub async fn get_download_progress(repo: String) -> Option<DownloadProgress> {
+    let progress_map = DOWNLOAD_PROGRESS.read().await;
+    progress_map.get(&repo).cloned()
+}
+
+/// Start downloading a model from HuggingFace with progress tracking
+pub async fn start_download_with_progress(
+    repo: String,
+    revision: Option<String>,
+    filename: Option<String>,
+) -> Result<String, InferenceError> {
+    let revision = revision.unwrap_or_else(|| "main".to_string());
+    let filename = filename.unwrap_or_else(|| "model.safetensors".to_string());
+    
+    let download_id = format!("{}_{}", repo, revision);
+    
+    // Initialize progress
+    {
+        let mut progress_map = DOWNLOAD_PROGRESS.write().await;
+        progress_map.insert(download_id.clone(), DownloadProgress {
+            total_bytes: None,
+            downloaded_bytes: 0,
+            percentage: 0.0,
+            phase: DownloadPhase::Connecting,
+            message: Some("Starting download...".to_string()),
+        });
+    }
+    
+    // Start download in background
+    let download_id_clone = download_id.clone();
+    let repo_clone = repo.clone();
+    let revision_clone = revision.clone();
+    let filename_clone = filename.clone();
+    
+    tokio::spawn(async move {
+        let result = download_model_with_progress_tracking(
+            &repo_clone, 
+            &revision_clone, 
+            &filename_clone,
+            &download_id_clone
+        ).await;
+        
+        // Update final status
+        let mut progress_map = DOWNLOAD_PROGRESS.write().await;
+        if let Ok(_) = result {
+            progress_map.insert(download_id_clone.clone(), DownloadProgress {
+                total_bytes: progress_map.get(&download_id_clone).and_then(|p| p.total_bytes),
+                downloaded_bytes: progress_map.get(&download_id_clone).map(|p| p.downloaded_bytes).unwrap_or(0),
+                percentage: 100.0,
+                phase: DownloadPhase::Completed,
+                message: Some("Download completed successfully!".to_string()),
+            });
+        } else {
+            progress_map.insert(download_id_clone, DownloadProgress {
+                total_bytes: None,
+                downloaded_bytes: 0,
+                percentage: 0.0,
+                phase: DownloadPhase::Failed,
+                message: Some("Download failed".to_string()),
+            });
+        }
+    });
+    
+    Ok(download_id)
+}
+
+/// Download model with progress tracking
+async fn download_model_with_progress_tracking(
+    repo: &str,
+    revision: &str,
+    filename: &str,
+    download_id: &str,
+) -> Result<Vec<u8>, InferenceError> {
+    use futures::StreamExt;
+    
+    let url = format!(
+        "https://huggingface.co/{}/resolve/{}/{}",
+        repo, revision, filename
+    );
+    
+    println!("📡 Starting download from: {}", url);
+    
+    // Update progress: connecting
+    {
+        let mut progress_map = DOWNLOAD_PROGRESS.write().await;
+        progress_map.insert(download_id.to_string(), DownloadProgress {
+            total_bytes: None,
+            downloaded_bytes: 0,
+            percentage: 0.0,
+            phase: DownloadPhase::Connecting,
+            message: Some("Connecting to server...".to_string()),
+        });
+    }
+    
+    let client = reqwest::Client::builder()
+        .user_agent("inference-flutter/1.0.0")
+        .timeout(std::time::Duration::from_secs(300))
+        .build()
+        .map_err(|e| InferenceError::model_load(format!("Failed to create HTTP client: {}", e)))?;
+
+    let response = client
+        .get(&url)
+        .send()
+        .await
+        .map_err(|e| {
+            let error_msg = if e.is_connect() {
+                format!("Failed to connect to HuggingFace: {}. Please check your internet connection.", e)
+            } else if e.is_timeout() {
+                format!("Download timeout: {}. The model file might be very large.", e)
+            } else if e.is_request() {
+                format!("Request error: {}. Please verify the repository and filename.", e)
+            } else {
+                format!("Network error: {}", e)
+            };
+            InferenceError::model_load(error_msg)
+        })?;
+
+    if !response.status().is_success() {
+        let status = response.status();
+        let error_msg = if status == 404 {
+            format!("Model not found (404): {}. Please check the repository name and filename.", url)
+        } else if status == 403 {
+            format!("Access denied (403): {}. The model might be private or require authentication.", url)
+        } else {
+            format!("HTTP error {}: Failed to download model from {}", status, url)
+        };
+        return Err(InferenceError::model_load(error_msg));
+    }
+
+    // Get content length if available
+    let total_bytes = response.content_length();
+    
+    // Update progress: downloading
+    {
+        let mut progress_map = DOWNLOAD_PROGRESS.write().await;
+        progress_map.insert(download_id.to_string(), DownloadProgress {
+            total_bytes,
+            downloaded_bytes: 0,
+            percentage: 0.0,
+            phase: DownloadPhase::Downloading,
+            message: Some(format!("Downloading model{}", 
+                if let Some(size) = total_bytes {
+                    format!(" ({:.1} MB)", size as f64 / 1024.0 / 1024.0)
+                } else {
+                    "...".to_string()
+                }
+            )),
+        });
+    }
+
+    println!("📥 Downloading model data...");
+    
+    // Download with progress reporting
+    let mut downloaded_bytes = 0u64;
+    let mut buffer = Vec::new();
+    let mut stream = response.bytes_stream();
+    
+    while let Some(chunk) = stream.next().await {
+        let chunk = chunk.map_err(|e| {
+            InferenceError::model_load(format!("Failed to read response bytes: {}", e))
+        })?;
+        
+        buffer.extend_from_slice(&chunk);
+        downloaded_bytes += chunk.len() as u64;
+        
+        // Calculate progress
+        let percentage = if let Some(total) = total_bytes {
+            (downloaded_bytes as f64 / total as f64) * 100.0
+        } else {
+            0.0
+        };
+        
+        // Update progress periodically (every 1MB or 10% to avoid too many updates)
+        if downloaded_bytes % (1024 * 1024) == 0 || 
+           (total_bytes.is_some() && (percentage as u64) % 10 == 0) {
+            let mut progress_map = DOWNLOAD_PROGRESS.write().await;
+            progress_map.insert(download_id.to_string(), DownloadProgress {
+                total_bytes,
+                downloaded_bytes,
+                percentage,
+                phase: DownloadPhase::Downloading,
+                message: Some(format!("Downloaded {:.1} MB{}", 
+                    downloaded_bytes as f64 / 1024.0 / 1024.0,
+                    if let Some(total) = total_bytes {
+                        format!(" of {:.1} MB", total as f64 / 1024.0 / 1024.0)
+                    } else {
+                        "".to_string()
+                    }
+                )),
+            });
+        }
+    }
+    
+    // Update progress: processing
+    {
+        let mut progress_map = DOWNLOAD_PROGRESS.write().await;
+        progress_map.insert(download_id.to_string(), DownloadProgress {
+            total_bytes,
+            downloaded_bytes,
+            percentage: if total_bytes.is_some() { 100.0 } else { 0.0 },
+            phase: DownloadPhase::Processing,
+            message: Some("Processing downloaded model...".to_string()),
+        });
+    }
+
+    println!("✅ Downloaded {} bytes successfully", buffer.len());
+    
+    Ok(buffer)
 }
 
 /// Session handle for managing loaded models
@@ -497,7 +714,7 @@ pub async fn load_from_huggingface(
                 let cache_key = format!("hf_{}_{}/{}", repo.replace('/', "_"), revision, filename);
                 
                 // Download and load from URL with progress
-                let model_bytes = download_model_with_progress(&url).await?;
+                let model_bytes = download_model_with_progress_callback_fn(&url, progress_callback).await?;
                 let session_info = load_model_from_bytes(model_bytes, SessionConfig::default()).await?;
                 return Ok(session_info);
             }
@@ -530,22 +747,7 @@ pub async fn load_from_huggingface(
     }
 }
 
-/// Stream download progress for HuggingFace model loading
-pub async fn download_progress_stream(
-    repo: String,
-    revision: Option<String>,
-    filename: Option<String>,
-) -> Result<impl futures::Stream<Item = DownloadProgress>, InferenceError> {
-    let revision = revision.unwrap_or_else(|| "main".to_string());
-    let filename = filename.unwrap_or_else(|| "model.safetensors".to_string());
-    
-    let url = format!(
-        "https://huggingface.co/{}/resolve/{}/{}",
-        repo, revision, filename
-    );
-    
-    download_model_progress_stream(&url).await
-}
+
 
 /// Create a progress stream for model download
 async fn download_model_progress_stream(
@@ -752,6 +954,163 @@ async fn download_model_with_progress(url: &str) -> Result<Vec<u8>, InferenceErr
 /// Download a model from URL (existing function - kept for compatibility)
 async fn download_model(url: &str) -> Result<Vec<u8>, InferenceError> {
     download_model_with_progress(url).await
+}
+
+/// Download a model from URL with progress callback function
+async fn download_model_with_progress_callback_fn(
+    url: &str,
+    progress_callback: impl Fn(DownloadProgress) + Send + Sync + 'static,
+) -> Result<Vec<u8>, InferenceError> {
+    use futures::StreamExt;
+    
+    println!("📡 Starting download from: {}", url);
+    
+    // Send connecting progress
+    progress_callback(DownloadProgress {
+        total_bytes: None,
+        downloaded_bytes: 0,
+        percentage: 0.0,
+        phase: DownloadPhase::Connecting,
+        message: Some("Connecting to server...".to_string()),
+    });
+    
+    let client = reqwest::Client::builder()
+        .user_agent("inference-flutter/1.0.0")
+        .timeout(std::time::Duration::from_secs(300)) // 5 minute timeout
+        .build()
+        .map_err(|e| InferenceError::model_load(format!("Failed to create HTTP client: {}", e)))?;
+
+    let response = client
+        .get(url)
+        .send()
+        .await
+        .map_err(|e| {
+            progress_callback(DownloadProgress {
+                total_bytes: None,
+                downloaded_bytes: 0,
+                percentage: 0.0,
+                phase: DownloadPhase::Failed,
+                message: Some(format!("Connection failed: {}", e)),
+            });
+            
+            let error_msg = if e.is_connect() {
+                format!("Failed to connect to HuggingFace: {}. Please check your internet connection.", e)
+            } else if e.is_timeout() {
+                format!("Download timeout: {}. The model file might be very large.", e)
+            } else if e.is_request() {
+                format!("Request error: {}. Please verify the repository and filename.", e)
+            } else {
+                format!("Network error: {}", e)
+            };
+            InferenceError::model_load(error_msg)
+        })?;
+
+    if !response.status().is_success() {
+        let status = response.status();
+        let error_msg = if status == 404 {
+            format!("Model not found (404): {}. Please check the repository name and filename.", url)
+        } else if status == 403 {
+            format!("Access denied (403): {}. The model might be private or require authentication.", url)
+        } else {
+            format!("HTTP error {}: Failed to download model from {}", status, url)
+        };
+        
+        progress_callback(DownloadProgress {
+            total_bytes: None,
+            downloaded_bytes: 0,
+            percentage: 0.0,
+            phase: DownloadPhase::Failed,
+            message: Some(error_msg.clone()),
+        });
+        
+        return Err(InferenceError::model_load(error_msg));
+    }
+
+    // Get content length if available
+    let total_bytes = response.content_length();
+    
+    // Send downloading progress
+    progress_callback(DownloadProgress {
+        total_bytes,
+        downloaded_bytes: 0,
+        percentage: 0.0,
+        phase: DownloadPhase::Downloading,
+        message: Some(format!("Downloading model{}", 
+            if let Some(size) = total_bytes {
+                format!(" ({:.1} MB)", size as f64 / 1024.0 / 1024.0)
+            } else {
+                "...".to_string()
+            }
+        )),
+    });
+
+    println!("📥 Downloading model data...");
+    
+    // Download with progress reporting
+    let mut downloaded_bytes = 0u64;
+    let mut buffer = Vec::new();
+    let mut stream = response.bytes_stream();
+    
+    while let Some(chunk) = stream.next().await {
+        let chunk = chunk.map_err(|e| {
+            progress_callback(DownloadProgress {
+                total_bytes,
+                downloaded_bytes,
+                percentage: 0.0,
+                phase: DownloadPhase::Failed,
+                message: Some(format!("Download failed: {}", e)),
+            });
+            InferenceError::model_load(format!("Failed to read response bytes: {}", e))
+        })?;
+        
+        buffer.extend_from_slice(&chunk);
+        downloaded_bytes += chunk.len() as u64;
+        
+        // Calculate progress
+        let percentage = if let Some(total) = total_bytes {
+            (downloaded_bytes as f64 / total as f64) * 100.0
+        } else {
+            0.0
+        };
+        
+        // Send progress update
+        progress_callback(DownloadProgress {
+            total_bytes,
+            downloaded_bytes,
+            percentage,
+            phase: DownloadPhase::Downloading,
+            message: Some(format!("Downloaded {:.1} MB{}", 
+                downloaded_bytes as f64 / 1024.0 / 1024.0,
+                if let Some(total) = total_bytes {
+                    format!(" of {:.1} MB", total as f64 / 1024.0 / 1024.0)
+                } else {
+                    "".to_string()
+                }
+            )),
+        });
+    }
+    
+    // Send processing progress
+    progress_callback(DownloadProgress {
+        total_bytes,
+        downloaded_bytes,
+        percentage: if total_bytes.is_some() { 100.0 } else { 0.0 },
+        phase: DownloadPhase::Processing,
+        message: Some("Processing downloaded model...".to_string()),
+    });
+
+    println!("✅ Downloaded {} bytes successfully", buffer.len());
+    
+    // Send completion progress
+    progress_callback(DownloadProgress {
+        total_bytes: Some(downloaded_bytes),
+        downloaded_bytes,
+        percentage: 100.0,
+        phase: DownloadPhase::Completed,
+        message: Some("Download completed successfully!".to_string()),
+    });
+    
+    Ok(buffer)
 }
 
 /// Get cache directory path

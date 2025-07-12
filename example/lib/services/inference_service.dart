@@ -56,38 +56,38 @@ class InferenceService extends ChangeNotifier {
     String engine,
   ) async {
     try {
-      print('🚀 InferenceService: Starting $engine inference...');
-      print('📊 InferenceService: Input type: ${input.runtimeType}');
-      print('📊 InferenceService: Session: $session');
+      debugPrint('🚀 InferenceService: Starting $engine inference...');
+      debugPrint('📊 InferenceService: Input type: ${input.runtimeType}');
+      debugPrint('📊 InferenceService: Session: $session');
 
       _setLoading(true, 'Running $engine inference...');
 
       final stopwatch = Stopwatch()..start();
-      print('⚡ InferenceService: Calling session.predict()...');
+      debugPrint('⚡ InferenceService: Calling session.predict()...');
       final result = await session.predict(input);
       stopwatch.stop();
 
       final inferenceTime = stopwatch.elapsedMilliseconds.toDouble();
       _recordInferenceTime(engine, inferenceTime);
 
-      print(
+      debugPrint(
         '✅ InferenceService: Inference completed successfully in ${inferenceTime}ms',
       );
-      print('📊 InferenceService: Result: $result');
+      debugPrint('📊 InferenceService: Result: $result');
 
       _setLoading(false);
       return result;
     } catch (e, stackTrace) {
       final errorMsg = 'Inference failed: $e';
-      print('❌ InferenceService: $errorMsg');
-      print('📍 InferenceService: Full error details:');
-      print('   - Error type: ${e.runtimeType}');
-      print('   - Error message: $e');
-      print('   - Input type: ${input.runtimeType}');
-      print('   - Engine: $engine');
-      print('   - Session: $session');
-      print('📍 InferenceService: Stack trace:');
-      print('$stackTrace');
+      debugPrint('❌ InferenceService: $errorMsg');
+      debugPrint('📍 InferenceService: Full error details:');
+      debugPrint('   - Error type: ${e.runtimeType}');
+      debugPrint('   - Error message: $e');
+      debugPrint('   - Input type: ${input.runtimeType}');
+      debugPrint('   - Engine: $engine');
+      debugPrint('   - Session: $session');
+      debugPrint('📍 InferenceService: Stack trace:');
+      debugPrint('$stackTrace');
 
       _setError(errorMsg);
       return null;
@@ -101,10 +101,10 @@ class InferenceService extends ChangeNotifier {
     String? revision,
   }) async {
     try {
-      print('🚀 InferenceService: Loading model from HuggingFace Hub...');
-      print('📊 InferenceService: Repository: $repo');
-      print('📊 InferenceService: Filename: $filename');
-      print('📊 InferenceService: Revision: ${revision ?? 'main'}');
+      debugPrint('🚀 InferenceService: Loading model from HuggingFace Hub...');
+      debugPrint('📊 InferenceService: Repository: $repo');
+      debugPrint('📊 InferenceService: Filename: $filename');
+      debugPrint('📊 InferenceService: Revision: ${revision ?? 'main'}');
 
       _setLoading(true, 'Downloading model from HuggingFace Hub...');
 
@@ -120,17 +120,17 @@ class InferenceService extends ChangeNotifier {
       final loadTime = stopwatch.elapsedMilliseconds.toDouble();
       _recordLoadTime('huggingface', loadTime);
 
-      print(
+      debugPrint(
         '✅ InferenceService: HuggingFace model loaded successfully in ${loadTime}ms',
       );
-      print('📊 InferenceService: Session details: $session');
+      debugPrint('📊 InferenceService: Session details: $session');
 
       _setLoading(false);
       return session;
     } catch (e, stackTrace) {
       final errorMsg = 'Failed to load HuggingFace model: $e';
-      print('❌ InferenceService: $errorMsg');
-      print('📍 InferenceService: Stack trace: $stackTrace');
+      debugPrint('❌ InferenceService: $errorMsg');
+      debugPrint('📍 InferenceService: Stack trace: $stackTrace');
 
       _setError(errorMsg);
       return null;

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:inference/inference.dart';
+import 'package:inference/src/rust/api/inference.dart' as rust_api;
 import '../services/inference_service.dart';
 import 'package:http/http.dart' as http;
+import 'dart:async';
 
 class HuggingFaceDemoScreen extends StatefulWidget {
   const HuggingFaceDemoScreen({super.key});
@@ -23,6 +25,11 @@ class _HuggingFaceDemoScreenState extends State<HuggingFaceDemoScreen> {
   String _selectedModel = 'bert';
   String? _networkTestResult;
 
+  // Progress tracking
+  Timer? _progressTimer;
+  rust_api.DownloadProgress? _downloadProgress;
+  String? _currentDownloadId;
+
   // Sample texts for BERT testing
   final List<String> _sampleTexts = [
     "The weather is beautiful today!",
@@ -35,126 +42,176 @@ class _HuggingFaceDemoScreenState extends State<HuggingFaceDemoScreen> {
   @override
   void initState() {
     super.initState();
-    _textController.text = _sampleTexts.first;
+    _textController.text = 'The weather is beautiful today!';
   }
 
   @override
   void dispose() {
-    _bertModel?.dispose();
-    _resnetModel?.dispose();
+    _progressTimer?.cancel();
     _textController.dispose();
     super.dispose();
   }
 
-  Future<void> _loadBertFromHuggingFace() async {
-    final service = context.read<InferenceService>();
+  /// Start progress monitoring for a download
+  void _startProgressMonitoring(String downloadId) {
+    _currentDownloadId = downloadId;
+    _progressTimer?.cancel();
+    _progressTimer = Timer.periodic(const Duration(milliseconds: 500), (
+      timer,
+    ) async {
+      try {
+        final progress = await rust_api.getDownloadProgress(repo: downloadId);
+        if (mounted) {
+          setState(() {
+            _downloadProgress = progress;
+          });
 
+          // Stop monitoring when download is completed or failed
+          if (progress != null &&
+              (progress.phase == rust_api.DownloadPhase.completed ||
+                  progress.phase == rust_api.DownloadPhase.failed)) {
+            timer.cancel();
+            _progressTimer = null;
+          }
+        }
+      } catch (e) {
+        print('Error getting download progress: $e');
+      }
+    });
+  }
+
+  /// Stop progress monitoring
+  void _stopProgressMonitoring() {
+    _progressTimer?.cancel();
+    _progressTimer = null;
+    _currentDownloadId = null;
+    if (mounted) {
+      setState(() {
+        _downloadProgress = null;
+      });
+    }
+  }
+
+  Future<void> _testNetworkConnectivity() async {
+    setState(() {
+      _networkTestResult = null;
+    });
+
+    try {
+      final response = await http
+          .get(
+            Uri.parse('https://huggingface.co/google-bert/bert-base-uncased'),
+            headers: {'User-Agent': 'Flutter-Inference-Test/1.0'},
+          )
+          .timeout(const Duration(seconds: 10));
+
+      setState(() {
+        _networkTestResult = 'Network connectivity OK (${response.statusCode})';
+      });
+    } catch (e) {
+      setState(() {
+        _networkTestResult = 'Network test failed: $e';
+      });
+    }
+  }
+
+  Future<void> _loadBertFromHuggingFace() async {
     setState(() {
       _isLoadingBert = true;
       _loadError = null;
+      _downloadProgress = null;
     });
 
     try {
       print('🤗 Loading BERT model from HuggingFace Hub...');
 
-      // Load BERT model from HuggingFace Hub
+      final service = Provider.of<InferenceService>(context, listen: false);
+
+      // Start download with progress tracking
+      final downloadId = await rust_api.startDownloadWithProgress(
+        repo: 'google-bert/bert-base-uncased',
+        revision: 'main',
+        filename: 'model.safetensors',
+      );
+
+      print('📊 Started download with ID: $downloadId');
+      _startProgressMonitoring(downloadId);
+
+      // Load the model (this will wait for the download to complete)
       final model = await service.loadFromHuggingFace(
         repo: 'google-bert/bert-base-uncased',
         filename: 'model.safetensors',
         revision: 'main',
       );
 
-      if (model != null && mounted) {
+      if (model != null) {
         setState(() {
           _bertModel = model;
           _isLoadingBert = false;
-          _loadError = null;
         });
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('✅ BERT model loaded successfully from HuggingFace!'),
-            backgroundColor: Colors.green,
-          ),
-        );
+        print('✅ Successfully loaded BERT model');
       } else {
         throw Exception('Model loading returned null');
       }
-    } catch (e, stackTrace) {
+    } catch (e) {
+      setState(() {
+        _loadError = e.toString();
+        _isLoadingBert = false;
+      });
       print('❌ Failed to load BERT model: $e');
-      print('📍 Stack trace: $stackTrace');
-
-      if (mounted) {
-        setState(() {
-          _isLoadingBert = false;
-          _loadError = e.toString();
-        });
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to load BERT model: $e'),
-            backgroundColor: Colors.red,
-            duration: const Duration(seconds: 5),
-          ),
-        );
-      }
+      print('📍 Stack trace: ${StackTrace.current}');
+    } finally {
+      _stopProgressMonitoring();
     }
   }
 
   Future<void> _loadResNetFromHuggingFace() async {
-    final service = context.read<InferenceService>();
-
     setState(() {
       _isLoadingResNet = true;
       _loadError = null;
+      _downloadProgress = null;
     });
 
     try {
       print('🤗 Loading ResNet model from HuggingFace Hub...');
 
-      // Load ResNet model from HuggingFace Hub
+      final service = Provider.of<InferenceService>(context, listen: false);
+
+      // Start download with progress tracking
+      final downloadId = await rust_api.startDownloadWithProgress(
+        repo: 'microsoft/resnet-50',
+        revision: 'main',
+        filename: 'model.safetensors',
+      );
+
+      print('📊 Started download with ID: $downloadId');
+      _startProgressMonitoring(downloadId);
+
+      // Load the model (this will wait for the download to complete)
       final model = await service.loadFromHuggingFace(
         repo: 'microsoft/resnet-50',
         filename: 'model.safetensors',
         revision: 'main',
       );
 
-      if (model != null && mounted) {
+      if (model != null) {
         setState(() {
           _resnetModel = model;
           _isLoadingResNet = false;
-          _loadError = null;
         });
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              '✅ ResNet model loaded successfully from HuggingFace!',
-            ),
-            backgroundColor: Colors.green,
-          ),
-        );
+        print('✅ Successfully loaded ResNet model');
       } else {
         throw Exception('Model loading returned null');
       }
-    } catch (e, stackTrace) {
+    } catch (e) {
+      setState(() {
+        _loadError = e.toString();
+        _isLoadingResNet = false;
+      });
       print('❌ Failed to load ResNet model: $e');
-      print('📍 Stack trace: $stackTrace');
-
-      if (mounted) {
-        setState(() {
-          _isLoadingResNet = false;
-          _loadError = e.toString();
-        });
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to load ResNet model: $e'),
-            backgroundColor: Colors.red,
-            duration: const Duration(seconds: 5),
-          ),
-        );
-      }
+      print('📍 Stack trace: ${StackTrace.current}');
+    } finally {
+      _stopProgressMonitoring();
     }
   }
 
@@ -237,47 +294,160 @@ class _HuggingFaceDemoScreenState extends State<HuggingFaceDemoScreen> {
     }
   }
 
-  Future<void> _testNetworkConnectivity() async {
-    setState(() {
-      _networkTestResult = 'Testing network connectivity...';
-    });
-
-    try {
-      print('🌐 Testing network connectivity...');
-      final response = await http
-          .get(
-            Uri.parse('https://httpbin.org/json'),
-            headers: {'User-Agent': 'Flutter-Inference-Test/1.0'},
-          )
-          .timeout(const Duration(seconds: 10));
-
-      if (response.statusCode == 200) {
-        setState(() {
-          _networkTestResult =
-              '✅ Network connectivity OK (${response.statusCode})';
-        });
-        print('✅ Network test successful');
-      } else {
-        setState(() {
-          _networkTestResult =
-              '⚠️ Network test failed: HTTP ${response.statusCode}';
-        });
-        print('⚠️ Network test failed: ${response.statusCode}');
-      }
-    } catch (e) {
-      setState(() {
-        _networkTestResult = '❌ Network test failed: $e';
-      });
-      print('❌ Network test failed: $e');
-    }
-  }
-
   void _useSampleText(String text) {
     _textController.text = text;
     setState(() {
       _result = null;
       _processingTime = null;
     });
+  }
+
+  /// Build download progress widget
+  Widget _buildDownloadProgress() {
+    if (_downloadProgress == null) return const SizedBox.shrink();
+
+    final progress = _downloadProgress!;
+    final isDownloading = progress.phase == rust_api.DownloadPhase.downloading;
+
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  _getPhaseIcon(progress.phase),
+                  color: _getPhaseColor(progress.phase),
+                  size: 20,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  'Download Progress',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+
+            // Progress bar
+            if (isDownloading && progress.totalBytes != null)
+              Column(
+                children: [
+                  LinearProgressIndicator(
+                    value: progress.percentage / 100.0,
+                    backgroundColor: Colors.grey[300],
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      _getPhaseColor(progress.phase),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        '${progress.percentage.toStringAsFixed(1)}%',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      Text(
+                        '${_formatBytes(progress.downloadedBytes.toInt())} / ${_formatBytes(progress.totalBytes!.toInt())}',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                    ],
+                  ),
+                ],
+              )
+            else if (isDownloading)
+              const LinearProgressIndicator(),
+
+            // Status message
+            if (progress.message != null) ...[
+              const SizedBox(height: 8),
+              Text(
+                progress.message!,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+            ],
+
+            // Phase indicator
+            const SizedBox(height: 8),
+            Chip(
+              label: Text(_getPhaseText(progress.phase)),
+              backgroundColor: _getPhaseColor(progress.phase).withOpacity(0.1),
+              labelStyle: TextStyle(
+                color: _getPhaseColor(progress.phase),
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// Get icon for download phase
+  IconData _getPhaseIcon(rust_api.DownloadPhase phase) {
+    switch (phase) {
+      case rust_api.DownloadPhase.connecting:
+        return Icons.wifi_find;
+      case rust_api.DownloadPhase.downloading:
+        return Icons.download;
+      case rust_api.DownloadPhase.processing:
+        return Icons.settings;
+      case rust_api.DownloadPhase.caching:
+        return Icons.save;
+      case rust_api.DownloadPhase.completed:
+        return Icons.check_circle;
+      case rust_api.DownloadPhase.failed:
+        return Icons.error;
+    }
+  }
+
+  /// Get color for download phase
+  Color _getPhaseColor(rust_api.DownloadPhase phase) {
+    switch (phase) {
+      case rust_api.DownloadPhase.connecting:
+        return Colors.blue;
+      case rust_api.DownloadPhase.downloading:
+        return Colors.green;
+      case rust_api.DownloadPhase.processing:
+        return Colors.orange;
+      case rust_api.DownloadPhase.caching:
+        return Colors.purple;
+      case rust_api.DownloadPhase.completed:
+        return Colors.green;
+      case rust_api.DownloadPhase.failed:
+        return Colors.red;
+    }
+  }
+
+  /// Get text for download phase
+  String _getPhaseText(rust_api.DownloadPhase phase) {
+    switch (phase) {
+      case rust_api.DownloadPhase.connecting:
+        return 'Connecting';
+      case rust_api.DownloadPhase.downloading:
+        return 'Downloading';
+      case rust_api.DownloadPhase.processing:
+        return 'Processing';
+      case rust_api.DownloadPhase.caching:
+        return 'Caching';
+      case rust_api.DownloadPhase.completed:
+        return 'Completed';
+      case rust_api.DownloadPhase.failed:
+        return 'Failed';
+    }
+  }
+
+  /// Format bytes to human readable format
+  String _formatBytes(int bytes) {
+    if (bytes < 1024) return '$bytes B';
+    if (bytes < 1024 * 1024) return '${(bytes / 1024).toStringAsFixed(1)} KB';
+    if (bytes < 1024 * 1024 * 1024)
+      return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
+    return '${(bytes / (1024 * 1024 * 1024)).toStringAsFixed(1)} GB';
   }
 
   @override
@@ -498,6 +668,54 @@ class _HuggingFaceDemoScreenState extends State<HuggingFaceDemoScreen> {
                     ),
                   ),
                 ),
+
+                // Download Progress Section
+                _buildDownloadProgress(),
+
+                // Error Display Section
+                if (_loadError != null) ...[
+                  Card(
+                    color: Colors.red[50],
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              const Icon(Icons.error, color: Colors.red),
+                              const SizedBox(width: 8),
+                              Text(
+                                'Loading Error',
+                                style: Theme.of(context).textTheme.titleMedium
+                                    ?.copyWith(color: Colors.red[700]),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            _loadError!,
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(color: Colors.red[700]),
+                          ),
+                          const SizedBox(height: 8),
+                          ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                _loadError = null;
+                              });
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red[100],
+                              foregroundColor: Colors.red[700],
+                            ),
+                            child: const Text('Dismiss'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
 
                 const SizedBox(height: 16),
 

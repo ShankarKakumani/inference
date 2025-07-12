@@ -31,16 +31,28 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   bool dco_decode_bool(dynamic raw);
 
   @protected
+  DownloadProgress dco_decode_box_autoadd_download_progress(dynamic raw);
+
+  @protected
   InferenceInput dco_decode_box_autoadd_inference_input(dynamic raw);
 
   @protected
   SessionConfig dco_decode_box_autoadd_session_config(dynamic raw);
 
   @protected
+  BigInt dco_decode_box_autoadd_u_64(dynamic raw);
+
+  @protected
   BigInt dco_decode_box_autoadd_usize(dynamic raw);
 
   @protected
   DataType dco_decode_data_type(dynamic raw);
+
+  @protected
+  DownloadPhase dco_decode_download_phase(dynamic raw);
+
+  @protected
+  DownloadProgress dco_decode_download_progress(dynamic raw);
 
   @protected
   double dco_decode_f_32(dynamic raw);
@@ -100,6 +112,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   String? dco_decode_opt_String(dynamic raw);
 
   @protected
+  DownloadProgress? dco_decode_opt_box_autoadd_download_progress(dynamic raw);
+
+  @protected
+  BigInt? dco_decode_opt_box_autoadd_u_64(dynamic raw);
+
+  @protected
   BigInt? dco_decode_opt_box_autoadd_usize(dynamic raw);
 
   @protected
@@ -137,6 +155,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   bool sse_decode_bool(SseDeserializer deserializer);
 
   @protected
+  DownloadProgress sse_decode_box_autoadd_download_progress(
+      SseDeserializer deserializer);
+
+  @protected
   InferenceInput sse_decode_box_autoadd_inference_input(
       SseDeserializer deserializer);
 
@@ -145,10 +167,19 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  BigInt sse_decode_box_autoadd_u_64(SseDeserializer deserializer);
+
+  @protected
   BigInt sse_decode_box_autoadd_usize(SseDeserializer deserializer);
 
   @protected
   DataType sse_decode_data_type(SseDeserializer deserializer);
+
+  @protected
+  DownloadPhase sse_decode_download_phase(SseDeserializer deserializer);
+
+  @protected
+  DownloadProgress sse_decode_download_progress(SseDeserializer deserializer);
 
   @protected
   double sse_decode_f_32(SseDeserializer deserializer);
@@ -213,6 +244,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   String? sse_decode_opt_String(SseDeserializer deserializer);
 
   @protected
+  DownloadProgress? sse_decode_opt_box_autoadd_download_progress(
+      SseDeserializer deserializer);
+
+  @protected
+  BigInt? sse_decode_opt_box_autoadd_u_64(SseDeserializer deserializer);
+
+  @protected
   BigInt? sse_decode_opt_box_autoadd_usize(SseDeserializer deserializer);
 
   @protected
@@ -251,6 +289,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_bool(bool self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_download_progress(
+      DownloadProgress self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_inference_input(
       InferenceInput self, SseSerializer serializer);
 
@@ -259,10 +301,20 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SessionConfig self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_u_64(BigInt self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_usize(BigInt self, SseSerializer serializer);
 
   @protected
   void sse_encode_data_type(DataType self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_download_phase(DownloadPhase self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_download_progress(
+      DownloadProgress self, SseSerializer serializer);
 
   @protected
   void sse_encode_f_32(double self, SseSerializer serializer);
@@ -333,6 +385,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_opt_String(String? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_download_progress(
+      DownloadProgress? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_u_64(BigInt? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_autoadd_usize(BigInt? self, SseSerializer serializer);

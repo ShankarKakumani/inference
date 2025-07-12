@@ -37,7 +37,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueMoi,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.11.1";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 1818969595;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 585097583;
 
 // Section: executor
 
@@ -236,6 +236,44 @@ fn wire__crate__api__inference__get_cache_size_impl(
                 transform_result_sse::<_, crate::models::error::InferenceError>(
                     (move || async move {
                         let output_ok = crate::api::inference::get_cache_size().await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
+fn wire__crate__api__inference__get_download_progress_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "get_download_progress",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_repo = <String>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, ()>(
+                    (move || async move {
+                        let output_ok = Result::<_, ()>::Ok(
+                            crate::api::inference::get_download_progress(api_repo).await,
+                        )?;
                         Ok(output_ok)
                     })()
                     .await,
@@ -800,6 +838,49 @@ fn wire__crate__api__inference__session_config_default_impl(
         },
     )
 }
+fn wire__crate__api__inference__start_download_with_progress_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "start_download_with_progress",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_repo = <String>::sse_decode(&mut deserializer);
+            let api_revision = <Option<String>>::sse_decode(&mut deserializer);
+            let api_filename = <Option<String>>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, crate::models::error::InferenceError>(
+                    (move || async move {
+                        let output_ok = crate::api::inference::start_download_with_progress(
+                            api_repo,
+                            api_revision,
+                            api_filename,
+                        )
+                        .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
 fn wire__crate__api__inference__train_linfa_model_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
@@ -883,6 +964,40 @@ impl SseDecode for crate::models::tensor::DataType {
             5 => crate::models::tensor::DataType::U32,
             6 => crate::models::tensor::DataType::Bool,
             _ => unreachable!("Invalid variant for DataType: {}", inner),
+        };
+    }
+}
+
+impl SseDecode for crate::api::inference::DownloadPhase {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => crate::api::inference::DownloadPhase::Connecting,
+            1 => crate::api::inference::DownloadPhase::Downloading,
+            2 => crate::api::inference::DownloadPhase::Processing,
+            3 => crate::api::inference::DownloadPhase::Caching,
+            4 => crate::api::inference::DownloadPhase::Completed,
+            5 => crate::api::inference::DownloadPhase::Failed,
+            _ => unreachable!("Invalid variant for DownloadPhase: {}", inner),
+        };
+    }
+}
+
+impl SseDecode for crate::api::inference::DownloadProgress {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_totalBytes = <Option<u64>>::sse_decode(deserializer);
+        let mut var_downloadedBytes = <u64>::sse_decode(deserializer);
+        let mut var_percentage = <f64>::sse_decode(deserializer);
+        let mut var_phase = <crate::api::inference::DownloadPhase>::sse_decode(deserializer);
+        let mut var_message = <Option<String>>::sse_decode(deserializer);
+        return crate::api::inference::DownloadProgress {
+            total_bytes: var_totalBytes,
+            downloaded_bytes: var_downloadedBytes,
+            percentage: var_percentage,
+            phase: var_phase,
+            message: var_message,
         };
     }
 }
@@ -1157,6 +1272,30 @@ impl SseDecode for Option<String> {
     }
 }
 
+impl SseDecode for Option<crate::api::inference::DownloadProgress> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<crate::api::inference::DownloadProgress>::sse_decode(
+                deserializer,
+            ));
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<u64> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<u64>::sse_decode(deserializer));
+        } else {
+            return None;
+        }
+    }
+}
+
 impl SseDecode for Option<usize> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -1264,52 +1403,64 @@ fn pde_ffi_dispatcher_primary_impl(
         1 => wire__crate__api__inference__clear_cache_impl(port, ptr, rust_vec_len, data_len),
         4 => wire__crate__api__inference__dispose_session_impl(port, ptr, rust_vec_len, data_len),
         6 => wire__crate__api__inference__get_cache_size_impl(port, ptr, rust_vec_len, data_len),
-        7 => wire__crate__api__inference__get_session_info_impl(port, ptr, rust_vec_len, data_len),
-        9 => wire__crate__api__simple__init_app_impl(port, ptr, rust_vec_len, data_len),
-        10 => wire__crate__api__inference__init_inference_impl(port, ptr, rust_vec_len, data_len),
-        12 => wire__crate__api__inference__load_from_huggingface_impl(
+        7 => wire__crate__api__inference__get_download_progress_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        13 => wire__crate__api__inference__load_model_impl(port, ptr, rust_vec_len, data_len),
-        14 => wire__crate__api__inference__load_model_from_bytes_impl(
+        8 => wire__crate__api__inference__get_session_info_impl(port, ptr, rust_vec_len, data_len),
+        10 => wire__crate__api__simple__init_app_impl(port, ptr, rust_vec_len, data_len),
+        11 => wire__crate__api__inference__init_inference_impl(port, ptr, rust_vec_len, data_len),
+        13 => wire__crate__api__inference__load_from_huggingface_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        15 => wire__crate__api__inference__load_model_from_file_impl(
+        14 => wire__crate__api__inference__load_model_impl(port, ptr, rust_vec_len, data_len),
+        15 => wire__crate__api__inference__load_model_from_bytes_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        16 => {
+        16 => wire__crate__api__inference__load_model_from_file_impl(
+            port,
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        17 => {
             wire__crate__api__inference__load_model_from_url_impl(port, ptr, rust_vec_len, data_len)
         }
-        17 => wire__crate__api__inference__load_model_with_candle_impl(
+        18 => wire__crate__api__inference__load_model_with_candle_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        18 => wire__crate__api__inference__load_model_with_config_impl(
+        19 => wire__crate__api__inference__load_model_with_config_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        19 => wire__crate__api__inference__predict_impl(port, ptr, rust_vec_len, data_len),
-        20 => wire__crate__api__inference__predict_batch_impl(port, ptr, rust_vec_len, data_len),
-        21 => wire__crate__api__inference__session_config_default_impl(
+        20 => wire__crate__api__inference__predict_impl(port, ptr, rust_vec_len, data_len),
+        21 => wire__crate__api__inference__predict_batch_impl(port, ptr, rust_vec_len, data_len),
+        22 => wire__crate__api__inference__session_config_default_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        22 => {
+        23 => wire__crate__api__inference__start_download_with_progress_impl(
+            port,
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        24 => {
             wire__crate__api__inference__train_linfa_model_impl(port, ptr, rust_vec_len, data_len)
         }
         _ => unreachable!(),
@@ -1329,8 +1480,8 @@ fn pde_ffi_dispatcher_sync_impl(
         }
         3 => wire__crate__api__inference__detect_engine_from_path_impl(ptr, rust_vec_len, data_len),
         5 => wire__crate__api__inference__get_available_engines_impl(ptr, rust_vec_len, data_len),
-        8 => wire__crate__api__simple__greet_impl(ptr, rust_vec_len, data_len),
-        11 => wire__crate__api__inference__is_engine_available_impl(ptr, rust_vec_len, data_len),
+        9 => wire__crate__api__simple__greet_impl(ptr, rust_vec_len, data_len),
+        12 => wire__crate__api__inference__is_engine_available_impl(ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }
@@ -1360,6 +1511,55 @@ impl flutter_rust_bridge::IntoIntoDart<crate::models::tensor::DataType>
     for crate::models::tensor::DataType
 {
     fn into_into_dart(self) -> crate::models::tensor::DataType {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::inference::DownloadPhase {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self {
+            Self::Connecting => 0.into_dart(),
+            Self::Downloading => 1.into_dart(),
+            Self::Processing => 2.into_dart(),
+            Self::Caching => 3.into_dart(),
+            Self::Completed => 4.into_dart(),
+            Self::Failed => 5.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::inference::DownloadPhase
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::inference::DownloadPhase>
+    for crate::api::inference::DownloadPhase
+{
+    fn into_into_dart(self) -> crate::api::inference::DownloadPhase {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::inference::DownloadProgress {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.total_bytes.into_into_dart().into_dart(),
+            self.downloaded_bytes.into_into_dart().into_dart(),
+            self.percentage.into_into_dart().into_dart(),
+            self.phase.into_into_dart().into_dart(),
+            self.message.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::inference::DownloadProgress
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::inference::DownloadProgress>
+    for crate::api::inference::DownloadProgress
+{
+    fn into_into_dart(self) -> crate::api::inference::DownloadProgress {
         self
     }
 }
@@ -1582,6 +1782,37 @@ impl SseEncode for crate::models::tensor::DataType {
             },
             serializer,
         );
+    }
+}
+
+impl SseEncode for crate::api::inference::DownloadPhase {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                crate::api::inference::DownloadPhase::Connecting => 0,
+                crate::api::inference::DownloadPhase::Downloading => 1,
+                crate::api::inference::DownloadPhase::Processing => 2,
+                crate::api::inference::DownloadPhase::Caching => 3,
+                crate::api::inference::DownloadPhase::Completed => 4,
+                crate::api::inference::DownloadPhase::Failed => 5,
+                _ => {
+                    unimplemented!("");
+                }
+            },
+            serializer,
+        );
+    }
+}
+
+impl SseEncode for crate::api::inference::DownloadProgress {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Option<u64>>::sse_encode(self.total_bytes, serializer);
+        <u64>::sse_encode(self.downloaded_bytes, serializer);
+        <f64>::sse_encode(self.percentage, serializer);
+        <crate::api::inference::DownloadPhase>::sse_encode(self.phase, serializer);
+        <Option<String>>::sse_encode(self.message, serializer);
     }
 }
 
@@ -1808,6 +2039,26 @@ impl SseEncode for Option<String> {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
             <String>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<crate::api::inference::DownloadProgress> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <crate::api::inference::DownloadProgress>::sse_encode(value, serializer);
+        }
+    }
+}
+
+impl SseEncode for Option<u64> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.is_some(), serializer);
+        if let Some(value) = self {
+            <u64>::sse_encode(value, serializer);
         }
     }
 }
