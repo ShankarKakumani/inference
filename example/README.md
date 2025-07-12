@@ -1,148 +1,120 @@
-# Inference Package Examples
+# HuggingFace Integration Demo
 
-This directory contains comprehensive examples demonstrating how to use the **Inference** package for machine learning in Flutter applications.
+This is a Flutter app that demonstrates the HuggingFace integration capabilities of the Inference package. It showcases how to download and use models directly from the HuggingFace Hub.
 
-## 🚀 Quick Start
+## Features
 
-The simplest way to get started with the Inference package:
+- **Real HuggingFace Integration**: Download models directly from HuggingFace Hub using the `hf-hub` Rust crate
+- **Automatic Caching**: Models are cached locally after first download for faster subsequent loads
+- **Fallback Mechanism**: If `hf-hub` fails, the app falls back to direct URL downloads
+- **Multiple Model Types**: Supports both BERT (NLP) and ResNet (Computer Vision) models
+- **Real-time Inference**: Run inference on downloaded models with performance metrics
 
-```dart
-import 'package:inference/inference.dart';
+## Supported Models
 
-// Initialize the library
-await RustLib.init();
+### BERT (Natural Language Processing)
+- **Repository**: `google-bert/bert-base-uncased`
+- **Use Case**: Text embeddings and NLP tasks
+- **Input**: Text strings
+- **Output**: 768-dimensional embeddings
 
-// Load any ML model with automatic engine detection
-final model = await InferenceSession.load('path/to/model.safetensors');
+### ResNet (Computer Vision)
+- **Repository**: `microsoft/resnet-50`
+- **Use Case**: Image classification
+- **Input**: Tensor data (demo uses dummy input)
+- **Output**: 1000-class logits
 
-// Create input and run inference
-final input = await ImageInput.fromAsset('path/to/image.jpg');
-final result = await model.predict(input);
+## Getting Started
 
-// Get top prediction
-final topPrediction = result.topK(1).first;
-print('Prediction: Class ${topPrediction.classIndex} (${topPrediction.confidence})');
-
-// Clean up
-model.dispose();
-```
-
-## 📁 Example Structure
-
-### 🎯 **Standalone Examples**
-- **`example.dart`** - Simple standalone example showing core functionality
-- **`main.dart`** - Full Flutter app with comprehensive UI
-
-### 🖼️ **Image Classification**
-```dart
-// Load MobileNet model
-final session = await InferenceSession.load('assets/models/mobilenet_v2.safetensors');
-
-// Process image
-final input = await ImageInput.fromAsset('assets/images/cat.jpg');
-final result = await session.predict(input);
-
-// Get top 5 predictions
-final predictions = result.topK(5);
-for (final pred in predictions) {
-  print('${pred.classIndex}: ${(pred.confidence * 100).toStringAsFixed(2)}%');
-}
-```
-
-### 🧠 **On-Device Training**
-```dart
-// Train K-means clustering on device
-final session = await LinfaSession.trainKMeans(
-  data: [[1.0, 2.0], [8.0, 9.0]], // Your training data
-  numClusters: 2,
-);
-
-// Make predictions
-final input = TensorInput.fromList([5.0, 6.0]);
-final result = await session.predict(input);
-print('Cluster: ${result.argmax}');
-```
-
-### 📝 **Text Sentiment Analysis**
-```dart
-// Load safetensors sentiment model
-final session = await InferenceSession.load('assets/models/sentiment_model.safetensors');
-
-// Analyze text
-final input = NLPInput('This movie is amazing!');
-final result = await session.predict(input);
-
-// Get sentiment (0=negative, 1=positive)
-final sentiment = result.argmax == 1 ? 'Positive' : 'Negative';
-print('Sentiment: $sentiment');
-```
-
-## 🔧 **Supported Engines**
-
-The package automatically detects and uses the appropriate engine:
-
-| Engine | Models | Use Cases |
-|--------|--------|-----------|
-| **Candle** | `.safetensors`, `.pt`, `.pth` | PyTorch models, Neural networks |
-| **Linfa** | On-device training | Classical ML, K-means, SVM, Decision trees |
-
-## 🏃‍♂️ **Running the Examples**
-
-### Prerequisites
-1. Add the inference package to your `pubspec.yaml`:
-   ```yaml
-   dependencies:
-     inference: ^0.1.0-beta.4
+1. **Install Dependencies**:
+   ```bash
+   flutter pub get
    ```
 
-2. Place model files in your `assets/` directory and declare them in `pubspec.yaml`:
-   ```yaml
-   flutter:
-     assets:
-       - assets/models/
-       - assets/images/
+2. **Run the App**:
+   ```bash
+   flutter run
    ```
 
-### Run the Full Example App
-```bash
-cd example
-flutter run
+3. **Load Models**:
+   - Tap "Load" next to either BERT or ResNet
+   - Models will be downloaded from HuggingFace Hub
+   - First download may take time depending on your internet connection
+
+4. **Run Inference**:
+   - Select a model (BERT or ResNet)
+   - For BERT: Enter text or use sample texts
+   - For ResNet: Uses dummy tensor input
+   - Tap "Run Inference" to see results
+
+## Technical Details
+
+### HuggingFace Integration
+The app uses the `hf-hub` Rust crate to download models from HuggingFace Hub. If the download fails (due to network issues), it falls back to direct HTTP downloads.
+
+### Caching
+Models are automatically cached after first download using the inference package's built-in caching mechanism.
+
+### Error Handling
+The app includes comprehensive error handling with informative error messages for:
+- Network connectivity issues
+- Missing models
+- Authentication problems
+- Invalid model formats
+
+## Architecture
+
+```
+┌─────────────────────────────────────────┐
+│             Flutter UI                  │
+│  (HuggingFace Demo Screen)             │
+└─────────────────┬───────────────────────┘
+                  │
+┌─────────────────▼───────────────────────┐
+│         InferenceService                │
+│  (State Management & API Calls)        │
+└─────────────────┬───────────────────────┘
+                  │
+┌─────────────────▼───────────────────────┐
+│         Inference Package              │
+│  (Rust FFI Bridge)                     │
+└─────────────────┬───────────────────────┘
+                  │
+┌─────────────────▼───────────────────────┐
+│            Rust Backend                │
+│  (Candle + hf-hub Integration)         │
+└─────────────────────────────────────────┘
 ```
 
-### Run Standalone Examples
-```bash
-dart run example/example.dart
-```
+## Performance
 
-## 📱 **Platform Support**
+The app includes performance metrics showing:
+- Model loading times
+- Inference execution times
+- Memory usage (via model caching)
 
-✅ **Android** - Full support with GPU acceleration  
-✅ **iOS** - Full support with Metal acceleration  
-✅ **Windows** - Full support  
-✅ **macOS** - Full support  
-✅ **Linux** - Full support  
+## Requirements
 
-## 🎯 **Key Features Demonstrated**
+- Flutter 3.16.0 or later
+- Rust toolchain (for building the native library)
+- Internet connection (for downloading models)
 
-- **Zero Setup**: No complex configuration required
-- **Auto-Detection**: Automatically selects the right engine for your model
-- **Type Safety**: Full Dart type safety with comprehensive error handling
-- **Performance**: Hardware acceleration when available
-- **Flexibility**: Support for images, text, tensors, and audio inputs
-- **Memory Management**: Proper resource cleanup and disposal
+## Troubleshooting
 
-## 🔗 **Learn More**
+### Network Issues
+If you encounter network connectivity issues:
+1. Check your internet connection
+2. The app will automatically try fallback download methods
+3. Models are cached after successful download
 
-- 📖 [Package Documentation](https://pub.dev/packages/inference)
-- 🐙 [GitHub Repository](https://github.com/ShankarKakumani/inference)
-- 🎯 [API Reference](https://pub.dev/documentation/inference/latest/)
+### Model Loading Failures
+If models fail to load:
+1. Verify the repository names are correct
+2. Check if the model files exist on HuggingFace Hub
+3. Ensure you have sufficient storage space for caching
 
-## 💡 **Need Help?**
-
-- Check out the [comprehensive Flutter app](lib/main.dart) for advanced usage
-- Browse the [screen examples](lib/screens/) for specific use cases
-- Review the [service layer](lib/services/) for architecture patterns
-
----
-
-**Happy inferencing! 🚀**
+### Performance Issues
+If inference is slow:
+1. Models are loaded once and cached
+2. Subsequent inferences should be faster
+3. Consider using GPU acceleration if available

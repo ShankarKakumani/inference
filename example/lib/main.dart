@@ -18,7 +18,7 @@ class InferenceExampleApp extends StatelessWidget {
     return MultiProvider(
       providers: [ChangeNotifierProvider(create: (_) => InferenceService())],
       child: MaterialApp(
-        title: 'Inference Example',
+        title: 'Inference HuggingFace Demo',
         theme: ThemeData(
           useMaterial3: true,
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),

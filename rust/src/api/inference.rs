@@ -9,6 +9,39 @@ use std::sync::Arc;
 use std::path::PathBuf;
 use tokio::sync::RwLock;
 
+// Add progress reporting types
+/// Download progress information
+#[derive(Debug, Clone)]
+pub struct DownloadProgress {
+    /// Total bytes to download (if known)
+    pub total_bytes: Option<u64>,
+    /// Bytes downloaded so far
+    pub downloaded_bytes: u64,
+    /// Download progress percentage (0-100)
+    pub percentage: f64,
+    /// Current download phase
+    pub phase: DownloadPhase,
+    /// Optional message
+    pub message: Option<String>,
+}
+
+/// Different phases of the download process
+#[derive(Debug, Clone)]
+pub enum DownloadPhase {
+    /// Connecting to server
+    Connecting,
+    /// Downloading model data
+    Downloading,
+    /// Processing/validating downloaded data
+    Processing,
+    /// Saving to cache
+    Caching,
+    /// Download completed
+    Completed,
+    /// Download failed
+    Failed,
+}
+
 /// Session handle for managing loaded models
 pub type SessionHandle = u64;
 
@@ -411,7 +444,7 @@ pub async fn load_model_from_file(file_path: String) -> Result<SessionInfo, Infe
     load_model_with_config(file_path, SessionConfig::default()).await
 }
 
-/// HuggingFace integration - load model from hub
+/// HuggingFace integration - load model from hub using real hf-hub crate
 pub async fn load_from_huggingface(
     repo: String,
     revision: Option<String>,
@@ -420,20 +453,87 @@ pub async fn load_from_huggingface(
     let revision = revision.unwrap_or_else(|| "main".to_string());
     let filename = filename.unwrap_or_else(|| "model.safetensors".to_string());
     
-    // Build Hugging Face URL
-    let url = format!(
-        "https://huggingface.co/{}/resolve/{}/{}",
-        repo, revision, filename
-    );
+    println!("🤗 Loading model from HuggingFace Hub: {}", repo);
     
-    // Use caching with a descriptive key
-    let cache_key = format!("hf_{}_{}/{}", repo.replace('/', "_"), revision, filename);
-    
-    load_model_from_url(url, true, Some(cache_key)).await
+    // Try to use the new HuggingFace integration with model wrappers
+    #[cfg(feature = "candle")]
+    {
+        use crate::engines::{candle_engine::CandleEngine, EngineType};
+        use crate::engines::candle_engine::model_wrappers::{BertModelWrapper, ResNetModelWrapper};
+        use crate::models::{ModelConfig, ModelArchitecture, ResNetVariant};
+        use candle_core::Device;
+        
+        // Detect model type from repository name (simple heuristic)
+        let architecture = if repo.contains("bert") || repo.contains("BERT") {
+            ModelArchitecture::Bert
+        } else if repo.contains("resnet") || repo.contains("ResNet") {
+            ModelArchitecture::ResNet { variant: ResNetVariant::ResNet50 }
+        } else {
+            // Default to BERT for unknown models
+            ModelArchitecture::Bert
+        };
+        
+        // Create engine and load model
+        let engine = CandleEngine::new()?;
+        let config = ModelConfig::new(architecture)
+            .with_repo_id(&repo)
+            .with_filename(&filename)
+            .with_revision(&revision);
+        
+        // Try to load with hf-hub first, then fallback to URL download
+        let model = match engine.load_from_huggingface(&config).await {
+            Ok(model) => model,
+            Err(e) => {
+                println!("⚠️  HuggingFace Hub download failed: {}", e);
+                println!("🔄 Falling back to direct URL download...");
+                
+                // Fallback to URL-based loading
+                let url = format!(
+                    "https://huggingface.co/{}/resolve/{}/{}",
+                    repo, revision, filename
+                );
+                
+                println!("📡 Downloading from URL: {}", url);
+                let cache_key = format!("hf_{}_{}/{}", repo.replace('/', "_"), revision, filename);
+                
+                // Download and load from URL
+                let model_bytes = download_model(&url).await?;
+                let session_info = load_model_from_bytes(model_bytes, SessionConfig::default()).await?;
+                return Ok(session_info);
+            }
+        };
+        
+        // Create session and store it
+        let session = Session::new(model, EngineType::Candle);
+        let handle = {
+            let mut sessions = SESSIONS.write().await;
+            let handle = sessions.len() as SessionHandle;
+            sessions.insert(handle, session);
+            handle
+        };
+        
+        let session_ref = SESSIONS.read().await;
+        let session = session_ref.get(&handle).unwrap();
+        
+        Ok(create_session_info(handle, session))
+    }
+    #[cfg(not(feature = "candle"))]
+    {
+        // Fallback to URL-based loading
+        let url = format!(
+            "https://huggingface.co/{}/resolve/{}/{}",
+            repo, revision, filename
+        );
+        
+        let cache_key = format!("hf_{}_{}/{}", repo.replace('/', "_"), revision, filename);
+        load_model_from_url(url, true, Some(cache_key)).await
+    }
 }
 
 /// Download a model from URL
 async fn download_model(url: &str) -> Result<Vec<u8>, InferenceError> {
+    println!("📡 Starting download from: {}", url);
+    
     let client = reqwest::Client::builder()
         .user_agent("inference-flutter/1.0.0")
         .timeout(std::time::Duration::from_secs(300)) // 5 minute timeout
@@ -444,21 +544,38 @@ async fn download_model(url: &str) -> Result<Vec<u8>, InferenceError> {
         .get(url)
         .send()
         .await
-        .map_err(|e| InferenceError::model_load(format!("Failed to download model: {}", e)))?;
+        .map_err(|e| {
+            let error_msg = if e.is_connect() {
+                format!("Failed to connect to HuggingFace: {}. Please check your internet connection.", e)
+            } else if e.is_timeout() {
+                format!("Download timeout: {}. The model file might be very large.", e)
+            } else if e.is_request() {
+                format!("Request error: {}. Please verify the repository and filename.", e)
+            } else {
+                format!("Network error: {}", e)
+            };
+            InferenceError::model_load(error_msg)
+        })?;
 
     if !response.status().is_success() {
-        return Err(InferenceError::model_load(format!(
-            "HTTP error {}: Failed to download model from {}",
-            response.status(),
-            url
-        )));
+        let status = response.status();
+        let error_msg = if status == 404 {
+            format!("Model not found (404): {}. Please check the repository name and filename.", url)
+        } else if status == 403 {
+            format!("Access denied (403): {}. The model might be private or require authentication.", url)
+        } else {
+            format!("HTTP error {}: Failed to download model from {}", status, url)
+        };
+        return Err(InferenceError::model_load(error_msg));
     }
 
+    println!("📥 Downloading model data...");
     let bytes = response
         .bytes()
         .await
         .map_err(|e| InferenceError::model_load(format!("Failed to read response bytes: {}", e)))?;
 
+    println!("✅ Downloaded {} bytes successfully", bytes.len());
     Ok(bytes.to_vec())
 }
 

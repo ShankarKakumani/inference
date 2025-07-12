@@ -1,5 +1,5 @@
 name: inference_example
-description: "Comprehensive testing platform for the Inference Flutter package"
+description: "HuggingFace demo for the Inference Flutter package"
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -39,11 +39,9 @@ dependencies:
     # the parent directory to use the current plugin's version.
     path: ../
 
-  # Dependencies for example app (from BRD)
+  # Dependencies for HuggingFace demo
   provider: ^6.0.5           # State management
-  image_picker: ^1.0.4       # Camera and gallery access
-  file_picker: ^8.0.0+1        # File uploads
-  path_provider: ^2.1.1      # File system access
+  http: ^1.1.0               # HTTP client for network testing
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -72,13 +70,6 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
-
-  # Assets for ML models and example data
-  assets:
-    - assets/models/
-    - assets/models/candle/
-    - assets/models/linfa/
-    - assets/sample_data/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

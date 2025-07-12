@@ -90,7 +90,7 @@ Future<SessionInfo> loadModelFromUrl(
 Future<SessionInfo> loadModelFromFile({required String filePath}) =>
     RustLib.instance.api.crateApiInferenceLoadModelFromFile(filePath: filePath);
 
-/// HuggingFace integration - load model from hub
+/// HuggingFace integration - load model from hub using real hf-hub crate
 Future<SessionInfo> loadFromHuggingface(
         {required String repo, String? revision, String? filename}) =>
     RustLib.instance.api.crateApiInferenceLoadFromHuggingface(
