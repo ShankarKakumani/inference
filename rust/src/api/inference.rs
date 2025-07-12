@@ -94,9 +94,10 @@ pub async fn start_download_with_progress(
         // Update final status
         let mut progress_map = DOWNLOAD_PROGRESS.write().await;
         if let Ok(_) = result {
+            let existing_progress = progress_map.get(&download_id_clone).cloned();
             progress_map.insert(download_id_clone.clone(), DownloadProgress {
-                total_bytes: progress_map.get(&download_id_clone).and_then(|p| p.total_bytes),
-                downloaded_bytes: progress_map.get(&download_id_clone).map(|p| p.downloaded_bytes).unwrap_or(0),
+                total_bytes: existing_progress.as_ref().and_then(|p| p.total_bytes),
+                downloaded_bytes: existing_progress.as_ref().map(|p| p.downloaded_bytes).unwrap_or(0),
                 percentage: 100.0,
                 phase: DownloadPhase::Completed,
                 message: Some("Download completed successfully!".to_string()),
@@ -676,9 +677,7 @@ pub async fn load_from_huggingface(
     #[cfg(feature = "candle")]
     {
         use crate::engines::{candle_engine::CandleEngine, EngineType};
-        use crate::engines::candle_engine::model_wrappers::{BertModelWrapper, ResNetModelWrapper};
         use crate::models::{ModelConfig, ModelArchitecture, ResNetVariant};
-        use candle_core::Device;
         
         // Detect model type from repository name (simple heuristic)
         let architecture = if repo.contains("bert") || repo.contains("BERT") {
@@ -714,7 +713,7 @@ pub async fn load_from_huggingface(
                 let cache_key = format!("hf_{}_{}/{}", repo.replace('/', "_"), revision, filename);
                 
                 // Download and load from URL with progress
-                let model_bytes = download_model_with_progress_callback_fn(&url, progress_callback).await?;
+                let model_bytes = download_model(&url).await?;
                 let session_info = load_model_from_bytes(model_bytes, SessionConfig::default()).await?;
                 return Ok(session_info);
             }

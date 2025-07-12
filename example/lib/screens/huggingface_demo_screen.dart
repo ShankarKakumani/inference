@@ -15,6 +15,7 @@ class HuggingFaceDemoScreen extends StatefulWidget {
 
 class _HuggingFaceDemoScreenState extends State<HuggingFaceDemoScreen> {
   final TextEditingController _textController = TextEditingController();
+  final TextEditingController _customModelController = TextEditingController();
   InferenceSession? _bertModel;
   InferenceSession? _resnetModel;
   InferenceResult? _result;
@@ -22,13 +23,29 @@ class _HuggingFaceDemoScreenState extends State<HuggingFaceDemoScreen> {
   String? _loadError;
   bool _isLoadingBert = false;
   bool _isLoadingResNet = false;
+  bool _isLoadingCustom = false;
   String _selectedModel = 'bert';
   String? _networkTestResult;
 
-  // Progress tracking
-  Timer? _progressTimer;
-  rust_api.DownloadProgress? _downloadProgress;
-  String? _currentDownloadId;
+  // Individual progress tracking for each model
+  Timer? _bertProgressTimer;
+  Timer? _resnetProgressTimer;
+  Timer? _customProgressTimer;
+  rust_api.DownloadProgress? _bertDownloadProgress;
+  rust_api.DownloadProgress? _resnetDownloadProgress;
+  rust_api.DownloadProgress? _customDownloadProgress;
+  String? _bertDownloadId;
+  String? _resnetDownloadId;
+  String? _customDownloadId;
+
+  // Cache management
+  int? _cacheSize;
+  bool _isClearingCache = false;
+  bool _isLoadingCacheSize = false;
+
+  // Downloaded models tracking
+  List<String> _downloadedModels = [];
+  bool _isLoadingDownloadedModels = false;
 
   // Sample texts for BERT testing
   final List<String> _sampleTexts = [
@@ -43,27 +60,147 @@ class _HuggingFaceDemoScreenState extends State<HuggingFaceDemoScreen> {
   void initState() {
     super.initState();
     _textController.text = 'The weather is beautiful today!';
+    _loadCacheSize();
+    _loadDownloadedModels();
   }
 
   @override
   void dispose() {
-    _progressTimer?.cancel();
+    _bertProgressTimer?.cancel();
+    _resnetProgressTimer?.cancel();
+    _customProgressTimer?.cancel();
     _textController.dispose();
+    _customModelController.dispose();
     super.dispose();
   }
 
-  /// Start progress monitoring for a download
-  void _startProgressMonitoring(String downloadId) {
-    _currentDownloadId = downloadId;
-    _progressTimer?.cancel();
-    _progressTimer = Timer.periodic(const Duration(milliseconds: 500), (
+  /// Load cache size information
+  Future<void> _loadCacheSize() async {
+    if (_isLoadingCacheSize) return;
+
+    setState(() {
+      _isLoadingCacheSize = true;
+    });
+
+    try {
+      final size = await InferenceSession.getCacheSize();
+      if (mounted) {
+        setState(() {
+          _cacheSize = size;
+        });
+      }
+    } catch (e) {
+      print('Error loading cache size: $e');
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoadingCacheSize = false;
+        });
+      }
+    }
+  }
+
+  /// Load downloaded models list (mock implementation - you can enhance this)
+  Future<void> _loadDownloadedModels() async {
+    setState(() {
+      _isLoadingDownloadedModels = true;
+    });
+
+    try {
+      // This is a mock implementation. In a real app, you'd query the cache
+      // or maintain a list of downloaded models
+      await Future.delayed(const Duration(milliseconds: 500));
+
+      List<String> models = [];
+      if (_bertModel != null) models.add('google-bert/bert-base-uncased');
+      if (_resnetModel != null) models.add('microsoft/resnet-50');
+      // Keep existing custom models that aren't already in the list
+      for (String model in _downloadedModels) {
+        if (!models.contains(model)) {
+          models.add(model);
+        }
+      }
+
+      if (mounted) {
+        setState(() {
+          _downloadedModels = models;
+        });
+      }
+    } catch (e) {
+      print('Error loading downloaded models: $e');
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoadingDownloadedModels = false;
+        });
+      }
+    }
+  }
+
+  /// Clear model cache
+  Future<void> _clearCache() async {
+    if (_isClearingCache) return;
+
+    setState(() {
+      _isClearingCache = true;
+    });
+
+    try {
+      await InferenceSession.clearCache();
+
+      // Reset model states since cache is cleared
+      setState(() {
+        _bertModel = null;
+        _resnetModel = null;
+        _result = null;
+        _processingTime = null;
+        _downloadedModels.clear();
+      });
+
+      await _loadCacheSize(); // Refresh cache size
+      await _loadDownloadedModels(); // Refresh downloaded models
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Cache cleared successfully! Models will need to be reloaded.',
+            ),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    } catch (e) {
+      print('Error clearing cache: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to clear cache: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isClearingCache = false;
+        });
+      }
+    }
+  }
+
+  /// Start progress monitoring for BERT download
+  void _startBertProgressMonitoring(String downloadId) {
+    _bertDownloadId = downloadId;
+    _bertProgressTimer?.cancel();
+    _bertProgressTimer = Timer.periodic(const Duration(milliseconds: 500), (
       timer,
     ) async {
       try {
         final progress = await rust_api.getDownloadProgress(repo: downloadId);
         if (mounted) {
           setState(() {
-            _downloadProgress = progress;
+            _bertDownloadProgress = progress;
           });
 
           // Stop monitoring when download is completed or failed
@@ -71,23 +208,118 @@ class _HuggingFaceDemoScreenState extends State<HuggingFaceDemoScreen> {
               (progress.phase == rust_api.DownloadPhase.completed ||
                   progress.phase == rust_api.DownloadPhase.failed)) {
             timer.cancel();
-            _progressTimer = null;
+            _bertProgressTimer = null;
+            // Refresh cache size and downloaded models after download completes
+            Future.delayed(const Duration(milliseconds: 500), () {
+              _loadCacheSize();
+              _loadDownloadedModels();
+            });
           }
         }
       } catch (e) {
-        print('Error getting download progress: $e');
+        print('Error getting BERT download progress: $e');
       }
     });
   }
 
-  /// Stop progress monitoring
-  void _stopProgressMonitoring() {
-    _progressTimer?.cancel();
-    _progressTimer = null;
-    _currentDownloadId = null;
+  /// Start progress monitoring for ResNet download
+  void _startResnetProgressMonitoring(String downloadId) {
+    _resnetDownloadId = downloadId;
+    _resnetProgressTimer?.cancel();
+    _resnetProgressTimer = Timer.periodic(const Duration(milliseconds: 500), (
+      timer,
+    ) async {
+      try {
+        final progress = await rust_api.getDownloadProgress(repo: downloadId);
+        if (mounted) {
+          setState(() {
+            _resnetDownloadProgress = progress;
+          });
+
+          // Stop monitoring when download is completed or failed
+          if (progress != null &&
+              (progress.phase == rust_api.DownloadPhase.completed ||
+                  progress.phase == rust_api.DownloadPhase.failed)) {
+            timer.cancel();
+            _resnetProgressTimer = null;
+            // Refresh cache size and downloaded models after download completes
+            Future.delayed(const Duration(milliseconds: 500), () {
+              _loadCacheSize();
+              _loadDownloadedModels();
+            });
+          }
+        }
+      } catch (e) {
+        print('Error getting ResNet download progress: $e');
+      }
+    });
+  }
+
+  /// Start progress monitoring for custom model download
+  void _startCustomProgressMonitoring(String downloadId) {
+    _customDownloadId = downloadId;
+    _customProgressTimer?.cancel();
+    _customProgressTimer = Timer.periodic(const Duration(milliseconds: 500), (
+      timer,
+    ) async {
+      try {
+        final progress = await rust_api.getDownloadProgress(repo: downloadId);
+        if (mounted) {
+          setState(() {
+            _customDownloadProgress = progress;
+          });
+
+          // Stop monitoring when download is completed or failed
+          if (progress != null &&
+              (progress.phase == rust_api.DownloadPhase.completed ||
+                  progress.phase == rust_api.DownloadPhase.failed)) {
+            timer.cancel();
+            _customProgressTimer = null;
+            // Refresh cache size and downloaded models after download completes
+            Future.delayed(const Duration(milliseconds: 500), () {
+              _loadCacheSize();
+              _loadDownloadedModels();
+            });
+          }
+        }
+      } catch (e) {
+        print('Error getting custom model download progress: $e');
+      }
+    });
+  }
+
+  /// Stop BERT progress monitoring
+  void _stopBertProgressMonitoring() {
+    _bertProgressTimer?.cancel();
+    _bertProgressTimer = null;
+    _bertDownloadId = null;
     if (mounted) {
       setState(() {
-        _downloadProgress = null;
+        _bertDownloadProgress = null;
+      });
+    }
+  }
+
+  /// Stop ResNet progress monitoring
+  void _stopResnetProgressMonitoring() {
+    _resnetProgressTimer?.cancel();
+    _resnetProgressTimer = null;
+    _resnetDownloadId = null;
+    if (mounted) {
+      setState(() {
+        _resnetDownloadProgress = null;
+      });
+    }
+  }
+
+  /// Stop custom model progress monitoring
+  void _stopCustomProgressMonitoring() {
+    _customProgressTimer?.cancel();
+    _customProgressTimer = null;
+    _customDownloadId = null;
+    if (mounted) {
+      setState(() {
+        _customDownloadProgress = null;
       });
     }
   }
@@ -119,7 +351,7 @@ class _HuggingFaceDemoScreenState extends State<HuggingFaceDemoScreen> {
     setState(() {
       _isLoadingBert = true;
       _loadError = null;
-      _downloadProgress = null;
+      _bertDownloadProgress = null;
     });
 
     try {
@@ -134,8 +366,8 @@ class _HuggingFaceDemoScreenState extends State<HuggingFaceDemoScreen> {
         filename: 'model.safetensors',
       );
 
-      print('📊 Started download with ID: $downloadId');
-      _startProgressMonitoring(downloadId);
+      print('📊 Started BERT download with ID: $downloadId');
+      _startBertProgressMonitoring(downloadId);
 
       // Load the model (this will wait for the download to complete)
       final model = await service.loadFromHuggingFace(
@@ -150,6 +382,8 @@ class _HuggingFaceDemoScreenState extends State<HuggingFaceDemoScreen> {
           _isLoadingBert = false;
         });
         print('✅ Successfully loaded BERT model');
+        // Refresh downloaded models list after successful load
+        _loadDownloadedModels();
       } else {
         throw Exception('Model loading returned null');
       }
@@ -161,7 +395,7 @@ class _HuggingFaceDemoScreenState extends State<HuggingFaceDemoScreen> {
       print('❌ Failed to load BERT model: $e');
       print('📍 Stack trace: ${StackTrace.current}');
     } finally {
-      _stopProgressMonitoring();
+      _stopBertProgressMonitoring();
     }
   }
 
@@ -169,7 +403,7 @@ class _HuggingFaceDemoScreenState extends State<HuggingFaceDemoScreen> {
     setState(() {
       _isLoadingResNet = true;
       _loadError = null;
-      _downloadProgress = null;
+      _resnetDownloadProgress = null;
     });
 
     try {
@@ -184,8 +418,8 @@ class _HuggingFaceDemoScreenState extends State<HuggingFaceDemoScreen> {
         filename: 'model.safetensors',
       );
 
-      print('📊 Started download with ID: $downloadId');
-      _startProgressMonitoring(downloadId);
+      print('📊 Started ResNet download with ID: $downloadId');
+      _startResnetProgressMonitoring(downloadId);
 
       // Load the model (this will wait for the download to complete)
       final model = await service.loadFromHuggingFace(
@@ -200,6 +434,8 @@ class _HuggingFaceDemoScreenState extends State<HuggingFaceDemoScreen> {
           _isLoadingResNet = false;
         });
         print('✅ Successfully loaded ResNet model');
+        // Refresh downloaded models list after successful load
+        _loadDownloadedModels();
       } else {
         throw Exception('Model loading returned null');
       }
@@ -211,7 +447,69 @@ class _HuggingFaceDemoScreenState extends State<HuggingFaceDemoScreen> {
       print('❌ Failed to load ResNet model: $e');
       print('📍 Stack trace: ${StackTrace.current}');
     } finally {
-      _stopProgressMonitoring();
+      _stopResnetProgressMonitoring();
+    }
+  }
+
+  Future<void> _loadCustomModel() async {
+    final repo = _customModelController.text.trim();
+    if (repo.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please enter a model repository'),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return;
+    }
+
+    setState(() {
+      _isLoadingCustom = true;
+      _loadError = null;
+      _customDownloadProgress = null;
+    });
+
+    try {
+      print('🤗 Loading custom model from HuggingFace Hub: $repo');
+
+      final service = Provider.of<InferenceService>(context, listen: false);
+
+      // Option 1: Simple load (no progress) - RECOMMENDED
+      // This handles download + caching + loading internally
+      final model = await service.loadFromHuggingFace(
+        repo: repo,
+        filename: 'model.safetensors',
+        revision: 'main',
+      );
+
+      if (model != null) {
+        setState(() {
+          _isLoadingCustom = false;
+        });
+        print('✅ Successfully loaded custom model: $repo');
+        // Add custom model directly to downloaded models list
+        if (!_downloadedModels.contains(repo)) {
+          _downloadedModels.add(repo);
+        }
+        // Refresh downloaded models list after successful load
+        _loadDownloadedModels();
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Successfully loaded model: $repo'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      } else {
+        throw Exception('Model loading returned null');
+      }
+    } catch (e) {
+      setState(() {
+        _loadError = e.toString();
+        _isLoadingCustom = false;
+      });
+      print('❌ Failed to load custom model: $e');
+      print('📍 Stack trace: ${StackTrace.current}');
     }
   }
 
@@ -302,87 +600,108 @@ class _HuggingFaceDemoScreenState extends State<HuggingFaceDemoScreen> {
     });
   }
 
-  /// Build download progress widget
-  Widget _buildDownloadProgress() {
-    if (_downloadProgress == null) return const SizedBox.shrink();
+  /// Build a clickable model chip for popular models
+  Widget _buildModelChip(String repo, String displayName) {
+    return GestureDetector(
+      onTap: () {
+        _customModelController.text = repo;
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        decoration: BoxDecoration(
+          color: Colors.blue[50],
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.blue[200]!),
+        ),
+        child: Text(
+          displayName,
+          style: TextStyle(
+            color: Colors.blue[700],
+            fontSize: 11,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
+    );
+  }
 
-    final progress = _downloadProgress!;
+  /// Build enhanced progress widget for downloads
+  Widget _buildCompactProgress(rust_api.DownloadProgress? progress) {
+    if (progress == null) return const SizedBox.shrink();
+
     final isDownloading = progress.phase == rust_api.DownloadPhase.downloading;
+    final isCompleted = progress.phase == rust_api.DownloadPhase.completed;
+    final isFailed = progress.phase == rust_api.DownloadPhase.failed;
 
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(
-                  _getPhaseIcon(progress.phase),
-                  color: _getPhaseColor(progress.phase),
-                  size: 20,
-                ),
-                const SizedBox(width: 8),
+    return Container(
+      margin: const EdgeInsets.only(top: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: _getPhaseColor(progress.phase).withOpacity(0.08),
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(
+          color: _getPhaseColor(progress.phase).withOpacity(0.3),
+          width: 1,
+        ),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                _getPhaseIcon(progress.phase),
+                color: _getPhaseColor(progress.phase),
+                size: 14,
+              ),
+              const SizedBox(width: 6),
+              if (isDownloading && progress.totalBytes != null) ...[
                 Text(
-                  'Download Progress',
-                  style: Theme.of(context).textTheme.titleMedium,
+                  '${progress.percentage.toStringAsFixed(0)}%',
+                  style: TextStyle(
+                    color: _getPhaseColor(progress.phase),
+                    fontWeight: FontWeight.w600,
+                    fontSize: 11,
+                  ),
+                ),
+                const SizedBox(width: 6),
+                Text(
+                  '${_formatBytes(progress.downloadedBytes)} / ${_formatBytes(progress.totalBytes!)}',
+                  style: TextStyle(
+                    color: Colors.grey[600],
+                    fontSize: 10,
+                    fontFamily: 'monospace',
+                  ),
+                ),
+              ] else ...[
+                Text(
+                  _getPhaseText(progress.phase),
+                  style: TextStyle(
+                    color: _getPhaseColor(progress.phase),
+                    fontWeight: FontWeight.w600,
+                    fontSize: 11,
+                  ),
                 ),
               ],
-            ),
-            const SizedBox(height: 12),
-
-            // Progress bar
-            if (isDownloading && progress.totalBytes != null)
-              Column(
-                children: [
-                  LinearProgressIndicator(
-                    value: progress.percentage / 100.0,
-                    backgroundColor: Colors.grey[300],
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      _getPhaseColor(progress.phase),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '${progress.percentage.toStringAsFixed(1)}%',
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                      Text(
-                        '${_formatBytes(progress.downloadedBytes.toInt())} / ${_formatBytes(progress.totalBytes!.toInt())}',
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                    ],
-                  ),
-                ],
-              )
-            else if (isDownloading)
-              const LinearProgressIndicator(),
-
-            // Status message
-            if (progress.message != null) ...[
-              const SizedBox(height: 8),
-              Text(
-                progress.message!,
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
             ],
-
-            // Phase indicator
-            const SizedBox(height: 8),
-            Chip(
-              label: Text(_getPhaseText(progress.phase)),
-              backgroundColor: _getPhaseColor(progress.phase).withOpacity(0.1),
-              labelStyle: TextStyle(
-                color: _getPhaseColor(progress.phase),
-                fontWeight: FontWeight.w500,
+          ),
+          if (isDownloading && progress.totalBytes != null) ...[
+            const SizedBox(height: 4),
+            SizedBox(
+              width: 120,
+              height: 3,
+              child: LinearProgressIndicator(
+                value: progress.percentage / 100.0,
+                backgroundColor: Colors.grey[300],
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  _getPhaseColor(progress.phase),
+                ),
+                borderRadius: BorderRadius.circular(1.5),
               ),
             ),
           ],
-        ),
+        ],
       ),
     );
   }
@@ -442,7 +761,18 @@ class _HuggingFaceDemoScreenState extends State<HuggingFaceDemoScreen> {
   }
 
   /// Format bytes to human readable format
-  String _formatBytes(int bytes) {
+  String _formatBytes(BigInt bytes) {
+    final bytesAsDouble = bytes.toDouble();
+    if (bytesAsDouble < 1024) return '$bytes B';
+    if (bytesAsDouble < 1024 * 1024)
+      return '${(bytesAsDouble / 1024).toStringAsFixed(1)} KB';
+    if (bytesAsDouble < 1024 * 1024 * 1024)
+      return '${(bytesAsDouble / (1024 * 1024)).toStringAsFixed(1)} MB';
+    return '${(bytesAsDouble / (1024 * 1024 * 1024)).toStringAsFixed(1)} GB';
+  }
+
+  /// Format bytes to human readable format (overload for int)
+  String _formatBytesInt(int bytes) {
     if (bytes < 1024) return '$bytes B';
     if (bytes < 1024 * 1024) return '${(bytes / 1024).toStringAsFixed(1)} KB';
     if (bytes < 1024 * 1024 * 1024)
@@ -519,6 +849,106 @@ class _HuggingFaceDemoScreenState extends State<HuggingFaceDemoScreen> {
                               ),
                           ],
                         ),
+
+                        const SizedBox(height: 12),
+
+                        // Cache Management Section
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[50],
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: Colors.grey[300]!),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.storage,
+                                    size: 16,
+                                    color: Colors.grey,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    'Cache Management',
+                                    style:
+                                        Theme.of(context).textTheme.titleSmall,
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Total Cache Size: ${_isLoadingCacheSize
+                                              ? 'Loading...'
+                                              : _cacheSize != null
+                                              ? _formatBytesInt(_cacheSize!)
+                                              : 'Unknown'}',
+                                          style: Theme.of(
+                                            context,
+                                          ).textTheme.bodySmall?.copyWith(
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          'Includes HuggingFace Hub cache and inference cache.',
+                                          style: Theme.of(
+                                            context,
+                                          ).textTheme.bodySmall?.copyWith(
+                                            color: Colors.grey[600],
+                                          ),
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          '⚠️ This will clear all cached models and require re-download.',
+                                          style: Theme.of(
+                                            context,
+                                          ).textTheme.bodySmall?.copyWith(
+                                            color: Colors.orange[700],
+                                            fontSize: 11,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  ElevatedButton.icon(
+                                    onPressed:
+                                        _isClearingCache ? null : _clearCache,
+                                    icon:
+                                        _isClearingCache
+                                            ? const SizedBox(
+                                              width: 16,
+                                              height: 16,
+                                              child: CircularProgressIndicator(
+                                                strokeWidth: 2,
+                                              ),
+                                            )
+                                            : const Icon(Icons.clear, size: 16),
+                                    label: Text(
+                                      _isClearingCache
+                                          ? 'Clearing...'
+                                          : 'Clear Cache',
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.orange[50],
+                                      foregroundColor: Colors.orange[700],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -526,151 +956,239 @@ class _HuggingFaceDemoScreenState extends State<HuggingFaceDemoScreen> {
 
                 const SizedBox(height: 16),
 
-                // Model Loading Section
+                // Downloaded Models Section
                 Card(
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Load Models from HuggingFace Hub',
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                        const SizedBox(height: 16),
-
-                        // BERT Model Loading
                         Row(
                           children: [
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        _bertModel != null
-                                            ? Icons.check_circle
-                                            : Icons.download,
-                                        color:
-                                            _bertModel != null
-                                                ? Colors.green
-                                                : Colors.blue,
-                                      ),
-                                      const SizedBox(width: 8),
-                                      const Text('BERT Base Uncased'),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    'bert-base-uncased',
-                                    style: Theme.of(
-                                      context,
-                                    ).textTheme.bodySmall?.copyWith(
-                                      fontFamily: 'monospace',
-                                      color: Colors.grey[600],
-                                    ),
-                                  ),
-                                ],
-                              ),
+                            const Icon(
+                              Icons.download_done,
+                              color: Colors.green,
                             ),
-                            ElevatedButton(
-                              onPressed:
-                                  _isLoadingBert
-                                      ? null
-                                      : _loadBertFromHuggingFace,
-                              child:
-                                  _isLoadingBert
-                                      ? const SizedBox(
-                                        width: 20,
-                                        height: 20,
-                                        child: CircularProgressIndicator(
-                                          strokeWidth: 2,
-                                        ),
-                                      )
-                                      : Text(
-                                        _bertModel != null ? 'Loaded' : 'Load',
-                                      ),
+                            const SizedBox(width: 8),
+                            Text(
+                              'Downloaded Models',
+                              style: Theme.of(context).textTheme.titleMedium,
                             ),
                           ],
                         ),
-
-                        const SizedBox(height: 16),
-
-                        // ResNet Model Loading
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        _resnetModel != null
-                                            ? Icons.check_circle
-                                            : Icons.download,
-                                        color:
-                                            _resnetModel != null
-                                                ? Colors.green
-                                                : Colors.blue,
+                        const SizedBox(height: 12),
+                        if (_isLoadingDownloadedModels)
+                          const Center(child: CircularProgressIndicator())
+                        else if (_downloadedModels.isEmpty)
+                          Container(
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: Colors.grey[100],
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(color: Colors.grey[300]!),
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.info_outline,
+                                  color: Colors.grey[600],
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  'No models downloaded yet',
+                                  style: Theme.of(context).textTheme.bodyMedium
+                                      ?.copyWith(color: Colors.grey[600]),
+                                ),
+                              ],
+                            ),
+                          )
+                        else
+                          Column(
+                            children:
+                                _downloadedModels.map((model) {
+                                  return Container(
+                                    margin: const EdgeInsets.only(bottom: 8),
+                                    padding: const EdgeInsets.all(12),
+                                    decoration: BoxDecoration(
+                                      color: Colors.green[50],
+                                      borderRadius: BorderRadius.circular(8),
+                                      border: Border.all(
+                                        color: Colors.green[200]!,
                                       ),
-                                      const SizedBox(width: 8),
-                                      const Text('ResNet-50'),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    'microsoft/resnet-50',
-                                    style: Theme.of(
-                                      context,
-                                    ).textTheme.bodySmall?.copyWith(
-                                      fontFamily: 'monospace',
-                                      color: Colors.grey[600],
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            ElevatedButton(
-                              onPressed:
-                                  _isLoadingResNet
-                                      ? null
-                                      : _loadResNetFromHuggingFace,
-                              child:
-                                  _isLoadingResNet
-                                      ? const SizedBox(
-                                        width: 20,
-                                        height: 20,
-                                        child: CircularProgressIndicator(
-                                          strokeWidth: 2,
+                                    child: Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.check_circle,
+                                          color: Colors.green,
+                                          size: 20,
                                         ),
-                                      )
-                                      : Text(
-                                        _resnetModel != null
-                                            ? 'Loaded'
-                                            : 'Load',
-                                      ),
-                            ),
-                          ],
-                        ),
-
-                        if (service.isLoading) ...[
-                          const SizedBox(height: 16),
-                          const LinearProgressIndicator(),
-                          const SizedBox(height: 8),
-                          Text(
-                            service.loadingMessage,
-                            style: Theme.of(context).textTheme.bodySmall,
+                                        const SizedBox(width: 12),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                model,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyMedium
+                                                    ?.copyWith(
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                              ),
+                                              Text(
+                                                'Ready for inference',
+                                                style: Theme.of(
+                                                  context,
+                                                ).textTheme.bodySmall?.copyWith(
+                                                  color: Colors.green[700],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }).toList(),
                           ),
-                        ],
                       ],
                     ),
                   ),
                 ),
 
-                // Download Progress Section
-                _buildDownloadProgress(),
+                const SizedBox(height: 16),
+
+                // Custom Model Download Section
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.cloud_download,
+                              color: Colors.blue,
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              'Download Any HuggingFace Model',
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Enter any HuggingFace model repository to download and use with the inference engine.',
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(color: Colors.grey[600]),
+                        ),
+                        const SizedBox(height: 12),
+                        TextField(
+                          controller: _customModelController,
+                          decoration: const InputDecoration(
+                            hintText:
+                                'e.g., google-bert/bert-base-uncased, microsoft/resnet-50',
+                            border: OutlineInputBorder(),
+                            prefixIcon: Icon(Icons.link),
+                            helperText: 'Format: owner/model-name',
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        Row(
+                          children: [
+                            ElevatedButton.icon(
+                              onPressed:
+                                  _isLoadingCustom ? null : _loadCustomModel,
+                              icon:
+                                  _isLoadingCustom
+                                      ? const SizedBox(
+                                        width: 16,
+                                        height: 16,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                        ),
+                                      )
+                                      : const Icon(Icons.download),
+                              label: Text(
+                                _isLoadingCustom
+                                    ? 'Downloading...'
+                                    : 'Download Model',
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.blue[50],
+                                foregroundColor: Colors.blue[700],
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            if (_customDownloadProgress != null)
+                              _buildCompactProgress(_customDownloadProgress),
+                          ],
+                        ),
+                        const SizedBox(height: 12),
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.blue[25],
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: Colors.blue[100]!),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.lightbulb_outline,
+                                    color: Colors.blue[700],
+                                    size: 16,
+                                  ),
+                                  const SizedBox(width: 6),
+                                  Text(
+                                    'Popular Models:',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.blue[700],
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 6),
+                              Wrap(
+                                spacing: 6,
+                                runSpacing: 4,
+                                children: [
+                                  _buildModelChip(
+                                    'google-bert/bert-base-uncased',
+                                    'BERT',
+                                  ),
+                                  _buildModelChip(
+                                    'microsoft/resnet-50',
+                                    'ResNet',
+                                  ),
+                                  _buildModelChip(
+                                    'distilbert-base-uncased',
+                                    'DistilBERT',
+                                  ),
+                                  _buildModelChip(
+                                    'google/mobilebert-uncased',
+                                    'MobileBERT',
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
 
                 // Error Display Section
                 if (_loadError != null) ...[
@@ -909,33 +1427,6 @@ class _HuggingFaceDemoScreenState extends State<HuggingFaceDemoScreen> {
                                 ),
                               ],
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-
-                // Error Display
-                if (_loadError != null) ...[
-                  Card(
-                    color: Colors.red[50],
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Row(
-                            children: [
-                              Icon(Icons.error, color: Colors.red),
-                              SizedBox(width: 8),
-                              Text('Error'),
-                            ],
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            _loadError!,
-                            style: const TextStyle(color: Colors.red),
                           ),
                         ],
                       ),

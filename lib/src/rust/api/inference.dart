@@ -8,7 +8,7 @@ import '../models/error.dart';
 import '../models/tensor.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-// These functions are ignored because they are not marked as `pub`: `create_session_info`, `download_model_progress_stream`, `download_model_with_progress_callback_fn`, `download_model_with_progress_callback`, `download_model_with_progress_tracking`, `download_model_with_progress`, `download_model`, `get_cache_dir`, `load_from_cache`, `parse_data_type`, `parse_engine_type`, `save_to_cache`, `url_to_cache_key`
+// These functions are ignored because they are not marked as `pub`: `create_session_info`, `download_model_progress_stream`, `download_model_with_progress_callback_fn`, `download_model_with_progress_callback`, `download_model_with_progress_tracking`, `download_model_with_progress`, `download_model`, `get_cache_dir`, `get_directory_size`, `get_hf_cache_dir`, `load_from_cache`, `parse_data_type`, `parse_engine_type`, `save_to_cache`, `url_to_cache_key`
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`
 
 /// Get current download progress for a repository
