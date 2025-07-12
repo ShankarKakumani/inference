@@ -8,8 +8,10 @@ import '../models/error.dart';
 import '../models/tensor.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-// These functions are ignored because they are not marked as `pub`: `create_session_info`, `download_model`, `get_cache_dir`, `load_from_cache`, `parse_data_type`, `parse_engine_type`, `save_to_cache`, `url_to_cache_key`
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`, `fmt`
+// These functions are ignored because they are not marked as `pub`: `create_session_info`, `download_model_progress_stream`, `download_model_with_progress_callback`, `download_model_with_progress`, `download_model`, `get_cache_dir`, `load_from_cache`, `parse_data_type`, `parse_engine_type`, `save_to_cache`, `url_to_cache_key`
+// These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `DownloadPhase`, `DownloadProgress`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`
+// These functions have error during generation (see debug logs or enable `stop_on_error: true` for more details): `download_progress_stream`
 
 /// Load a model with automatic engine detection
 Future<SessionInfo> loadModel({required String modelPath}) =>

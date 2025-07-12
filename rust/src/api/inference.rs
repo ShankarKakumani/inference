@@ -487,7 +487,7 @@ pub async fn load_from_huggingface(
                 println!("⚠️  HuggingFace Hub download failed: {}", e);
                 println!("🔄 Falling back to direct URL download...");
                 
-                // Fallback to URL-based loading
+                // Fallback to URL-based loading with progress reporting
                 let url = format!(
                     "https://huggingface.co/{}/resolve/{}/{}",
                     repo, revision, filename
@@ -496,8 +496,8 @@ pub async fn load_from_huggingface(
                 println!("📡 Downloading from URL: {}", url);
                 let cache_key = format!("hf_{}_{}/{}", repo.replace('/', "_"), revision, filename);
                 
-                // Download and load from URL
-                let model_bytes = download_model(&url).await?;
+                // Download and load from URL with progress
+                let model_bytes = download_model_with_progress(&url).await?;
                 let session_info = load_model_from_bytes(model_bytes, SessionConfig::default()).await?;
                 return Ok(session_info);
             }
@@ -530,9 +530,63 @@ pub async fn load_from_huggingface(
     }
 }
 
-/// Download a model from URL
-async fn download_model(url: &str) -> Result<Vec<u8>, InferenceError> {
+/// Stream download progress for HuggingFace model loading
+pub async fn download_progress_stream(
+    repo: String,
+    revision: Option<String>,
+    filename: Option<String>,
+) -> Result<impl futures::Stream<Item = DownloadProgress>, InferenceError> {
+    let revision = revision.unwrap_or_else(|| "main".to_string());
+    let filename = filename.unwrap_or_else(|| "model.safetensors".to_string());
+    
+    let url = format!(
+        "https://huggingface.co/{}/resolve/{}/{}",
+        repo, revision, filename
+    );
+    
+    download_model_progress_stream(&url).await
+}
+
+/// Create a progress stream for model download
+async fn download_model_progress_stream(
+    url: &str,
+) -> Result<impl futures::Stream<Item = DownloadProgress>, InferenceError> {
+    use futures::stream;
+    use tokio::sync::mpsc;
+    
+    let (tx, rx) = mpsc::unbounded_channel();
+    let url = url.to_string();
+    
+    // Spawn download task
+    tokio::spawn(async move {
+        let _ = download_model_with_progress_callback(&url, tx).await;
+    });
+    
+    // Convert receiver to stream
+    let stream = stream::unfold(rx, |mut rx| async move {
+        rx.recv().await.map(|progress| (progress, rx))
+    });
+    
+    Ok(stream)
+}
+
+/// Download a model from URL with progress callback
+async fn download_model_with_progress_callback(
+    url: &str,
+    progress_tx: tokio::sync::mpsc::UnboundedSender<DownloadProgress>,
+) -> Result<Vec<u8>, InferenceError> {
+    use futures::StreamExt;
+    
     println!("📡 Starting download from: {}", url);
+    
+    // Send connecting progress
+    let _ = progress_tx.send(DownloadProgress {
+        total_bytes: None,
+        downloaded_bytes: 0,
+        percentage: 0.0,
+        phase: DownloadPhase::Connecting,
+        message: Some("Connecting to server...".to_string()),
+    });
     
     let client = reqwest::Client::builder()
         .user_agent("inference-flutter/1.0.0")
@@ -545,6 +599,14 @@ async fn download_model(url: &str) -> Result<Vec<u8>, InferenceError> {
         .send()
         .await
         .map_err(|e| {
+            let _ = progress_tx.send(DownloadProgress {
+                total_bytes: None,
+                downloaded_bytes: 0,
+                percentage: 0.0,
+                phase: DownloadPhase::Failed,
+                message: Some(format!("Connection failed: {}", e)),
+            });
+            
             let error_msg = if e.is_connect() {
                 format!("Failed to connect to HuggingFace: {}. Please check your internet connection.", e)
             } else if e.is_timeout() {
@@ -566,17 +628,130 @@ async fn download_model(url: &str) -> Result<Vec<u8>, InferenceError> {
         } else {
             format!("HTTP error {}: Failed to download model from {}", status, url)
         };
+        
+        let _ = progress_tx.send(DownloadProgress {
+            total_bytes: None,
+            downloaded_bytes: 0,
+            percentage: 0.0,
+            phase: DownloadPhase::Failed,
+            message: Some(error_msg.clone()),
+        });
+        
         return Err(InferenceError::model_load(error_msg));
     }
 
-    println!("📥 Downloading model data...");
-    let bytes = response
-        .bytes()
-        .await
-        .map_err(|e| InferenceError::model_load(format!("Failed to read response bytes: {}", e)))?;
+    // Get content length if available
+    let total_bytes = response.content_length();
+    
+    // Send downloading progress
+    let _ = progress_tx.send(DownloadProgress {
+        total_bytes,
+        downloaded_bytes: 0,
+        percentage: 0.0,
+        phase: DownloadPhase::Downloading,
+        message: Some(format!("Downloading model{}", 
+            if let Some(size) = total_bytes {
+                format!(" ({:.1} MB)", size as f64 / 1024.0 / 1024.0)
+            } else {
+                "...".to_string()
+            }
+        )),
+    });
 
-    println!("✅ Downloaded {} bytes successfully", bytes.len());
-    Ok(bytes.to_vec())
+    println!("📥 Downloading model data...");
+    
+    // Download with progress reporting
+    let mut downloaded_bytes = 0u64;
+    let mut buffer = Vec::new();
+    let mut stream = response.bytes_stream();
+    
+    while let Some(chunk) = stream.next().await {
+        let chunk = chunk.map_err(|e| {
+            let _ = progress_tx.send(DownloadProgress {
+                total_bytes,
+                downloaded_bytes,
+                percentage: 0.0,
+                phase: DownloadPhase::Failed,
+                message: Some(format!("Download failed: {}", e)),
+            });
+            InferenceError::model_load(format!("Failed to read response bytes: {}", e))
+        })?;
+        
+        buffer.extend_from_slice(&chunk);
+        downloaded_bytes += chunk.len() as u64;
+        
+        // Calculate progress
+        let percentage = if let Some(total) = total_bytes {
+            (downloaded_bytes as f64 / total as f64) * 100.0
+        } else {
+            0.0
+        };
+        
+        // Send progress update
+        let _ = progress_tx.send(DownloadProgress {
+            total_bytes,
+            downloaded_bytes,
+            percentage,
+            phase: DownloadPhase::Downloading,
+            message: Some(format!("Downloaded {:.1} MB{}", 
+                downloaded_bytes as f64 / 1024.0 / 1024.0,
+                if let Some(total) = total_bytes {
+                    format!(" of {:.1} MB", total as f64 / 1024.0 / 1024.0)
+                } else {
+                    "".to_string()
+                }
+            )),
+        });
+    }
+    
+    // Send processing progress
+    let _ = progress_tx.send(DownloadProgress {
+        total_bytes,
+        downloaded_bytes,
+        percentage: if total_bytes.is_some() { 100.0 } else { 0.0 },
+        phase: DownloadPhase::Processing,
+        message: Some("Processing downloaded model...".to_string()),
+    });
+
+    println!("✅ Downloaded {} bytes successfully", buffer.len());
+    
+    // Send completion progress
+    let _ = progress_tx.send(DownloadProgress {
+        total_bytes: Some(downloaded_bytes),
+        downloaded_bytes,
+        percentage: 100.0,
+        phase: DownloadPhase::Completed,
+        message: Some("Download completed successfully!".to_string()),
+    });
+    
+    Ok(buffer)
+}
+
+/// Download a model from URL with progress (simplified version)
+async fn download_model_with_progress(url: &str) -> Result<Vec<u8>, InferenceError> {
+    use tokio::sync::mpsc;
+    
+    let (tx, mut rx) = mpsc::unbounded_channel();
+    
+    // Start download
+    let download_task = download_model_with_progress_callback(url, tx);
+    
+    // Consume progress updates (just log them for now)
+    let progress_task = async {
+        while let Some(progress) = rx.recv().await {
+            println!("📊 Download Progress: {:.1}% ({} bytes)", 
+                progress.percentage, progress.downloaded_bytes);
+        }
+    };
+    
+    // Run both tasks
+    let (result, _) = tokio::join!(download_task, progress_task);
+    result
+}
+
+/// Download a model from URL (existing function - kept for compatibility)
+async fn download_model(url: &str) -> Result<Vec<u8>, InferenceError> {
+    download_model_with_progress(url).await
 }
 
 /// Get cache directory path

@@ -1970,6 +1970,7 @@ dependencies = [
  "candle-transformers",
  "env_logger",
  "flutter_rust_bridge",
+ "futures",
  "hf-hub",
  "image",
  "linfa",
